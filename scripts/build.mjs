@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, readJSON, makeT, rmDir, writeFile, copyDir, urlFor, SLUG_RE, L } from './lib/util.mjs';
+import { ROOT, readJSON, makeT, rmDir, writeFile, copyDir, urlFor, filePathFor, SLUG_RE, L } from './lib/util.mjs';
 import { renderHome } from './lib/page-home.mjs';
 import { renderTool } from './lib/page-tool.mjs';
 import { renderCatalog } from './lib/page-catalog.mjs';
@@ -64,7 +64,7 @@ rmDir(path.join(DIST, 'css', '_src'));
 /* ---------- الصفحات ---------- */
 let pageCount = 0;
 const write = (lang, rel, html) => {
-  const out = urlFor(lang, defaultLang, rel).replace(/^\//, '');
+  const out = filePathFor(lang, defaultLang, rel).replace(/^\//, '');
   writeFile(path.join(DIST, out), html);
   pageCount += 1;
 };
@@ -117,7 +117,7 @@ ${languages.map((l) => `    <xhtml:link rel="alternate" hreflang="${l.code}" hre
 writeFile(path.join(DIST, 'sitemap.xml'), sitemap);
 writeFile(
   path.join(DIST, 'robots.txt'),
-  `User-agent: *\nAllow: /\n\nSitemap: ${config.baseUrl}/sitemap.xml\n`
+  `User-agent: *\nAllow: /\n\nSitemap: ${config.baseUrl}${config.basePath || ''}/sitemap.xml\n`
 );
 
 /* ---------- ملف رؤوس للاستضافة (Netlify/Cloudflare) ---------- */

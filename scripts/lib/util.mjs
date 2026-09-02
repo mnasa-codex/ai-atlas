@@ -42,11 +42,20 @@ export function makeT(dicts, defaultLang) {
 }
 
 /** مسار الصفحة لكل لغة: اللغة الافتراضية في الجذر، الباقي ببادئة. */
-export function urlFor(lang, defaultLang, rel, basePath = SITE_CONFIG.basePath || '') {
+export function publicUrlFor(lang, defaultLang, rel, basePath = SITE_CONFIG.basePath || '') {
   const clean = rel.replace(/^\/+/, '');
   const prefix = String(basePath || '').replace(/\/+$/, '');
   const localePath = lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`;
   return `${prefix}${localePath}`;
+}
+
+export function urlFor(lang, defaultLang, rel, basePath = SITE_CONFIG.basePath || '') {
+  return publicUrlFor(lang, defaultLang, rel, basePath);
+}
+
+export function filePathFor(lang, defaultLang, rel) {
+  const clean = rel.replace(/^\/+/, '');
+  return lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`;
 }
 
 export function waHref({ number, text }) {

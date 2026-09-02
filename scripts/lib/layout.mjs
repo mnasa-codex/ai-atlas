@@ -1,5 +1,6 @@
 import { esc, escAttr, escJSON, L, urlFor, waHref } from './util.mjs';
 import { icon } from './icons.mjs';
+import { publicUrlFor } from './util.mjs';
 
 /**
  * القالب الأم لكل الصفحات: هيدر واحد وفوتر واحد ومصدر حقيقة واحد.
@@ -14,9 +15,9 @@ export function renderLayout(ctx, page) {
 
   const basePath = config.basePath || '';
   const assetUrl = (rel) => `${basePath}/${String(rel).replace(/^\/+/, '')}`;
-  const canonical = `${config.baseUrl}${urlFor(lang, defaultLang, page.relPath, basePath)}`;
+  const canonical = `${config.baseUrl}${publicUrlFor(lang, defaultLang, page.relPath, basePath)}`;
   const alternates = languages
-    .map((l) => `  <link rel="alternate" hreflang="${l.code}" href="${escAttr(config.baseUrl + urlFor(l.code, defaultLang, page.relPath, basePath))}">`)
+    .map((l) => `  <link rel="alternate" hreflang="${l.code}" href="${escAttr(config.baseUrl + publicUrlFor(l.code, defaultLang, page.relPath, basePath))}">`)
     .join('\n');
 
   const wa = config.contact.whatsapp;
@@ -24,8 +25,8 @@ export function renderLayout(ctx, page) {
   const genericWa = waHref({ number: wa.number, text: t(lang, 'contact.waGeneric') });
 
   const navItems = [
-    { href: urlFor(lang, defaultLang, 'catalog.html', basePath), key: 'nav.catalog', id: 'catalog' },
-    { href: urlFor(lang, defaultLang, 'contact.html', basePath), key: 'nav.contact', id: 'contact' }
+    { href: publicUrlFor(lang, defaultLang, 'catalog.html', basePath), key: 'nav.catalog', id: 'catalog' },
+    { href: publicUrlFor(lang, defaultLang, 'contact.html', basePath), key: 'nav.contact', id: 'contact' }
   ];
 
   return `<!DOCTYPE html>
@@ -37,7 +38,7 @@ export function renderLayout(ctx, page) {
 <meta name="description" content="${escAttr(page.description)}">
 ${page.noindex ? '<meta name="robots" content="noindex, nofollow">' : '<meta name="robots" content="index, follow">'}
 <link rel="canonical" href="${escAttr(canonical)}">
-<link rel="alternate" hreflang="x-default" href="${escAttr(config.baseUrl + urlFor(defaultLang, defaultLang, page.relPath, basePath))}">
+<link rel="alternate" hreflang="x-default" href="${escAttr(config.baseUrl + publicUrlFor(defaultLang, defaultLang, page.relPath, basePath))}">
 ${alternates}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="${escAttr(meta.locale)}">
@@ -58,7 +59,7 @@ ${page.jsonLd ? `<script type="application/ld+json">${escJSON(page.jsonLd)}</scr
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="${escAttr(urlFor(lang, defaultLang, 'index.html', basePath))}">
+    <a class="brand" href="${escAttr(publicUrlFor(lang, defaultLang, 'index.html', basePath))}">
       <span class="brand-mark">${icon('bolt')}</span>
       <span>${esc(L(config.siteName, lang))}</span>
     </a>
@@ -69,7 +70,7 @@ ${page.jsonLd ? `<script type="application/ld+json">${escJSON(page.jsonLd)}</scr
       <button class="icon-btn" type="button" data-theme-toggle aria-pressed="false" aria-label="${escAttr(t(lang, 'common.themeAria'))}">
         ${icon('sun')}${icon('moon')}
       </button>
-      <a class="lang-flip" href="${escAttr(urlFor(flip.code, defaultLang, page.relPath, basePath))}" data-lang="${escAttr(flip.code)}" lang="${escAttr(flip.code)}" hreflang="${escAttr(flip.code)}" aria-label="${escAttr(t(lang, 'common.langAria', { label: flip.label }))}">
+      <a class="lang-flip" href="${escAttr(publicUrlFor(flip.code, defaultLang, page.relPath, basePath))}" data-lang="${escAttr(flip.code)}" lang="${escAttr(flip.code)}" hreflang="${escAttr(flip.code)}" aria-label="${escAttr(t(lang, 'common.langAria', { label: flip.label }))}">
         <span>${esc(flip.short)}</span>
       </a>
     </div>
