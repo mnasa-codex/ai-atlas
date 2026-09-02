@@ -1,7 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
-  font-family: "IBM Plex Sans Arabic", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font);
   font-size: 100%;
   background-color: var(--bg);
   color: var(--fg);
@@ -12,7 +12,7 @@ html {
   scroll-padding-block-start: calc(var(--header-h) + 72px);
 }
 
-html[lang="en"] { font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
+html[lang="en"] { font-family: var(--font-en); }
 
 body {
   min-block-size: 100vh;

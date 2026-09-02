@@ -49,6 +49,7 @@ ${alternates}
 ${page.ogImage ? `<meta property="og:image" content="${escAttr(page.ogImage)}">` : ''}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#07080b">
+<link rel="preload" href="${assetUrl(`assets/fonts/${lang === 'ar' ? 'ibm-plex-sans-arabic-400' : 'inter-400'}.woff2`)}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${assetUrl('css/app.css')}">
 <script src="${assetUrl('js/theme-init.js')}"></script>
 ${page.jsonLd ? `<script type="application/ld+json">${escJSON(page.jsonLd)}</script>` : ''}
@@ -114,7 +115,7 @@ ${page.main}
 <a class="icon-btn to-top" href="#main" aria-label="${escAttr(t(lang, 'common.toTop'))}">${icon('up')}</a>
 
 <div class="fab">
-  <div class="fab-panel" role="group" aria-label="${escAttr(t(lang, 'contact.fabAria'))}" hidden>
+  <div class="fab-panel" role="group" aria-label="${escAttr(t(lang, 'contact.fabAria'))}">
     <p>${esc(L(config.contact.response_time, lang))}</p>
     ${wa.enabled ? `<a class="btn btn-wa btn-block" href="${escAttr(genericWa)}" target="_blank" rel="noopener noreferrer">${icon('whatsapp')}<span>${esc(t(lang, 'contact.whatsapp'))}</span><span class="sr-only"> — ${esc(t(lang, 'common.external'))}</span></a>` : ''}
     ${fb.enabled ? `<a class="btn btn-fb btn-block" href="${escAttr(fb.messenger)}" target="_blank" rel="noopener noreferrer">${icon('facebook')}<span>${esc(t(lang, 'contact.messenger'))}</span><span class="sr-only"> — ${esc(t(lang, 'common.external'))}</span></a>` : ''}

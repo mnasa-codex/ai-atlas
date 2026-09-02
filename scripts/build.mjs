@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, readJSON, makeT, rmDir, writeFile, copyDir, urlFor, filePathFor, SLUG_RE, L } from './lib/util.mjs';
+import { ROOT, readJSON, makeT, rmDir, writeFile, copyDir, urlFor, filePathFor, SLUG_RE } from './lib/util.mjs';
 import { renderHome } from './lib/page-home.mjs';
 import { renderTool } from './lib/page-tool.mjs';
 import { renderCatalog } from './lib/page-catalog.mjs';
@@ -38,13 +38,17 @@ rmDir(DIST);
 // أصول ثابتة تُنسخ كما هي (لا حزم، لا تحويل)
 copyDir(path.join(ROOT, 'src', 'styles'), path.join(DIST, 'css', '_src'));
 copyDir(path.join(ROOT, 'src', 'js'), path.join(DIST, 'js'));
+const assetsDir = path.join(ROOT, 'src', 'assets');
+if (fs.existsSync(assetsDir)) copyDir(assetsDir, path.join(DIST, 'assets'));
 
 /* ---------- دمج CSS في ملف واحد بالترتيب الصحيح ---------- */
 const cssOrder = [
+  'fonts.css',
   'tokens.css',
   'base.css',
   'components/layout.css',
   'components/motion.css',
+  'components/atlas.css',
   'components/home.css',
   'components/tool.css',
   'components/pricing.css',

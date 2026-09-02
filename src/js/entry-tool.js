@@ -8,6 +8,8 @@ import { initPricing } from './modules/pricing.js';
 import { initLightbox } from './modules/lightbox.js';
 import { initBars } from './modules/bars.js';
 import { initFab } from './modules/fab.js';
+import { initFit } from './modules/fit.js';
+import { initHud } from './modules/hud.js';
 import { initLangSwitch } from './modules/lang-switch.js';
 
 initTheme($('[data-theme-toggle]'));
@@ -21,3 +23,5 @@ initPricing();
 initLightbox();
 initBars();
 initFab();
+initFit();
+initHud();

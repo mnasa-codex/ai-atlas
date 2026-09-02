@@ -1,6 +1,35 @@
-import { esc, escAttr, L, urlFor, waHref, money } from './util.mjs';
+import { esc, escAttr, escJSON, L, urlFor, waHref, money } from './util.mjs';
 import { icon, hasIcon } from './icons.mjs';
 import { renderLayout } from './layout.mjs';
+
+function renderStance(ctx, lang, tool) {
+  const stance = tool.meta?.stance; if (!stance) return '';
+  return `<span class="stamp" data-stance="${escAttr(stance)}"><span>${esc(ctx.t(lang, 'stance.label'))}</span><b>${esc(ctx.t(lang, `stance.${stance}`))}</b></span>`;
+}
+
+function renderFacts(ctx, lang, tool) {
+  const { t } = ctx; const plans = tool.pricing?.plans || []; const facts = [];
+  const add = (tone, iconName, key) => facts.push(`<div class="fact" data-tone="${tone}">${icon(iconName)}<span>${esc(t(lang, key))}</span></div>`);
+  if (tool.pricing?.verify_required) add('warn', 'alert', 'facts.unverified');
+  plans.some(p => p.is_free) ? add('good','check','facts.hasFree') : add('warn','alert','facts.noFree');
+  if (plans.some(p => p.what_you_get?.data_used_for_training === true)) add('warn','info','facts.trainsOnData');
+  else if (plans.length && plans.every(p => p.what_you_get?.data_used_for_training === false)) add('good','shield','facts.noTraining');
+  tool.api?.available === true ? add('good','external','facts.hasApi') : add('bad','x','facts.noApi');
+  plans.length && plans.every(p => p.what_you_get?.commercial_use === true) ? add('good','check','facts.commercialOk') : add('warn','info','facts.commercialNo');
+  if (tool.arabic_support?.ui === false) add('info','globe','facts.noArabicUi');
+  return `<section class="section" id="facts"><div class="container"><div class="axis-head reveal"><span class="axis-id">01 / ${esc(t(lang,'facts.title'))}</span><h2>${esc(t(lang,'facts.title'))}</h2><p>${esc(t(lang,'facts.lead'))}</p></div><div class="facts reveal">${facts.join('')}</div></div></section>`;
+}
+
+function renderFit(ctx, lang, tool, pageUrl) {
+  const { config, t } = ctx; const fit = tool.pricing?.fit; if (!fit?.enabled) return '';
+  const plans = (tool.pricing.plans || []).filter(p => p.fit).map(p => ({ id:p.id, name:L(p.name,lang), price:p.contact_for_price === true ? null : (p.price?.amount ?? null), currency:p.price?.currency || 'USD', capacity:p.fit.unlimited ? null : p.fit.capacity, unlimited:p.fit.unlimited === true, privacy:p.what_you_get?.privacy_mode === true, commercial:p.what_you_get?.commercial_use === true, viaAdmin:false, href:p.cta?.url || null, ctaLabel:t(lang,'pricing.btnDirect') }));
+  const offer = tool.pricing.admin_offer; if (offer?.enabled) plans.push({ id:'admin-offer', name:L(offer.name,lang), price:null, currency:'USD', capacity:null, unlimited:true, privacy:true, commercial:true, viaAdmin:true, href:null, ctaLabel:t(lang,'pricing.btnWhatsapp') });
+  const adminHref = config.contact.whatsapp?.enabled ? waHref({ number:config.contact.whatsapp.number, text:t(lang,'contact.waTemplate',{ plan:L(offer?.name || {ar:'—',en:'—'},lang), tool:L(tool.name,lang), url:pageUrl }) }) : null;
+  const keys=['stance.label','fit.eligible','fit.recommended','fit.perUnit','fit.perMonthCost','fit.covers','fit.unlimited','fit.headroom','fit.runsOut','fit.rejectedTitle','fit.whyCapacity','fit.whyPrivacy','fit.whyCommercial','fit.whyPayment','fit.whyNoPrice','fit.noneTitle','fit.noneDesc','fit.askAdmin'];
+  const strings=Object.fromEntries(keys.map(k=>[k,t(lang,k)]));
+  const needs=[['privacy','fit.needPrivacy'],['commercial','fit.needCommercial'],['localPay','fit.needLocalPay']];
+  return `<section class="section" id="fit"><div class="container"><div class="axis-head reveal"><span class="axis-id">02 / ${esc(t(lang,'fit.title'))}</span><h2>${esc(t(lang,'fit.title'))}</h2><p>${esc(t(lang,'fit.lead'))}</p></div><div class="fit reveal" data-fit><div class="fit-console"><div class="fit-dial"><label for="fit-range">${esc(t(lang,'fit.inputLabel'))} — ${esc(L(fit.metric.label,lang))}</label><div class="fit-readout" data-fit-readout></div><input class="fit-range" id="fit-range" type="range" data-fit-range min="${fit.metric.min}" max="${fit.metric.max}" step="${fit.metric.step}" value="${fit.metric.default}"><div class="fit-steps"><span>${fit.metric.min}</span><span>${fit.metric.max}</span></div></div><div class="fit-needs"><span>${esc(t(lang,'fit.needsTitle'))}</span>${needs.map(([key,label])=>`<label class="fit-check"><input type="checkbox" data-fit-need="${key}"><span>${esc(t(lang,label))}</span></label>`).join('')}<button class="btn btn-ghost btn-sm" type="button" data-fit-reset>${esc(t(lang,'fit.reset'))}</button></div></div><div class="fit-out"><p class="fit-eligible" data-fit-eligible></p><div class="fit-winner" data-fit-winner></div><div class="fit-rejected" data-fit-rejected></div><p class="muted" style="font-size:var(--fs-xs)">${esc(t(lang,'fit.note'))}</p></div></div><script type="application/json" id="fit-data">${escJSON({metric:{unit:L(fit.metric.unit,lang),default:fit.metric.default},plans,strings,adminHref})}</script></div></section>`;
+}
 
 const yn = (value, t, lang) =>
   value === true
@@ -100,7 +129,7 @@ function renderPlan(ctx, lang, tool, plan, pageUrl) {
         ${plan.not_included?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.notIncluded'))}</h4>${list(plan.not_included, 'is-no', 'x')}</div>` : ''}
         ${plan.upgrade_triggers?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.upgradeWhen'))}</h4>${list(plan.upgrade_triggers, 'is-up', 'arrow')}</div>` : ''}
         ${g.models_access?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.models'))}</h4><div class="chips">${g.models_access.map((m) => `<span class="badge">${esc(m)}</span>`).join('')}</div></div>` : ''}
-        <div class="plan-block"><h4>${esc(t(lang, 'tool.limits'))}</h4><div class="plan-facts">${facts}${trainingFact}${textFacts}${g.sla ? `<div class="plan-fact"><span>${esc(t(lang, 'tool.sla'))}</span><b>${esc(g.sla)}</b></div>` : ''}</div></div>
+        <div class="plan-block"><h4>${esc(t(lang, 'tool.entitlements'))}</h4><div class="plan-facts">${facts}${trainingFact}${textFacts}${g.sla ? `<div class="plan-fact"><span>${esc(t(lang, 'tool.sla'))}</span><b>${esc(g.sla)}</b></div>` : ''}</div></div>
         ${plan.value_verdict ? `<p class="plan-verdict"><strong>${esc(t(lang, 'tool.verdictPlan'))}</strong>${esc(L(plan.value_verdict, lang))}</p>` : ''}
         ${hasPrice && plan.cta?.url ? `<div class="plan-cta"><a class="btn btn-primary btn-block" href="${escAttr(plan.cta.url)}" target="_blank" rel="noopener noreferrer">${esc(t(lang, 'pricing.btnDirect'))}${icon('external')}<span class="sr-only"> — ${esc(t(lang, 'common.external'))}</span></a></div>` : ''}
       </article>`;
@@ -144,8 +173,11 @@ export function renderTool(ctx, lang, tool) {
   const pricing = tool.pricing || {};
   const plans = [...(pricing.plans || [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
+  const fitEnabled = Boolean(tool.pricing?.fit?.enabled);
   const sections = [
     ['overview', 'tool.overview'],
+    ['facts', 'facts.title'],
+    fitEnabled ? ['fit', 'fit.title'] : null,
     ['what-it-does', 'tool.whatItDoes'],
     ['features', 'tool.features'],
     ['use-cases', 'tool.useCases'],
@@ -168,7 +200,7 @@ export function renderTool(ctx, lang, tool) {
   const features = (tool.key_features || []).map((f) => `<article class="card feature-card spot reveal">
         <h3><span class="feature-icon">${icon(hasIcon(f.icon) ? f.icon : 'sparkles')}</span>${esc(L(f.title, lang))}</h3>
         <p>${esc(L(f.description, lang))}</p>
-        ${f.impact ? `<span class="badge badge-accent">${esc(t(lang, 'tool.mostPopular'))}: ${esc(f.impact)}</span>` : ''}
+        ${f.impact ? `<span class="badge badge-accent">${esc(t(lang, 'impact.label'))}: ${esc(t(lang, `impact.${f.impact}`))}</span>` : ''}
       </article>`).join('\n      ');
 
   const useCases = (tool.use_cases || []).map((u) => `<article class="card spot reveal">
@@ -238,7 +270,7 @@ export function renderTool(ctx, lang, tool) {
 
   const main = `
 <section class="tool-hero">
-  <div class="hero-bg" aria-hidden="true"><div class="hero-bg-fallback"></div></div>
+  <div class="hero-bg" aria-hidden="true"><div class="dotfield"></div></div>
   <div class="container tool-hero-inner">
     ${isDraft ? `<div class="notice">${icon('alert')}<span>${esc(t(lang, 'tool.draft'))}</span></div>` : ''}
     <div class="tool-id">
@@ -258,6 +290,7 @@ export function renderTool(ctx, lang, tool) {
       <span class="badge">${esc(t(lang, 'tool.verifiedAt'))}: ${esc(tool.meta?.last_verified ?? '—')}</span>
       <span class="badge badge-success score">${esc(tool.ratings?.overall ?? '—')}<small> / 5</small></span>
     </div>
+    ${renderStance(ctx, lang, tool)}
     <div class="tool-hero-actions">
       ${tool.links?.website ? `<a class="btn btn-primary" href="${escAttr(tool.links.website)}" target="_blank" rel="noopener noreferrer">${esc(t(lang, 'tool.visit'))}${icon('external')}<span class="sr-only"> — ${esc(t(lang, 'common.external'))}</span></a>` : ''}
       ${tool.links?.docs ? `<a class="btn btn-ghost" href="${escAttr(tool.links.docs)}" target="_blank" rel="noopener noreferrer">${esc(t(lang, 'tool.docs'))}${icon('external')}</a>` : ''}
@@ -271,6 +304,7 @@ export function renderTool(ctx, lang, tool) {
     <div class="subnav-scroll">
       ${subnav}
     </div>
+    <div class="hud"><div>${esc(t(lang, 'hud.verified'))} <b>${esc(tool.meta?.last_verified ?? '—')}</b></div><span class="sep">/</span><div>${esc(t(lang, 'hud.plans'))} <b>${plans.length}</b></div><span class="sep">/</span><div>${esc(t(lang, 'hud.stance'))} <b>${esc(tool.meta?.stance ? t(lang, `stance.${tool.meta.stance}`) : '—')}</b></div></div>
   </div>
 </nav>
 
@@ -283,6 +317,9 @@ export function renderTool(ctx, lang, tool) {
     </div>
   </div>
 </section>
+
+${renderFacts(ctx, lang, tool)}
+${renderFit(ctx, lang, tool, pageUrl)}
 
 <section class="section" id="what-it-does">
   <div class="container">
