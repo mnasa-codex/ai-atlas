@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+const SITE_CONFIG = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'site.config.json'), 'utf-8'));
+
 export const ROOT = process.cwd();
 export const readJSON = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf-8'));
 
@@ -40,9 +42,11 @@ export function makeT(dicts, defaultLang) {
 }
 
 /** مسار الصفحة لكل لغة: اللغة الافتراضية في الجذر، الباقي ببادئة. */
-export function urlFor(lang, defaultLang, rel) {
+export function urlFor(lang, defaultLang, rel, basePath = SITE_CONFIG.basePath || '') {
   const clean = rel.replace(/^\/+/, '');
-  return lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`;
+  const prefix = String(basePath || '').replace(/\/+$/, '');
+  const localePath = lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`;
+  return `${prefix}${localePath}`;
 }
 
 export function waHref({ number, text }) {

@@ -12,9 +12,11 @@ export function renderLayout(ctx, page) {
   const other = languages.filter((l) => l.code !== lang);
   const flip = other[0];
 
-  const canonical = `${config.baseUrl}${urlFor(lang, defaultLang, page.relPath)}`;
+  const basePath = config.basePath || '';
+  const assetUrl = (rel) => `${basePath}/${String(rel).replace(/^\/+/, '')}`;
+  const canonical = `${config.baseUrl}${urlFor(lang, defaultLang, page.relPath, basePath)}`;
   const alternates = languages
-    .map((l) => `  <link rel="alternate" hreflang="${l.code}" href="${escAttr(config.baseUrl + urlFor(l.code, defaultLang, page.relPath))}">`)
+    .map((l) => `  <link rel="alternate" hreflang="${l.code}" href="${escAttr(config.baseUrl + urlFor(l.code, defaultLang, page.relPath, basePath))}">`)
     .join('\n');
 
   const wa = config.contact.whatsapp;
@@ -22,8 +24,8 @@ export function renderLayout(ctx, page) {
   const genericWa = waHref({ number: wa.number, text: t(lang, 'contact.waGeneric') });
 
   const navItems = [
-    { href: urlFor(lang, defaultLang, 'catalog.html'), key: 'nav.catalog', id: 'catalog' },
-    { href: urlFor(lang, defaultLang, 'contact.html'), key: 'nav.contact', id: 'contact' }
+    { href: urlFor(lang, defaultLang, 'catalog.html', basePath), key: 'nav.catalog', id: 'catalog' },
+    { href: urlFor(lang, defaultLang, 'contact.html', basePath), key: 'nav.contact', id: 'contact' }
   ];
 
   return `<!DOCTYPE html>
@@ -35,7 +37,7 @@ export function renderLayout(ctx, page) {
 <meta name="description" content="${escAttr(page.description)}">
 ${page.noindex ? '<meta name="robots" content="noindex, nofollow">' : '<meta name="robots" content="index, follow">'}
 <link rel="canonical" href="${escAttr(canonical)}">
-<link rel="alternate" hreflang="x-default" href="${escAttr(config.baseUrl + urlFor(defaultLang, defaultLang, page.relPath))}">
+<link rel="alternate" hreflang="x-default" href="${escAttr(config.baseUrl + urlFor(defaultLang, defaultLang, page.relPath, basePath))}">
 ${alternates}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="${escAttr(meta.locale)}">
@@ -46,8 +48,8 @@ ${alternates}
 ${page.ogImage ? `<meta property="og:image" content="${escAttr(page.ogImage)}">` : ''}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#07080b">
-<link rel="stylesheet" href="/css/app.css">
-<script src="/js/theme-init.js"></script>
+<link rel="stylesheet" href="${assetUrl('css/app.css')}">
+<script src="${assetUrl('js/theme-init.js')}"></script>
 ${page.jsonLd ? `<script type="application/ld+json">${escJSON(page.jsonLd)}</script>` : ''}
 </head>
 <body class="${escAttr(page.bodyClass || '')}">
@@ -56,7 +58,7 @@ ${page.jsonLd ? `<script type="application/ld+json">${escJSON(page.jsonLd)}</scr
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="${escAttr(urlFor(lang, defaultLang, 'index.html'))}">
+    <a class="brand" href="${escAttr(urlFor(lang, defaultLang, 'index.html', basePath))}">
       <span class="brand-mark">${icon('bolt')}</span>
       <span>${esc(L(config.siteName, lang))}</span>
     </a>
@@ -67,7 +69,7 @@ ${page.jsonLd ? `<script type="application/ld+json">${escJSON(page.jsonLd)}</scr
       <button class="icon-btn" type="button" data-theme-toggle aria-pressed="false" aria-label="${escAttr(t(lang, 'common.themeAria'))}">
         ${icon('sun')}${icon('moon')}
       </button>
-      <a class="lang-flip" href="${escAttr(urlFor(flip.code, defaultLang, page.relPath))}" data-lang="${escAttr(flip.code)}" lang="${escAttr(flip.code)}" hreflang="${escAttr(flip.code)}" aria-label="${escAttr(t(lang, 'common.langAria', { label: flip.label }))}">
+      <a class="lang-flip" href="${escAttr(urlFor(flip.code, defaultLang, page.relPath, basePath))}" data-lang="${escAttr(flip.code)}" lang="${escAttr(flip.code)}" hreflang="${escAttr(flip.code)}" aria-label="${escAttr(t(lang, 'common.langAria', { label: flip.label }))}">
         <span>${esc(flip.short)}</span>
       </a>
     </div>
@@ -119,7 +121,7 @@ ${page.main}
   <button class="fab-trigger" type="button" aria-expanded="false" aria-label="${escAttr(t(lang, 'contact.fabAria'))}">${icon('chat')}</button>
 </div>
 
-<script type="module" src="/js/${escAttr(page.entry)}"></script>
+<script type="module" src="${assetUrl(`js/${escAttr(page.entry)}`)}"></script>
 </body>
 </html>`;
 }

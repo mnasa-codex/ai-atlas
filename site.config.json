@@ -1,6 +1,7 @@
 {
   "siteName": { "ar": "أطلس الذكاء الاصطناعي", "en": "AI ATLAS" },
-  "baseUrl": "https://ai-atlas.example.com",
+  "baseUrl": "https://mnasa-codex.github.io",
+  "basePath": "/ai-atlas",
   "defaultLang": "ar",
   "languages": [
     { "code": "ar", "dir": "rtl", "label": "العربية", "short": "ع", "locale": "ar-SY-u-nu-latn" },
