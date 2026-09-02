@@ -1,419 +1,445 @@
 {
   "slug": "midjourney",
-  "name": {
-    "ar": "ميدجورني",
-    "en": "Midjourney"
-  },
-  "vendor": {
-    "name": "Midjourney, Inc.",
-    "country": "الولايات المتحدة",
-    "founded": 2021
-  },
+  "name": { "ar": "ميدجورني", "en": "Midjourney" },
+  "vendor": { "name": "Midjourney, Inc.", "country": { "ar": "الولايات المتحدة", "en": "United States" }, "founded": 2021 },
   "tagline": {
-    "ar": "المنصة الرائدة عالمياً في توليد الصور الفنية والسينمائية فائقة الجودة.",
-    "en": "Leading generative AI platform creating photorealistic and cinematic imagery."
+    "ar": "منصة توليد الصور الفنية والسينمائية الأعلى جودة جمالياً في السوق.",
+    "en": "The most aesthetically refined text-to-image platform on the market."
   },
   "category": "image-generation",
-  "subcategories": [
-    "concept-art",
-    "photorealism"
-  ],
+  "subcategories": ["concept-art", "design-assets"],
   "maturity": "stable",
-  "platforms": [
-    "web",
-    "discord"
-  ],
+  "platforms": ["web", "discord"],
   "arabic_support": {
     "ui": false,
     "prompt_quality": "good",
     "note": {
-      "ar": "يفهم الأوامر العربية بدقة عالية.",
-      "en": "Understands Arabic accurately."
+      "ar": "الواجهة إنجليزية بالكامل، لكن الأوامر العربية تُفهَم بدقة جيدة. الأفضل كتابة المصطلحات الفنية بالإنجليزية.",
+      "en": "Interface is English-only, though Arabic prompts are understood well. Keep art-direction terms in English."
     }
   },
+
   "summary": {
-    "ar": "ميدجورني هو المعيار الذهبي لتوليد الفنون البصرية والصور الواقعية بالذكاء الاصطناعي للمصممين والمخرجين.",
-    "en": "Midjourney is the industry gold standard for text-to-image synthesis."
+    "ar": "ميدجورني منصة تحويل النص إلى صورة تُعدّ المعيار الذهبي في الجمال البصري والتناغم اللوني. تخدم المصممين والمخرجين ومديري الفن الذين يحتاجون مخرجات جاهزة للعرض على العميل بأقل تدخّل يدوي، مقابل مرونة تقنية أقل من منافسيها مفتوحة الوزن.",
+    "en": "Midjourney is a text-to-image platform widely treated as the gold standard for aesthetic quality and colour cohesion. It serves designers, directors and art leads who need client-ready output with minimal manual cleanup, at the cost of less technical control than open-weight rivals."
   },
   "long_description": {
-    "ar": "يمثل ميدجورني القوة الإنتاجية الأكثر موثوقية في توليد الصور بالذكاء الاصطناعي عبر محرك V6.1 المتطور.\n\nتتيح المنصة للمحترفين إنتاج أعمال فوتوغرافية وسينمائية بدرجات إضاءة وتفاصيل بشرية طبيعية للغاية.\n\nتوفر واجهة الويب مرونة كاملة للتحكم في معايير التوليد والتعديل الموضعي دون الحاجة لتطبيق ديسكورد.",
-    "en": "Midjourney delivers industry-leading image synthesis through its latest v6.1 generation engine."
+    "ar": "يقدّم ميدجورني عبر محرّكه v6.1 مستوى من الواقعية في تفاصيل البشرة والأقمشة والإضاءة يصعب الوصول إليه بأدوات أخرى دون تدخّل يدوي طويل. قوّته ليست في عدد الأزرار بل في أن المخرَج الافتراضي جميل ومتّسق لونياً من المحاولة الأولى.\n\nانتقلت المنصة من الاعتماد الكامل على ديسكورد إلى واجهة ويب كاملة تتيح التعديل الموضعي (Vary Region)، ومرجعية الأسلوب (--sref)، ومرجعية الشخصية (--cref)، مع لوحة لإدارة الأعمال والمجلدات.\n\nفي المقابل، لا توجد خطة مجانية دائمة، والصور مرئية للعامة في المعرض إلا في خطتي Pro وMega حيث يتوفّر وضع التخفّي (Stealth). ولا واجهة برمجة رسمية معلنة للاستخدام العام، وهذا قيد جوهري لمن يريد الدمج في منتجه.",
+    "en": "Through its v6.1 engine, Midjourney delivers skin, fabric and lighting fidelity that competing tools typically reach only after significant manual work. Its strength is not the number of knobs but that the default output is beautiful and colour-coherent on the first attempt.\n\nThe product has moved from Discord-only access to a full web app with regional editing (Vary Region), style referencing (--sref), and character referencing (--cref), plus an organiser for jobs and folders.\n\nOn the other side: there is no perpetual free tier, and generations are publicly visible in the gallery unless you are on Pro or Mega, where Stealth mode is available. There is also no publicly announced general-purpose API, a real constraint for product integration."
   },
+
   "what_it_does": [
-    {
-      "ar": "توليد تصاميم وصور فوتوغرافية واقعية بدقة 4K",
-      "en": "Generate 4K photorealistic imagery"
-    },
-    {
-      "ar": "إعادة رسم وتعديل أجزاء مخصصة في الصورة (Inpainting)",
-      "en": "Inpaint and modify localized regions"
-    },
-    {
-      "ar": "استنساخ الأسلوب الفني للصور عبر Style Reference",
-      "en": "Transfer artistic signatures via --sref"
-    }
+    { "ar": "توليد صور فوتوغرافية وفنية عالية الدقة من وصف نصي", "en": "Generate high-resolution photographic and illustrative images from a text prompt" },
+    { "ar": "تعديل منطقة محدّدة داخل الصورة وإعادة رسمها (Vary Region)", "en": "Repaint a selected region inside an image (Vary Region)" },
+    { "ar": "نقل أسلوب صورة مرجعية إلى مخرَج جديد عبر --sref", "en": "Transfer a reference image's style onto new output via --sref" },
+    { "ar": "تثبيت ملامح شخصية واحدة عبر عدة صور بـ --cref", "en": "Keep one character's features consistent across images with --cref" },
+    { "ar": "تكبير الصورة وإضافة تفاصيل (Upscale) وتوسيع الإطار (Zoom Out / Pan)", "en": "Upscale with added detail and extend the frame (Zoom Out / Pan)" },
+    { "ar": "توليد أسلوب الأنمي والمانغا عبر موديل Niji المتخصص", "en": "Produce anime and manga styles through the dedicated Niji model" }
   ],
   "how_it_works": {
-    "ar": "يعتمد على شبكات الانتشار العميقة المدربة على بلايين المتجهات البصرية المرتبطة دلالياً بنصوص مفاهيمية.",
-    "en": "Proprietary deep diffusion models mapped to massive semantic embeddings."
+    "ar": "يعتمد على موديلات انتشار (Diffusion) مملوكة: يبدأ من ضجيج عشوائي ويزيله تدريجياً موجَّهاً بتمثيل رقمي (Embedding) لنصّك، مع طبقة جمالية مدرَّبة على تفضيلات المستخدمين تدفع المخرَج نحو تركيب وإضاءة مقبولة بصرياً افتراضياً.",
+    "en": "It runs proprietary diffusion models: starting from random noise and denoising it step by step, guided by an embedding of your prompt, with an aesthetic layer trained on user preference that biases output toward pleasing composition and lighting by default."
   },
+
   "key_features": [
     {
-      "title": {
-        "ar": "محرك v6.1 فائق الواقعية",
-        "en": "v6.1 Neural Engine"
-      },
-      "description": {
-        "ar": "دقة استثنائية في رسم تفاصيل البشر والأقمشة والإضاءة.",
-        "en": "Exceptional biological fidelity and lighting."
-      },
-      "icon": "Sparkles",
-      "tier_required": "Standard",
-      "impact": "high"
+      "title": { "ar": "محرّك v6.1 عالي الواقعية", "en": "v6.1 engine" },
+      "description": { "ar": "دقة عالية في تفاصيل البشرة والأيدي والأقمشة، مع تماسك أفضل في تنفيذ الأوامر الطويلة.", "en": "Strong fidelity on skin, hands and fabric, with better adherence to long prompts." },
+      "icon": "sparkles", "tier_required": "basic", "impact": "high"
+    },
+    {
+      "title": { "ar": "مرجعية الأسلوب (--sref)", "en": "Style reference (--sref)" },
+      "description": { "ar": "توحيد الهوية البصرية لحملة كاملة عبر تمرير صورة مرجعية واحدة لكل المخرجات.", "en": "Lock a whole campaign's visual identity by passing one reference image to every generation." },
+      "icon": "palette", "tier_required": "basic", "impact": "high"
+    },
+    {
+      "title": { "ar": "التعديل الموضعي (Vary Region)", "en": "Regional editing (Vary Region)" },
+      "description": { "ar": "تحديد جزء من الصورة وإعادة توليده وحده بدل إعادة الصورة كاملة.", "en": "Select part of an image and regenerate only that area instead of the whole frame." },
+      "icon": "crop", "tier_required": "basic", "impact": "medium"
+    },
+    {
+      "title": { "ar": "وضع التخفّي (Stealth)", "en": "Stealth mode" },
+      "description": { "ar": "منع ظهور مخرجاتك في المعرض العام — ضروري لأعمال العملاء الخاضعة لاتفاقية سرية.", "en": "Keeps your generations out of the public gallery — required for NDA client work." },
+      "icon": "shield", "tier_required": "pro", "impact": "high"
+    },
+    {
+      "title": { "ar": "الوضع الهادئ غير المحدود (Relax)", "en": "Unlimited Relax mode" },
+      "description": { "ar": "توليد بلا حدّ عددي على حساب الانتظار في الطابور، متاح من خطة Standard وأعلى.", "en": "Uncapped generation in exchange for queue time, from Standard upward." },
+      "icon": "infinity", "tier_required": "standard", "impact": "high"
+    },
+    {
+      "title": { "ar": "موديل Niji للأنمي", "en": "Niji anime model" },
+      "description": { "ar": "موديل منفصل مدرَّب على أساليب الأنمي والمانغا بجودة تفوق المحرّك العام في هذا المجال.", "en": "A separate model trained on anime and manga styles, outperforming the general engine there." },
+      "icon": "brush", "tier_required": "basic", "impact": "medium"
     }
   ],
+
   "use_cases": [
     {
-      "persona": {
-        "ar": "مدير فني في وكالة دعاية",
-        "en": "Creative Agency Director"
-      },
-      "scenario": {
-        "ar": "إنتاج لوحات الإلهام وتصور المشاهد الإعلانية للعملاء.",
-        "en": "Drafting moodboards and concept pitches."
-      },
-      "outcome": {
-        "ar": "تسريع وتيرة اعتماد الحملات بنسبة 80%.",
-        "en": "Shortening approval loops by 80%."
-      },
-      "time_saved": {
-        "ar": "25 ساعة أسبوعياً",
-        "en": "25 hrs/week"
-      }
+      "persona": { "ar": "مدير فني في وكالة إعلان", "en": "Agency art director" },
+      "scenario": { "ar": "بناء لوحات إلهام وتصوّر مشاهد إعلانية قبل الإنتاج الفعلي.", "en": "Building moodboards and pre-visualising ad scenes before production." },
+      "outcome": { "ar": "عرض ثلاثة اتجاهات بصرية على العميل في اليوم نفسه بدل أسبوع.", "en": "Three visual directions presented to the client same-day instead of within a week." },
+      "time_saved": { "ar": "من 15 إلى 25 ساعة أسبوعياً", "en": "15–25 hours per week" }
+    },
+    {
+      "persona": { "ar": "مصمم مستقل", "en": "Freelance designer" },
+      "scenario": { "ar": "إنتاج صور غلاف ومواد سوشيال ميديا لعملاء صغار بميزانية لا تكفي جلسة تصوير.", "en": "Producing cover art and social assets for small clients who cannot fund a photo shoot." },
+      "outcome": { "ar": "تسليم حزمة بصرية كاملة بأسلوب موحّد دون تكلفة تصوير.", "en": "A full, stylistically consistent asset pack with no shoot cost." },
+      "time_saved": { "ar": "8 ساعات لكل مشروع", "en": "8 hours per project" }
+    },
+    {
+      "persona": { "ar": "مطوّر ألعاب مستقل", "en": "Indie game developer" },
+      "scenario": { "ar": "توليد فنّ مفاهيمي للبيئات والشخصيات في مرحلة النموذج الأولي.", "en": "Generating concept art for environments and characters during prototyping." },
+      "outcome": { "ar": "تثبيت الاتجاه الفني قبل التعاقد مع رسّام بشري.", "en": "Locking the art direction before hiring a human illustrator." },
+      "time_saved": { "ar": "أسبوعان في مرحلة التصوّر", "en": "Two weeks of concepting" }
     }
   ],
+
   "how_to_start": [
-    {
-      "step": 1,
-      "title": {
-        "ar": "تسجيل الحساب",
-        "en": "Sign Up"
-      },
-      "detail": {
-        "ar": "سجل الدخول على الموقع الرسمي.",
-        "en": "Sign in on Midjourney.com."
-      }
-    }
+    { "step": 1, "title": { "ar": "أنشئ حساباً", "en": "Create an account" }, "detail": { "ar": "سجّل الدخول على midjourney.com بحساب Google أو Discord، ثم اختر خطة — لا يوجد وضع مجاني للتجربة.", "en": "Sign in at midjourney.com with Google or Discord, then pick a plan — there is no free trial mode." } },
+    { "step": 2, "title": { "ar": "اكتب أول أمر", "en": "Write your first prompt" }, "detail": { "ar": "في صندوق Imagine صف المشهد والإضاءة والعدسة، مثال: cinematic portrait, 85mm, soft window light.", "en": "In the Imagine box describe subject, lighting and lens, e.g. cinematic portrait, 85mm, soft window light." } },
+    { "step": 3, "title": { "ar": "اضبط الأبعاد والأسلوب", "en": "Set aspect ratio and style" }, "detail": { "ar": "أضف --ar 16:9 للأبعاد، و--style raw لتقليل التجميل التلقائي وزيادة الواقعية.", "en": "Append --ar 16:9 for framing and --style raw to reduce automatic beautification." } },
+    { "step": 4, "title": { "ar": "كبّر وعدّل", "en": "Upscale and refine" }, "detail": { "ar": "اختر أفضل نتيجة، ثم Upscale، ثم Vary Region لإصلاح أي جزء غير مقنع بدل إعادة التوليد كاملاً.", "en": "Pick the best result, Upscale it, then use Vary Region to fix any weak area instead of regenerating." } },
+    { "step": 5, "title": { "ar": "وحّد الأسلوب", "en": "Lock your style" }, "detail": { "ar": "احفظ أفضل صورة كمرجع واستخدم --sref مع رابطها في كل مخرجات الحملة.", "en": "Save your best frame as a reference and pass --sref with its URL across the campaign." } }
   ],
   "pro_tips": [
-    {
-      "ar": "استخدم معامل --ar 16:9 للقطات السينمائية العريضة.",
-      "en": "Use --ar 16:9 for widescreen frames."
-    }
+    { "ar": "استخدم --style raw عند الحاجة لصورة تبدو فوتوغرافية لا لوحة رقمية.", "en": "Use --style raw when you need a photograph, not a digital painting." },
+    { "ar": "قلّل --stylize إلى 50 أو أقل لجعل المخرَج يتبع نصّك بدقة أكبر.", "en": "Lower --stylize to 50 or below to make output follow your text more literally." },
+    { "ar": "الأوصاف القصيرة المحدّدة تتفوّق على القوائم الطويلة من الصفات المتناقضة.", "en": "Short, specific prompts beat long lists of conflicting adjectives." },
+    { "ar": "على خطة Standard: نفّذ التجارب في وضع Relax واحفظ الساعات السريعة للنسخ النهائية.", "en": "On Standard: explore in Relax mode and save Fast hours for final renders." }
   ],
   "strengths": [
-    {
-      "ar": "أعلى جودة جمالية وتناغم لوني في السوق",
-      "en": "Unmatched aesthetic cohesion"
-    },
-    {
-      "ar": "توليد غير محدود في وضع Relax للخطط المتقدمة",
-      "en": "Unlimited relaxed generations on Standard tier"
-    }
+    { "ar": "أعلى جودة جمالية وتناغم لوني افتراضي بين كل أدوات توليد الصور", "en": "Best default aesthetic quality and colour cohesion among image generators" },
+    { "ar": "توليد غير محدود في وضع Relax من خطة Standard وأعلى", "en": "Unlimited Relax generation from the Standard tier upward" },
+    { "ar": "حقوق تجارية كاملة للمخرجات في كل الخطط المدفوعة", "en": "Full commercial rights to output on every paid plan" },
+    { "ar": "أدوات تماسك قوية: مرجعية أسلوب ومرجعية شخصية", "en": "Strong consistency tooling: style and character references" },
+    { "ar": "وضع تخفّي حقيقي لأعمال العملاء السرّية في Pro وMega", "en": "Genuine Stealth mode for confidential client work on Pro and Mega" }
   ],
   "limitations": [
-    {
-      "ar": "لا تتوفر خطة تجريبية مجانية مستمرة",
-      "en": "No free perpetual tier available"
-    },
-    {
-      "ar": "الصور عامة في الخطة الأساسية والقياسية",
-      "en": "Generations are public on Standard plan"
-    }
+    { "ar": "لا توجد خطة مجانية ولا فترة تجريبية — الدفع شرط للبدء", "en": "No free tier and no trial — payment is required to start" },
+    { "ar": "مخرجاتك مرئية للعامة في خطتي Basic وStandard", "en": "Your generations are publicly visible on Basic and Standard" },
+    { "ar": "لا واجهة برمجة (API) رسمية معلنة للاستخدام العام", "en": "No publicly announced general-purpose API" },
+    { "ar": "تحكّم تقني أقل من الموديلات مفتوحة الوزن (لا LoRA ولا تدريب مخصص)", "en": "Less technical control than open-weight models (no LoRA, no custom training)" },
+    { "ar": "دقّة النص المكتوب داخل الصور تبقى غير موثوقة", "en": "Rendering readable text inside images remains unreliable" },
+    { "ar": "الواجهة إنجليزية فقط بلا دعم RTL", "en": "English-only interface with no RTL support" }
   ],
   "not_good_for": [
-    {
-      "ar": "التعديل البكسلي للصور العائلية الحقيقية",
-      "en": "Pixel-level photographic touchups"
-    }
+    { "ar": "تعديل صور شخصية أو عائلية حقيقية بدقة البكسل", "en": "Pixel-accurate retouching of real personal photographs" },
+    { "ar": "الدمج البرمجي داخل تطبيق أو خدمة (لا API)", "en": "Programmatic integration inside an app or service (no API)" },
+    { "ar": "تصميم يعتمد على نص مقروء دقيق داخل الصورة", "en": "Designs that depend on precise readable text inside the image" },
+    { "ar": "من يحتاج تدريب موديل على منتجه أو شخصيته الخاصة", "en": "Anyone needing to train a model on their own product or character" }
   ],
+
   "pricing": {
     "source": "manual",
+    "verify_required": true,
     "updated_at": "2026-09-02",
     "updated_by": "admin",
     "note": {
-      "ar": "الأسعار مدخلة يدوياً بعد مطابقتها مع وثائق الفوترة الرسمية.",
-      "en": "Prices manually audited."
+      "ar": "الأسعار مُدخَلة يدوياً من لوحة الأدمن. الأسعار السنوية تُدفَع مقدّماً كسنة كاملة ويُعرَض ما يعادلها شهرياً.",
+      "en": "Prices entered manually from the admin panel. Annual prices are billed upfront for a full year and shown as a monthly equivalent."
     },
     "plans": [
       {
-        "id": "standard",
-        "name": {
-          "ar": "القياسية (Standard)",
-          "en": "Standard"
-        },
-        "highlight": true,
+        "id": "basic",
+        "name": { "ar": "الأساسية (Basic)", "en": "Basic" },
         "order": 1,
-        "price": {
-          "amount": 30,
-          "currency": "USD",
-          "cycle": "monthly",
-          "annual_amount": 288
-        },
+        "highlight": false,
+        "price": { "amount": 10, "currency": "USD", "cycle": "monthly", "annual_amount": 96, "note": { "ar": "لمستخدم واحد", "en": "single seat" } },
         "is_free": false,
         "contact_for_price": false,
-        "best_for": {
-          "ar": "المصممين المستقلين والمحترفين",
-          "en": "Freelancers and creatives"
-        },
+        "best_for": { "ar": "التجربة الجدّية والاستخدام الشخصي الخفيف", "en": "Serious trialling and light personal use" },
         "what_you_get": {
-          "headline": {
-            "ar": "15 ساعة سريعة شهرياً + توليد غير محدود بالوضع الهادئ (Relax Mode).",
-            "en": "15 Fast GPU hours + Unlimited Relax."
-          },
+          "headline": { "ar": "3.3 ساعة معالجة سريعة شهرياً (≈ 200 صورة) بحقوق تجارية كاملة، بلا وضع Relax.", "en": "3.3 Fast GPU hours per month (~200 images) with full commercial rights, no Relax mode." },
           "quotas": [
-            {
-              "label": {
-                "ar": "ساعات المعالجة السريعة",
-                "en": "Fast GPU Hours"
-              },
-              "value": "15",
-              "unit": {
-                "ar": "ساعة/شهر",
-                "en": "hrs/mo"
-              }
-            },
-            {
-              "label": {
-                "ar": "التوليد غير المحدود (Relax)",
-                "en": "Unlimited Relax"
-              },
-              "value": "لا نهائي",
-              "unit": {
-                "ar": "صور/شهر",
-                "en": "images/mo"
-              }
-            }
+            { "label": { "ar": "ساعات المعالجة السريعة", "en": "Fast GPU hours" }, "value": "3.3", "unit": { "ar": "ساعة/شهر", "en": "hrs/mo" }, "overage": { "ar": "يمكن شراء ساعات إضافية بالسعر المعلن", "en": "Extra hours purchasable at listed rate" } },
+            { "label": { "ar": "عدد الصور التقديري", "en": "Approximate images" }, "value": "≈ 200", "unit": { "ar": "صورة/شهر", "en": "images/mo" }, "overage": null },
+            { "label": { "ar": "الوضع الهادئ (Relax)", "en": "Relax mode" }, "value": "—", "unit": { "ar": "غير متاح", "en": "not included" }, "overage": null },
+            { "label": { "ar": "المهام السريعة المتزامنة", "en": "Concurrent fast jobs" }, "value": "3", "unit": { "ar": "مهمة", "en": "jobs" }, "overage": null }
           ],
           "unlocked_features": [
-            {
-              "ar": "توليد لا نهائي للصور دون القلق من نفاد الرصيد",
-              "en": "Unlimited relax image generations"
-            },
-            {
-              "ar": "الحق التجاري الكامل في بيع واستغلال الصور",
-              "en": "Full commercial ownership rights"
-            }
+            { "ar": "حقوق تجارية كاملة للمخرجات (للأفراد والشركات دون سقف الإيراد المرتفع)", "en": "Full commercial rights to output (individuals and companies below the high-revenue threshold)" },
+            { "ar": "الوصول عبر واجهة الويب وعبر ديسكورد", "en": "Access through both the web app and Discord" },
+            { "ar": "كل الموديلات العامة بما فيها Niji", "en": "All general models including Niji" },
+            { "ar": "التعديل الموضعي والتكبير وتوسيع الإطار", "en": "Regional editing, upscaling and frame extension" }
           ],
-          "models_access": [
-            "v6.1",
-            "niji 6"
-          ],
-          "speed_and_priority": {
-            "ar": "معالجة فورية للساعات السريعة",
-            "en": "Instant fast queue priority"
-          },
+          "models_access": ["v6.1", "niji 6"],
+          "speed_and_priority": { "ar": "طابور سريع أثناء الساعات المتاحة، ثم يتوقّف التوليد حتى تشتري ساعات إضافية", "en": "Fast queue while hours remain, then generation stops until you buy more hours" },
           "limits_and_caps": [
-            {
-              "ar": "حد التزامن: 3 مهام سريعة متزامنة",
-              "en": "3 concurrent fast jobs"
-            }
+            { "ar": "حتى 3 مهام سريعة متزامنة و10 في قائمة الانتظار", "en": "Up to 3 concurrent fast jobs and 10 queued" },
+            { "ar": "لا توليد بعد نفاد الساعات (لا يوجد بديل هادئ)", "en": "No generation once hours run out (no Relax fallback)" }
           ],
-          "support": {
-            "ar": "دعم مجتمعي وتذاكر فنية",
-            "en": "Community & ticket support"
-          },
+          "storage": { "ar": "معرض أعمال على السحابة بلا سقف معلن", "en": "Cloud gallery with no stated cap" },
+          "collaboration": { "ar": "مقعد فردي بلا إدارة فريق", "en": "Single seat, no team management" },
+          "support": { "ar": "دعم عبر المجتمع والتذاكر", "en": "Community and ticket support" },
           "commercial_use": true,
-          "data_used_for_training": false,
+          "data_used_for_training": true,
           "privacy_mode": false,
           "api_access": false,
           "sla": null
         },
         "not_included": [
-          {
-            "ar": "وضع التخفي (Stealth Mode)",
-            "en": "Stealth Mode"
-          }
+          { "ar": "الوضع الهادئ غير المحدود (Relax)", "en": "Unlimited Relax mode" },
+          { "ar": "وضع التخفّي (Stealth) — مخرجاتك ظاهرة في المعرض العام", "en": "Stealth mode — your output appears in the public gallery" }
         ],
         "upgrade_triggers": [
-          {
-            "ar": "الحاجة لضمان سرية صور ومشاريع العملاء",
-            "en": "Client NDA privacy needs"
-          }
+          { "ar": "نفاد الساعات السريعة قبل منتصف الشهر", "en": "Fast hours running out before mid-month" },
+          { "ar": "الحاجة للتجريب المكثّف دون حساب كل صورة", "en": "Needing heavy exploration without counting every image" }
         ],
-        "value_verdict": {
-          "ar": "الخطة ذات القيمة الأعلى بفضل التوليد غير المحدود.",
-          "en": "Highest value tier."
-        },
-        "cta": {
-          "type": "external",
-          "url": "https://midjourney.com"
-        }
+        "value_verdict": { "ar": "مناسبة للتحقّق من أن الأداة تخدمك فعلاً، لكن سقف 3.3 ساعة ينفد سريعاً مع أي عمل جدّي.", "en": "Fine for confirming the tool fits your workflow, but 3.3 hours evaporates under any real workload." },
+        "cta": { "type": "external", "url": "https://www.midjourney.com/account" }
       },
       {
-        "id": "enterprise",
-        "name": {
-          "ar": "المؤسسات واستوديوهات الإنتاج",
-          "en": "Enterprise / Studio"
-        },
-        "highlight": false,
+        "id": "standard",
+        "name": { "ar": "القياسية (Standard)", "en": "Standard" },
         "order": 2,
-        "price": {
-          "amount": null,
-          "currency": "USD",
-          "cycle": "custom",
-          "annual_amount": null
-        },
+        "highlight": true,
+        "price": { "amount": 30, "currency": "USD", "cycle": "monthly", "annual_amount": 288, "note": { "ar": "لمستخدم واحد", "en": "single seat" } },
         "is_free": false,
-        "contact_for_price": true,
-        "best_for": {
-          "ar": "الشركات الكبرى واستوديوهات الإنتاج السينمائي",
-          "en": "Enterprises and studios"
-        },
+        "contact_for_price": false,
+        "best_for": { "ar": "المصممين المستقلين والمحترفين العاملين يومياً", "en": "Freelancers and professionals working daily" },
         "what_you_get": {
-          "headline": {
-            "ar": "تخصيص كامل لساعات المعالجة، وضع التخفي التام، وإدارة المقاعد المركزية.",
-            "en": "Custom GPU pooling and stealth."
-          },
+          "headline": { "ar": "15 ساعة سريعة شهرياً + توليد غير محدود في الوضع الهادئ — نقطة التوازن الحقيقية.", "en": "15 Fast hours per month plus unlimited Relax generation — the real sweet spot." },
           "quotas": [
-            {
-              "label": {
-                "ar": "ساعات GPU سريعة مخصصة",
-                "en": "Dedicated Fast Pool"
-              },
-              "value": "مخصص",
-              "unit": {
-                "ar": "حسب العقد",
-                "en": "contractual"
-              }
-            }
+            { "label": { "ar": "ساعات المعالجة السريعة", "en": "Fast GPU hours" }, "value": "15", "unit": { "ar": "ساعة/شهر", "en": "hrs/mo" }, "overage": { "ar": "ساعات إضافية بالشراء", "en": "Extra hours purchasable" } },
+            { "label": { "ar": "الوضع الهادئ (Relax)", "en": "Relax mode" }, "value": { "ar": "غير محدود", "en": "Unlimited" }, "unit": { "ar": "صورة/شهر", "en": "images/mo" }, "overage": null },
+            { "label": { "ar": "المهام السريعة المتزامنة", "en": "Concurrent fast jobs" }, "value": "3", "unit": { "ar": "مهمة", "en": "jobs" }, "overage": null }
           ],
           "unlocked_features": [
-            {
-              "ar": "تفعيل دائم لوضع التخفي (Stealth Mode) لكافة الفريق",
-              "en": "Stealth generation mode enforced"
-            },
-            {
-              "ar": "إدارة مركزية للفواتير والوصول عبر المشرف",
-              "en": "Centralized invoice delegation"
-            }
+            { "ar": "توليد غير محدود في الوضع الهادئ بعد نفاد الساعات السريعة", "en": "Unlimited Relax generation once Fast hours are used up" },
+            { "ar": "حقوق تجارية كاملة للمخرجات", "en": "Full commercial rights to output" },
+            { "ar": "كل ميزات Basic بلا استثناء", "en": "Everything in Basic" }
           ],
-          "models_access": [
-            "v6.1 Cluster"
-          ],
-          "speed_and_priority": {
-            "ar": "أولوية قصوى مخصصة للشبكة",
-            "en": "Dedicated compute priority"
-          },
+          "models_access": ["v6.1", "niji 6"],
+          "speed_and_priority": { "ar": "أولوية سريعة خلال الساعات، ثم انتظار في الطابور الهادئ بلا توقّف عن العمل", "en": "Fast priority during hours, then queue waiting in Relax without stopping work" },
           "limits_and_caps": [
-            {
-              "ar": "تزامن غير محدود للمهام",
-              "en": "High concurrent pipeline"
-            }
+            { "ar": "حتى 3 مهام سريعة متزامنة", "en": "Up to 3 concurrent fast jobs" },
+            { "ar": "زمن الانتظار في الوضع الهادئ يطول عند ذروة الاستخدام", "en": "Relax queue time grows at peak load" }
           ],
-          "support": {
-            "ar": "مدير حساب مخصص + دعم فني 24/7",
-            "en": "Dedicated account manager"
-          },
+          "storage": { "ar": "معرض أعمال على السحابة بلا سقف معلن", "en": "Cloud gallery with no stated cap" },
+          "collaboration": { "ar": "مقعد فردي", "en": "Single seat" },
+          "support": { "ar": "دعم عبر المجتمع والتذاكر", "en": "Community and ticket support" },
+          "commercial_use": true,
+          "data_used_for_training": true,
+          "privacy_mode": false,
+          "api_access": false,
+          "sla": null
+        },
+        "not_included": [
+          { "ar": "وضع التخفّي (Stealth) — الصور تبقى عامة", "en": "Stealth mode — generations remain public" },
+          { "ar": "المهام المتزامنة الموسّعة (12 مهمة)", "en": "Expanded concurrency (12 jobs)" }
+        ],
+        "upgrade_triggers": [
+          { "ar": "توقيع اتفاقية سرية مع عميل تمنع نشر الصور", "en": "Signing a client NDA that forbids public generations" },
+          { "ar": "الحاجة لتشغيل عدة مهام سريعة في وقت واحد", "en": "Needing several fast jobs running at once" }
+        ],
+        "value_verdict": { "ar": "أفضل قيمة مقابل السعر في المنصة كلها: التوليد اللا محدود يزيل قلق الرصيد تماماً.", "en": "Best value on the platform: unlimited Relax removes credit anxiety entirely." },
+        "cta": { "type": "external", "url": "https://www.midjourney.com/account" }
+      },
+      {
+        "id": "pro",
+        "name": { "ar": "الاحترافية (Pro)", "en": "Pro" },
+        "order": 3,
+        "highlight": false,
+        "price": { "amount": 60, "currency": "USD", "cycle": "monthly", "annual_amount": 576, "note": { "ar": "لمستخدم واحد", "en": "single seat" } },
+        "is_free": false,
+        "contact_for_price": false,
+        "best_for": { "ar": "العمل مع عملاء تحت اتفاقية سرية والاستوديوهات الصغيرة", "en": "NDA client work and small studios" },
+        "what_you_get": {
+          "headline": { "ar": "30 ساعة سريعة + Relax غير محدود + وضع التخفّي التام + 12 مهمة متزامنة.", "en": "30 Fast hours, unlimited Relax, full Stealth mode, and 12 concurrent jobs." },
+          "quotas": [
+            { "label": { "ar": "ساعات المعالجة السريعة", "en": "Fast GPU hours" }, "value": "30", "unit": { "ar": "ساعة/شهر", "en": "hrs/mo" }, "overage": { "ar": "ساعات إضافية بالشراء", "en": "Extra hours purchasable" } },
+            { "label": { "ar": "الوضع الهادئ (Relax)", "en": "Relax mode" }, "value": { "ar": "غير محدود", "en": "Unlimited" }, "unit": { "ar": "صورة/شهر", "en": "images/mo" }, "overage": null },
+            { "label": { "ar": "المهام السريعة المتزامنة", "en": "Concurrent fast jobs" }, "value": "12", "unit": { "ar": "مهمة", "en": "jobs" }, "overage": null }
+          ],
+          "unlocked_features": [
+            { "ar": "وضع التخفّي (Stealth): مخرجاتك لا تظهر في المعرض العام إطلاقاً", "en": "Stealth mode: your output never appears in the public gallery" },
+            { "ar": "12 مهمة سريعة متزامنة — تجريب متوازٍ حقيقي", "en": "12 concurrent fast jobs — genuine parallel exploration" },
+            { "ar": "ضعف الساعات السريعة مقارنة بالقياسية", "en": "Double the Fast hours versus Standard" }
+          ],
+          "models_access": ["v6.1", "niji 6"],
+          "speed_and_priority": { "ar": "أولوية عالية مع تزامن موسّع", "en": "High priority with expanded concurrency" },
+          "limits_and_caps": [{ "ar": "حتى 12 مهمة سريعة متزامنة", "en": "Up to 12 concurrent fast jobs" }],
+          "storage": { "ar": "معرض خاص بلا سقف معلن", "en": "Private gallery with no stated cap" },
+          "collaboration": { "ar": "مقعد فردي — تُدار الفرق بمقاعد منفصلة", "en": "Single seat — teams are handled as separate seats" },
+          "support": { "ar": "دعم عبر التذاكر", "en": "Ticket support" },
           "commercial_use": true,
           "data_used_for_training": false,
           "privacy_mode": true,
-          "api_access": true,
-          "sla": "99.95%"
+          "api_access": false,
+          "sla": null
         },
-        "not_included": [],
+        "not_included": [
+          { "ar": "واجهة برمجة رسمية (API)", "en": "An official API" },
+          { "ar": "إدارة مركزية للفريق والفواتير", "en": "Central team and billing management" }
+        ],
+        "upgrade_triggers": [{ "ar": "نفاد 30 ساعة سريعة شهرياً بشكل متكرّر", "en": "Repeatedly exhausting 30 Fast hours a month" }],
+        "value_verdict": { "ar": "لا بديل عنها إن كان عملك تحت اتفاقية سرية — وضع التخفّي وحده يبرّر الفرق.", "en": "Non-negotiable for NDA work — Stealth mode alone justifies the gap." },
+        "cta": { "type": "external", "url": "https://www.midjourney.com/account" }
+      },
+      {
+        "id": "mega",
+        "name": { "ar": "الضخمة (Mega)", "en": "Mega" },
+        "order": 4,
+        "highlight": false,
+        "price": { "amount": 120, "currency": "USD", "cycle": "monthly", "annual_amount": 1152, "note": { "ar": "لمستخدم واحد", "en": "single seat" } },
+        "is_free": false,
+        "contact_for_price": false,
+        "best_for": { "ar": "الاستخدام الإنتاجي الكثيف وفرق المحتوى عالية الحجم", "en": "Heavy production use and high-volume content teams" },
+        "what_you_get": {
+          "headline": { "ar": "60 ساعة سريعة + Relax غير محدود + وضع التخفّي + 12 مهمة متزامنة.", "en": "60 Fast hours, unlimited Relax, Stealth mode, and 12 concurrent jobs." },
+          "quotas": [
+            { "label": { "ar": "ساعات المعالجة السريعة", "en": "Fast GPU hours" }, "value": "60", "unit": { "ar": "ساعة/شهر", "en": "hrs/mo" }, "overage": { "ar": "ساعات إضافية بالشراء", "en": "Extra hours purchasable" } },
+            { "label": { "ar": "الوضع الهادئ (Relax)", "en": "Relax mode" }, "value": { "ar": "غير محدود", "en": "Unlimited" }, "unit": { "ar": "صورة/شهر", "en": "images/mo" }, "overage": null },
+            { "label": { "ar": "المهام السريعة المتزامنة", "en": "Concurrent fast jobs" }, "value": "12", "unit": { "ar": "مهمة", "en": "jobs" }, "overage": null }
+          ],
+          "unlocked_features": [
+            { "ar": "أعلى سقف ساعات سريعة في المنصة", "en": "The highest Fast-hour allocation on the platform" },
+            { "ar": "كل ميزات Pro بما فيها وضع التخفّي", "en": "Everything in Pro including Stealth mode" }
+          ],
+          "models_access": ["v6.1", "niji 6"],
+          "speed_and_priority": { "ar": "أولوية عالية مستمرة طوال الشهر", "en": "Sustained high priority across the month" },
+          "limits_and_caps": [{ "ar": "حتى 12 مهمة سريعة متزامنة", "en": "Up to 12 concurrent fast jobs" }],
+          "storage": { "ar": "معرض خاص بلا سقف معلن", "en": "Private gallery with no stated cap" },
+          "collaboration": { "ar": "مقعد فردي", "en": "Single seat" },
+          "support": { "ar": "دعم عبر التذاكر", "en": "Ticket support" },
+          "commercial_use": true,
+          "data_used_for_training": false,
+          "privacy_mode": true,
+          "api_access": false,
+          "sla": null
+        },
+        "not_included": [{ "ar": "واجهة برمجة رسمية (API)", "en": "An official API" }],
         "upgrade_triggers": [],
-        "value_verdict": {
-          "ar": "الخيار الإلزامي للمؤسسات التي تتطلب حماية وسرية تامة.",
-          "en": "Essential for corporate studios."
-        },
-        "cta": {
-          "type": "contact",
-          "url": null
-        }
+        "value_verdict": { "ar": "لا تدفع فرقها إلا إن كنت تستهلك 30 ساعة سريعة شهرياً فعلياً؛ غير ذلك فـ Pro تكفي.", "en": "Only worth the jump if you genuinely burn 30 Fast hours a month; otherwise Pro suffices." },
+        "cta": { "type": "external", "url": "https://www.midjourney.com/account" }
       }
+    ],
+    "admin_offer": {
+      "enabled": true,
+      "name": { "ar": "تفعيل عبر المشرف", "en": "Provisioned by the admin" },
+      "best_for": { "ar": "من لا يملك بطاقة دفع دولية أو يريد تفعيلاً جاهزاً وسريعاً", "en": "Anyone without an international payment card, or who wants ready provisioning" },
+      "headline": {
+        "ar": "أتولّى تفعيل الخطة التي تختارها والدفع نيابةً عنك، وأسلّمك الحساب جاهزاً مع الشرح.",
+        "en": "I handle activation and payment on your behalf and hand you a ready account with a walkthrough."
+      },
+      "includes": [
+        { "ar": "تفعيل أي خطة من الخطط الأربع أعلاه", "en": "Activation of any of the four tiers above" },
+        { "ar": "شرح عملي للاستخدام وأفضل إعدادات البداية", "en": "A practical walkthrough and the best starting settings" },
+        { "ar": "متابعة ودعم بالعربية بعد التفعيل", "en": "Arabic-language follow-up and support after activation" }
+      ],
+      "disclaimer": {
+        "ar": "هذا عرض خدمة من أطلس وليس خطة رسمية من Midjourney. السعر يُحدَّد عند التواصل حسب الخطة والمدة.",
+        "en": "This is an Atlas service offer, not an official Midjourney tier. Price is agreed on contact based on tier and duration."
+      }
+    },
+    "comparison_rows": [
+      { "label": { "ar": "الساعات السريعة شهرياً", "en": "Fast hours per month" }, "values": { "basic": "3.3", "standard": "15", "pro": "30", "mega": "60" } },
+      { "label": { "ar": "الوضع الهادئ غير المحدود", "en": "Unlimited Relax" }, "values": { "basic": "—", "standard": "✓", "pro": "✓", "mega": "✓" } },
+      { "label": { "ar": "وضع التخفّي (Stealth)", "en": "Stealth mode" }, "values": { "basic": "—", "standard": "—", "pro": "✓", "mega": "✓" } },
+      { "label": { "ar": "المهام السريعة المتزامنة", "en": "Concurrent fast jobs" }, "values": { "basic": "3", "standard": "3", "pro": "12", "mega": "12" } },
+      { "label": { "ar": "الحقوق التجارية", "en": "Commercial rights" }, "values": { "basic": "✓", "standard": "✓", "pro": "✓", "mega": "✓" } }
     ]
   },
+
+  "integrations": ["Discord", "Web App"],
+  "api": {
+    "available": false,
+    "docs_url": null,
+    "rate_limits": { "ar": "لا توجد واجهة برمجة رسمية معلنة للاستخدام العام.", "en": "No publicly announced general-purpose API." }
+  },
+  "privacy_security": {
+    "retention": { "ar": "تُحفَظ الأوامر والصور في معرض حسابك ويمكن حذفها منه.", "en": "Prompts and images are stored in your account gallery and can be deleted from it." },
+    "opt_out_training": false,
+    "gdpr": true,
+    "soc2": null,
+    "region_hosting": { "ar": "الولايات المتحدة", "en": "United States" },
+    "note": {
+      "ar": "في خطتي Basic وStandard تكون مخرجاتك مرئية للعامة في المعرض. وضع التخفّي في Pro وMega يمنع ذلك. راجع شروط الاستخدام قبل أي عمل خاضع لاتفاقية سرية.",
+      "en": "On Basic and Standard your output is publicly visible in the gallery. Stealth mode on Pro and Mega prevents this. Review the terms before any NDA-bound work."
+    }
+  },
+
   "ratings": {
     "ease_of_use": 4.2,
     "output_quality": 4.9,
-    "value_for_money": 4.8,
-    "arabic_quality": 4,
+    "value_for_money": 4.3,
+    "arabic_quality": 3.8,
     "learning_curve": 3.4,
-    "overall": 4.8
+    "overall": 4.6
   },
   "verdict": {
-    "ar": "ميدجورني لا يزال يتربع على قمة جودة الصور الفنية. اختر القياسية للعمل اليومي أو تواصل معنا لخطة الاستوديوهات.",
-    "en": "The definitive king of visual AI."
+    "ar": "ميدجورني ما زال الأفضل عندما يكون المعيار هو جمال الصورة النهائية. اشترِ خطة Standard إن كان عملك يومياً، وانتقل إلى Pro فوراً إذا وقّعت اتفاقية سرية مع عميل. تجنّبه إن كنت تحتاج API أو تحكّماً تقنياً عميقاً.",
+    "en": "Midjourney still wins when the benchmark is sheer image beauty. Buy Standard if you work daily, and move to Pro the moment a client NDA is involved. Avoid it if you need an API or deep technical control."
   },
   "alternatives": [],
+
   "media": {
-    "logo": {
-      "url": "https://cdn.worldvectorlogo.com/logos/midjourney.svg",
-      "dominant_color": "#07080B"
-    },
+    "logo": { "url": null, "dominant_color": "#6d5cff" },
     "screenshots": [
       {
         "id": "s1",
-        "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&auto=format&fit=crop&q=80",
-        "width": 1600,
-        "height": 900,
-        "alt": {
-          "ar": "واجهة التوليد البصري",
-          "en": "Workspace"
-        },
-        "caption": {
-          "ar": "لوحة التوليد بالمتصفح",
-          "en": "Web Generation Suite"
-        }
+        "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&q=80&auto=format&fit=crop",
+        "width": 1600, "height": 900,
+        "alt": { "ar": "صورة توضيحية بديلة: تركيب بصري متدرّج الألوان يمثّل مخرجات توليد الصور", "en": "Placeholder illustration: a gradient visual composition standing in for image-generation output" },
+        "caption": { "ar": "صورة توضيحية مؤقتة — استبدلها بلقطة شاشة حقيقية من الأداة", "en": "Temporary placeholder — replace with a real screenshot of the tool" }
+      },
+      {
+        "id": "s2",
+        "url": "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1600&q=80&auto=format&fit=crop",
+        "width": 1600, "height": 900,
+        "alt": { "ar": "صورة توضيحية بديلة: أضواء ملوّنة مجرّدة تمثّل مرحلة التجريب البصري", "en": "Placeholder illustration: abstract coloured light standing in for the exploration stage" },
+        "caption": { "ar": "صورة توضيحية مؤقتة — استبدلها بلقطة شاشة حقيقية من الأداة", "en": "Temporary placeholder — replace with a real screenshot of the tool" }
       }
     ],
-    "og_image": {
-      "ar": "",
-      "en": ""
-    }
+    "og_image": { "ar": null, "en": null }
   },
   "links": {
     "website": "https://www.midjourney.com",
-    "pricing": "https://docs.midjourney.com",
-    "docs": "https://docs.midjourney.com"
+    "pricing": "https://docs.midjourney.com/docs/plans",
+    "docs": "https://docs.midjourney.com",
+    "changelog": "https://docs.midjourney.com/changelog"
   },
   "faq": [
     {
-      "q": {
-        "ar": "هل أمتلك الحقوق التجارية للصور؟",
-        "en": "Do I hold commercial rights?"
-      },
-      "a": {
-        "ar": "نعم، كافة الاشتراكات المدفوعة تمنحك ملكية تجارية كاملة.",
-        "en": "Yes, all paid subscriptions grant full commercial rights."
-      }
+      "q": { "ar": "هل أملك الحقوق التجارية للصور التي أولّدها؟", "en": "Do I own commercial rights to the images I generate?" },
+      "a": { "ar": "نعم، كل الخطط المدفوعة تمنح حقوقاً تجارية كاملة على المخرجات. لكن الشركات ذات الإيرادات السنوية المرتفعة مطالبة بخطة Pro أو Mega — راجع شروط الاستخدام الرسمية قبل الاستخدام التجاري الواسع.", "en": "Yes, all paid plans grant full commercial rights to output. Companies above a high annual-revenue threshold are required to be on Pro or Mega — check the official terms before wide commercial use." }
+    },
+    {
+      "q": { "ar": "هل توجد خطة مجانية؟", "en": "Is there a free plan?" },
+      "a": { "ar": "لا. أوقفت المنصة التجربة المجانية، والاشتراك المدفوع شرط لأي توليد. أرخص نقطة دخول هي خطة Basic.", "en": "No. The free trial was discontinued and a paid subscription is required for any generation. The cheapest entry point is the Basic plan." }
+    },
+    {
+      "q": { "ar": "هل صوري ظاهرة للعامة؟", "en": "Are my images publicly visible?" },
+      "a": { "ar": "في خطتي Basic وStandard نعم، تظهر في المعرض العام. وضع التخفّي (Stealth) المتوفّر في Pro وMega هو الطريقة الوحيدة لإخفائها تماماً.", "en": "On Basic and Standard, yes — they appear in the public gallery. Stealth mode, available on Pro and Mega, is the only way to keep them fully private." }
+    },
+    {
+      "q": { "ar": "هل يفهم الأوامر المكتوبة بالعربية؟", "en": "Does it understand Arabic prompts?" },
+      "a": { "ar": "يفهم الوصف العربي بشكل جيد عموماً، لكن المصطلحات الفنية الدقيقة (نوع العدسة، أسلوب الإضاءة، اسم الحركة الفنية) تعطي نتائج أدق بالإنجليزية.", "en": "Arabic descriptions generally work well, but precise art-direction terms (lens type, lighting style, art movement) give more accurate results in English." }
+    },
+    {
+      "q": { "ar": "هل توجد واجهة برمجة للدمج في تطبيقي؟", "en": "Is there an API for integrating into my app?" },
+      "a": { "ar": "لا توجد واجهة برمجة رسمية معلنة للاستخدام العام. الخدمات الوسيطة غير الرسمية تخالف الشروط وتعرّض حسابك للإيقاف.", "en": "There is no publicly announced official API. Unofficial middleman services violate the terms and put your account at risk of suspension." }
     }
   ],
   "seo": {
     "ar": {
-      "title": "ميدجورني (Midjourney) — ميزات وخطط وأسعار 2026",
-      "description": "دليل ميدجورني الشامل للخطط والميزات",
-      "keywords": [
-        "ميدجورني",
-        "أسعار ميدجورني"
-      ]
+      "title": "ميدجورني: الميزات والخطط والأسعار بالتفصيل2026",
+      "description": "دليل كامل لميدجورني: ماذا يفعل، ميزاته، وما تحصل عليه فعلياً في كل خطة من الساعات السريعة ووضع التخفّي والحقوق التجارية.",
+      "keywords": ["ميدجورني", "أسعار ميدجورني", "خطط ميدجورني", "توليد الصور بالذكاء الاصطناعي"]
     },
     "en": {
-      "title": "Midjourney — Complete Features & Pricing 2026",
-      "description": "Comprehensive Midjourney review",
-      "keywords": [
-        "Midjourney"
-      ]
+      "title": "Midjourney: Features, Plans and Pricing Explained (2026)",
+      "description": "A complete Midjourney guide: what it does, its features, and exactly what each tier gives you — Fast hours, Stealth mode and commercial rights.",
+      "keywords": ["Midjourney", "Midjourney pricing", "Midjourney plans", "AI image generation"]
     }
   },
   "meta": {
-    "confidence": 0.98,
-    "sources": [
-      "https://docs.midjourney.com"
-    ],
+    "confidence": 0.82,
+    "sources": ["https://docs.midjourney.com/docs/plans", "https://www.midjourney.com"],
     "generated_at": "2026-09-02",
-    "needs_review": [],
+    "model": "manual-authored",
+    "needs_review": ["pricing.plans[*].price", "privacy_security.soc2"],
     "status": "published",
     "last_verified": "2026-09-02"
   }

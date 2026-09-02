@@ -1,50 +1,89 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>AI ATLAS — لوحة المولد التلقائي</title>
-  <style>
-    body { background: #07080b; color: #f4f6fb; font-family: system-ui; padding: 48px 24px; display: flex; justify-content: center; }
-    .card { background: #0e1016; border: 1px solid #20242f; border-radius: 16px; padding: 32px; inline-size: 100%; max-inline-size: 600px; }
-    input { inline-size: 70%; background: #151822; border: 1px solid #20242f; padding: 12px; border-radius: 8px; color: #fff; }
-    button { background: #6d5cff; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    .log { background: #151822; border: 1px solid #20242f; padding: 16px; border-radius: 8px; margin-block-start: 16px; font-family: monospace; font-size: 0.85rem; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>AI ATLAS — لوحة الأدمن المحلية</title>
+<style>
+  :root {
+    --bg:#07080b; --surface:#0e1016; --surface-2:#151822; --border:#20242f;
+    --fg:#f4f6fb; --muted:#9aa3b2; --a1:#6d5cff; --a2:#00d3f2;
+    --ok:#22c55e; --warn:#f0a92b; --bad:#f2555a;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:var(--bg); color:var(--fg); min-height:100vh;
+    font-family:"IBM Plex Sans Arabic",system-ui,sans-serif; line-height:1.7;
+    padding:40px 20px; display:flex; justify-content:center;
+  }
+  .wrap { width:100%; max-width:680px; display:grid; gap:20px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:24px; }
+  h1 { font-size:1.375rem; line-height:1.3; }
+  h2 { font-size:1rem; margin-bottom:12px; }
+  p.sub { color:var(--muted); font-size:.875rem; margin-top:6px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+  input {
+    flex:1 1 240px; min-height:46px; padding:0 14px; border-radius:10px;
+    background:var(--surface-2); border:1px solid var(--border); color:var(--fg); font:inherit;
+  }
+  input:focus-visible { outline:2px solid var(--a2); outline-offset:2px; border-color:var(--a2); }
+  button {
+    min-height:46px; padding:0 20px; border:0; border-radius:10px; cursor:pointer;
+    background:var(--a1); color:#fff; font:inherit; font-weight:700;
+  }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .log {
+    margin-top:16px; padding:14px; border-radius:10px; background:#0a0c11;
+    border:1px solid var(--border); font-family:ui-monospace,monospace;
+    font-size:.8125rem; display:grid; gap:6px; max-height:320px; overflow:auto;
+  }
+  .log div { display:flex; gap:8px; }
+  .log .t { color:var(--muted); flex:0 0 auto; }
+  .ok { color:var(--ok); } .warn { color:var(--warn); } .bad { color:var(--bad); }
+  .notice {
+    padding:12px 14px; border-radius:10px; font-size:.8125rem;
+    background:rgba(240,169,43,.12); border:1px solid rgba(240,169,43,.4);
+  }
+  table { width:100%; border-collapse:collapse; font-size:.8125rem; }
+  th, td { text-align:start; padding:8px; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:600; }
+  .pill { padding:2px 10px; border-radius:99px; font-size:.75rem; font-weight:700; }
+  .pill.draft { background:rgba(240,169,43,.14); color:var(--warn); }
+  .pill.published { background:rgba(34,197,94,.14); color:var(--ok); }
+</style>
 </head>
 <body>
+<div class="wrap">
   <div class="card">
-    <h2>⚡ مولد تطبيقات الذكاء الاصطناعي (Gemini)</h2>
-    <p style="color:#9aa3b2; margin-block: 12px;">اكتب اسم التطبيق وسيقوم Gemini بإنشاء الصفحة فورياً:</p>
-    <div style="display:flex; gap:8px;">
-      <input type="text" id="tool" placeholder="مثال: Claude أو Flux..." autofocus>
-      <button id="btn">توليد ونشر</button>
+    <h1>مولّد صفحات الأدوات</h1>
+    <p class="sub">اكتب اسم الأداة فقط. المحتوى يُولَّد كمسوّدة، و<strong>الأسعار لا تُلمَس آلياً</strong> — تُدخلها أنت يدوياً.</p>
+    <div class="row">
+      <input id="tool" type="text" placeholder="مثال: Claude، Runway، ElevenLabs…" autocomplete="off" autofocus>
+      <button id="go" type="button">توليد</button>
     </div>
-    <div class="log" id="log">جاهز للبدء...</div>
+    <div class="log" id="log" role="log" aria-live="polite" aria-atomic="false"></div>
   </div>
-  <script>
-    const btn = document.getElementById("btn");
-    const input = document.getElementById("tool");
-    const log = document.getElementById("log");
-    btn.onclick = async () => {
-      const toolName = input.value.trim();
-      if (!toolName) return;
-      btn.disabled = true;
-      log.innerHTML = "⏳ جاري المعالجة...";
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ toolName })
-      });
-      const reader = res.body.getReader();
-      const dec = new TextDecoder();
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const text = dec.decode(value);
-        log.innerHTML += "<br>" + text;
-      }
-      btn.disabled = false;
-    };
-  </script>
+
+  <div class="card">
+    <h2>خطوتك بعد التوليد</h2>
+    <div class="notice">
+      ١. افتح <code>content/&lt;slug&gt;.json</code> وأدخِل الأسعار الحقيقية في <code>pricing.plans[].price</code>
+      واضبط <code>contact_for_price</code> على <code>false</code> لكل خطة لها سعر رقمي.<br>
+      ٢. لخطة بلا سعر معلن: اتركها <code>amount: null</code> و<code>contact_for_price: true</code> فتظهر كتلة واتساب تلقائياً.<br>
+      ٣. اضبط <code>pricing.verify_required: false</code> بعد المراجعة لإخفاء بانر التحذير.<br>
+      ٤. اضبط <code>meta.status: "published"</code> ثم <code>npm run build</code>.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>المحتوى الحالي</h2>
+    <table>
+      <thead><tr><th>الأداة</th><th>الحالة</th><th>الخطط</th><th>تحقّق</th></tr></thead>
+      <tbody id="tools"><tr><td colspan="4" style="color:var(--muted)">جارٍ التحميل…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+<script type="module" src="/admin.js"></script>
 </body>
 </html>

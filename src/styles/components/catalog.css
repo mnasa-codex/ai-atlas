@@ -1,3 +1,48 @@
-.catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-24); }
-.catalog-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--space-24); }
-.catalog-card h2 { margin-block-end: var(--space-8); }
+.catalog-toolbar {
+  display: grid; gap: var(--s-16); margin-block-end: var(--s-32);
+  padding: var(--s-16); border-radius: var(--r-lg);
+  background: var(--surface); border: 1px solid var(--border);
+}
+.search-field { position: relative; display: flex; align-items: center; }
+.search-field svg {
+  position: absolute; inset-inline-start: var(--s-12); inline-size: 18px; block-size: 18px;
+  color: var(--fg-subtle); pointer-events: none;
+}
+.search-field input {
+  inline-size: 100%; min-block-size: 48px;
+  padding-inline: calc(var(--s-16) + 26px) var(--s-16);
+  border-radius: var(--r-md); background: var(--surface-2);
+  border: 1px solid var(--border); color: var(--fg);
+}
+.search-field input::placeholder { color: var(--fg-subtle); }
+.search-field input:focus-visible { border-color: var(--a2); }
+
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-8); align-items: center; }
+.chip {
+  min-block-size: 40px; padding-inline: var(--s-16); border-radius: var(--r-full);
+  font-size: var(--fs-xs); font-weight: 700; color: var(--fg-muted);
+  background: var(--surface-2); border: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+.chip:hover { color: var(--fg); }
+.chip[aria-pressed="true"] { color: #fff; background: var(--a1); border-color: transparent; }
+
+.result-count { font-size: var(--fs-sm); color: var(--fg-muted); }
+
+.tool-grid { display: grid; gap: var(--s-24); grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.tool-card { display: flex; flex-direction: column; gap: var(--s-12); }
+.tool-card[hidden] { display: none; }
+.tool-card-head { display: flex; gap: var(--s-12); align-items: center; }
+.tool-card-head .tool-logo { inline-size: 46px; block-size: 46px; }
+.tool-card-head .tool-logo img { inline-size: 30px; block-size: 30px; }
+.tool-card h3 { font-size: 1.0625rem; }
+.tool-card p { font-size: var(--fs-sm); color: var(--fg-muted); flex: 1 1 auto; }
+.tool-card-foot { display: flex; flex-wrap: wrap; gap: var(--s-8); align-items: center; justify-content: space-between; }
+.tool-card-link { font-size: var(--fs-xs); font-weight: 800; color: var(--a2); display: inline-flex; gap: 4px; align-items: center; }
+.tool-card-link svg { inline-size: 14px; block-size: 14px; }
+
+.empty-state {
+  display: none; padding: var(--s-48) var(--s-24); text-align: center;
+  border: 1px dashed var(--border); border-radius: var(--r-lg); color: var(--fg-muted);
+}
+.empty-state.is-visible { display: block; }

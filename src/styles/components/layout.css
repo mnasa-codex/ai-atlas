@@ -1,0 +1,134 @@
+/* ===== Header ===== */
+.site-header {
+  position: sticky; inset-block-start: 0; z-index: 800;
+  block-size: var(--header-h);
+  display: flex; align-items: center;
+  background: color-mix(in oklab, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(160%) blur(14px);
+  border-block-end: 1px solid var(--border-subtle);
+}
+.header-inner { display: flex; align-items: center; gap: var(--s-16); inline-size: 100%; }
+
+.brand { display: inline-flex; align-items: center; gap: var(--s-8); font-weight: 800; font-size: 1.0625rem; }
+.brand-mark {
+  inline-size: 30px; block-size: 30px; border-radius: 9px;
+  display: grid; place-items: center; color: #fff; flex: 0 0 auto;
+  background: linear-gradient(135deg, var(--a1), var(--a2));
+  box-shadow: var(--shadow-glow);
+}
+.brand-mark svg { inline-size: 17px; block-size: 17px; }
+
+.header-nav { display: none; gap: var(--s-4); margin-inline-start: var(--s-16); }
+@media (min-width: 760px) { .header-nav { display: flex; } }
+.header-nav a {
+  padding: var(--s-8) var(--s-12); border-radius: var(--r-full);
+  font-size: var(--fs-sm); font-weight: 600; color: var(--fg-muted);
+  transition: color 0.2s, background-color 0.2s;
+}
+.header-nav a:hover { color: var(--fg); background: var(--surface-2); }
+.header-nav a[aria-current="page"] { color: var(--fg); background: var(--a1-subtle); }
+
+.header-actions { margin-inline-start: auto; display: flex; align-items: center; gap: var(--s-8); }
+
+.icon-btn {
+  inline-size: 44px; block-size: 44px; border-radius: var(--r-full);
+  display: grid; place-items: center; color: var(--fg-muted);
+  border: 1px solid var(--border); background: var(--surface);
+  transition: color 0.2s, border-color 0.2s, transform 0.15s var(--ease-out);
+}
+.icon-btn:hover { color: var(--fg); border-color: var(--a1); }
+.icon-btn:active { transform: scale(0.94); }
+.icon-btn svg { inline-size: 19px; block-size: 19px; }
+[data-theme="light"] .icon-btn .i-sun,
+:root:not([data-theme="light"]) .icon-btn .i-moon { display: none; }
+
+/* ===== Language flip ===== */
+.lang-flip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-inline-size: 52px; min-block-size: 44px; padding-inline: var(--s-12);
+  border-radius: var(--r-full); border: 1px solid var(--border);
+  background: var(--surface); font-size: var(--fs-xs); font-weight: 800;
+  letter-spacing: 0.04em; perspective: 500px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.lang-flip:hover { border-color: var(--a2); background: var(--surface-2); }
+.lang-flip > span { display: block; transition: transform 0.18s var(--ease-in), opacity 0.18s; }
+.lang-flip.is-flipping > span { transform: rotateX(90deg); opacity: 0; }
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-8);
+  min-block-size: 46px; padding: var(--s-12) var(--s-24);
+  border-radius: var(--r-md); font-weight: 700; font-size: var(--fs-sm);
+  border: 1px solid transparent; text-align: center;
+  transition: transform 0.15s var(--ease-out), filter 0.2s, background-color 0.2s, border-color 0.2s;
+}
+.btn:active { transform: scale(0.975); }
+.btn svg { inline-size: 17px; block-size: 17px; flex: 0 0 auto; }
+.btn-arrow { transition: transform 0.2s var(--ease-out); }
+.btn:hover .btn-arrow { transform: translateX(calc(4px * var(--dir))); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--a1), color-mix(in oklab, var(--a1) 70%, var(--a2)));
+  color: #fff; box-shadow: var(--shadow-glow);
+}
+.btn-primary:hover { filter: brightness(1.12); }
+.btn-ghost { background: var(--surface); border-color: var(--border); color: var(--fg); }
+.btn-ghost:hover { border-color: var(--a1); background: var(--surface-2); }
+.btn-block { inline-size: 100%; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: var(--s-4);
+  padding: 3px var(--s-12); border-radius: var(--r-full);
+  font-size: var(--fs-xs); font-weight: 700; line-height: 1.6;
+  background: var(--surface-2); color: var(--fg-muted); border: 1px solid var(--border);
+}
+.badge-accent { background: var(--a1-subtle); color: var(--a1); border-color: transparent; }
+.badge-warning { background: var(--warning-subtle); color: var(--warning); border-color: transparent; }
+.badge-success { background: var(--success-subtle); color: var(--success); border-color: transparent; }
+
+.notice {
+  display: flex; gap: var(--s-12); align-items: flex-start;
+  padding: var(--s-16); border-radius: var(--r-md);
+  font-size: var(--fs-sm); line-height: 1.7;
+  background: var(--warning-subtle); color: var(--fg);
+  border: 1px solid color-mix(in oklab, var(--warning) 40%, transparent);
+}
+.notice svg { inline-size: 18px; block-size: 18px; flex: 0 0 auto; color: var(--warning); margin-block-start: 4px; }
+
+/* ===== Sections & cards ===== */
+.section { padding-block: clamp(var(--s-48), 6vw, var(--s-96)); }
+.section + .section { border-block-start: 1px solid var(--border-subtle); }
+.section-head { max-inline-size: 62ch; margin-block-end: var(--s-32); }
+.section-head h2 { margin-block: var(--s-8) var(--s-12); }
+
+.card {
+  position: relative; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: var(--s-24); box-shadow: var(--shadow-key);
+  transition: border-color 0.25s, transform 0.25s var(--ease-out), box-shadow 0.25s;
+}
+.card:hover { border-color: color-mix(in oklab, var(--a1) 55%, var(--border)); }
+
+.grid { display: grid; gap: var(--s-24); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+
+/* ===== Footer ===== */
+.site-footer {
+  margin-block-start: auto; padding-block: var(--s-48) var(--s-32);
+  border-block-start: 1px solid var(--border); background: var(--bg-elev);
+  font-size: var(--fs-sm); color: var(--fg-muted);
+}
+.footer-grid {
+  display: grid; gap: var(--s-32);
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  margin-block-end: var(--s-32);
+}
+.footer-grid h3 { font-size: var(--fs-sm); color: var(--fg); margin-block-end: var(--s-12); }
+.footer-list { display: grid; gap: var(--s-8); }
+.footer-bottom {
+  padding-block-start: var(--s-24); border-block-start: 1px solid var(--border-subtle);
+  display: flex; flex-wrap: wrap; gap: var(--s-12); justify-content: space-between;
+  font-size: var(--fs-xs); color: var(--fg-subtle);
+}
+.footer-disclaimer { max-inline-size: 70ch; }
