@@ -1,4 +1,4 @@
-import { esc, escAttr, escJSON, L, urlFor, waHref, money } from './util.mjs';
+import { esc, escAttr, escJSON, L, bidi, urlFor, waHref, money } from './util.mjs';
 import { icon, hasIcon } from './icons.mjs';
 import { renderLayout } from './layout.mjs';
 
@@ -7,7 +7,7 @@ function renderStance(ctx, lang, tool) {
   return `<span class="stamp" data-stance="${escAttr(stance)}"><span>${esc(ctx.t(lang, 'stance.label'))}</span><b>${esc(ctx.t(lang, `stance.${stance}`))}</b></span>`;
 }
 
-function renderFacts(ctx, lang, tool) {
+function renderFacts(ctx, lang, tool, ax) {
   const { t } = ctx; const plans = tool.pricing?.plans || []; const facts = [];
   const add = (tone, iconName, key) => facts.push(`<div class="fact" data-tone="${tone}">${icon(iconName)}<span>${esc(t(lang, key))}</span></div>`);
   if (tool.pricing?.verify_required) add('warn', 'alert', 'facts.unverified');
@@ -17,10 +17,10 @@ function renderFacts(ctx, lang, tool) {
   tool.api?.available === true ? add('good','external','facts.hasApi') : add('bad','x','facts.noApi');
   plans.length && plans.every(p => p.what_you_get?.commercial_use === true) ? add('good','check','facts.commercialOk') : add('warn','info','facts.commercialNo');
   if (tool.arabic_support?.ui === false) add('info','globe','facts.noArabicUi');
-  return `<section class="section" id="facts"><div class="container"><div class="axis-head reveal"><span class="axis-id">01 / ${esc(t(lang,'facts.title'))}</span><h2>${esc(t(lang,'facts.title'))}</h2><p>${esc(t(lang,'facts.lead'))}</p></div><div class="facts reveal">${facts.join('')}</div></div></section>`;
+  return `<section class="section" id="facts"><div class="container">${ax('facts.title', 'facts.lead')}<div class="facts reveal">${facts.join('')}</div></div></section>`;
 }
 
-function renderFit(ctx, lang, tool, pageUrl) {
+function renderFit(ctx, lang, tool, pageUrl, ax) {
   const { config, t } = ctx; const fit = tool.pricing?.fit; if (!fit?.enabled) return '';
   const plans = (tool.pricing.plans || []).filter(p => p.fit).map(p => ({ id:p.id, name:L(p.name,lang), price:p.contact_for_price === true ? null : (p.price?.amount ?? null), currency:p.price?.currency || 'USD', capacity:p.fit.unlimited ? null : p.fit.capacity, unlimited:p.fit.unlimited === true, privacy:p.what_you_get?.privacy_mode === true, commercial:p.what_you_get?.commercial_use === true, viaAdmin:false, href:p.cta?.url || null, ctaLabel:t(lang,'pricing.btnDirect') }));
   const offer = tool.pricing.admin_offer; if (offer?.enabled) plans.push({ id:'admin-offer', name:L(offer.name,lang), price:null, currency:'USD', capacity:null, unlimited:true, privacy:true, commercial:true, viaAdmin:true, href:null, ctaLabel:t(lang,'pricing.btnWhatsapp') });
@@ -28,7 +28,16 @@ function renderFit(ctx, lang, tool, pageUrl) {
   const keys=['stance.label','fit.eligible','fit.recommended','fit.perUnit','fit.perMonthCost','fit.covers','fit.unlimited','fit.headroom','fit.runsOut','fit.rejectedTitle','fit.whyCapacity','fit.whyPrivacy','fit.whyCommercial','fit.whyPayment','fit.whyNoPrice','fit.noneTitle','fit.noneDesc','fit.askAdmin'];
   const strings=Object.fromEntries(keys.map(k=>[k,t(lang,k)]));
   const needs=[['privacy','fit.needPrivacy'],['commercial','fit.needCommercial'],['localPay','fit.needLocalPay']];
-  return `<section class="section" id="fit"><div class="container"><div class="axis-head reveal"><span class="axis-id">02 / ${esc(t(lang,'fit.title'))}</span><h2>${esc(t(lang,'fit.title'))}</h2><p>${esc(t(lang,'fit.lead'))}</p></div><div class="fit reveal" data-fit><div class="fit-console"><div class="fit-dial"><label for="fit-range">${esc(t(lang,'fit.inputLabel'))} — ${esc(L(fit.metric.label,lang))}</label><div class="fit-readout" data-fit-readout></div><input class="fit-range" id="fit-range" type="range" data-fit-range min="${fit.metric.min}" max="${fit.metric.max}" step="${fit.metric.step}" value="${fit.metric.default}"><div class="fit-steps"><span>${fit.metric.min}</span><span>${fit.metric.max}</span></div></div><div class="fit-needs"><span>${esc(t(lang,'fit.needsTitle'))}</span>${needs.map(([key,label])=>`<label class="fit-check"><input type="checkbox" data-fit-need="${key}"><span>${esc(t(lang,label))}</span></label>`).join('')}<button class="btn btn-ghost btn-sm" type="button" data-fit-reset>${esc(t(lang,'fit.reset'))}</button></div></div><div class="fit-out"><p class="fit-eligible" data-fit-eligible></p><div class="fit-winner" data-fit-winner></div><div class="fit-rejected" data-fit-rejected></div><p class="muted" style="font-size:var(--fs-xs)">${esc(t(lang,'fit.note'))}</p></div></div><script type="application/json" id="fit-data">${escJSON({metric:{unit:L(fit.metric.unit,lang),default:fit.metric.default},plans,strings,adminHref})}</script></div></section>`;
+  return `<section class="section" id="fit"><div class="container">${ax('fit.title', 'fit.lead')}<div class="fit reveal" data-fit><div class="fit-console"><div class="fit-dial"><label for="fit-range">${esc(t(lang,'fit.inputLabel'))} — ${esc(L(fit.metric.label,lang))}</label><div class="fit-readout" data-fit-readout></div><input class="fit-range" id="fit-range" type="range" data-fit-range min="${fit.metric.min}" max="${fit.metric.max}" step="${fit.metric.step}" value="${fit.metric.default}"><div class="fit-steps"><span>${fit.metric.min}</span><span>${fit.metric.max}</span></div></div><div class="fit-needs"><span>${esc(t(lang,'fit.needsTitle'))}</span>${needs.map(([key,label])=>`<label class="fit-check"><input type="checkbox" data-fit-need="${key}"><span>${esc(t(lang,label))}</span></label>`).join('')}<button class="btn btn-ghost btn-sm" type="button" data-fit-reset>${esc(t(lang,'fit.reset'))}</button></div></div><div class="fit-out"><p class="fit-eligible" data-fit-eligible></p><div class="fit-winner" data-fit-winner></div><div class="fit-rejected" data-fit-rejected></div><p class="muted" class="muted u-xs">${esc(t(lang,'fit.note'))}</p></div></div><script type="application/json" id="fit-data">${escJSON({metric:{unit:L(fit.metric.unit,lang),default:fit.metric.default},plans,strings,adminHref})}</script></div></section>`;
+}
+
+/** عدّاد أقسام آلي، يمنع العناوين المكررة والترقيم اليدوي. */
+function axisCounter(ctx, lang) {
+  let n = 0;
+  return (titleKey, leadKey) => {
+    n += 1;
+    return `<header class="axis reveal"><span class="axis__id" aria-hidden="true">${String(n).padStart(2, '0')}</span><h2 class="axis__title">${esc(ctx.t(lang, titleKey))}</h2>${leadKey ? `<p class="axis__lead">${esc(ctx.t(lang, leadKey))}</p>` : ''}</header>`;
+  };
 }
 
 const yn = (value, t, lang) =>
@@ -92,7 +101,7 @@ function renderPlan(ctx, lang, tool, plan, pageUrl) {
           </div>`).join('\n          ');
 
   const list = (items, cls, iconName) => (items || []).length
-    ? `<ul class="plan-list ${cls}">${items.map((i) => `<li>${icon(iconName)}<span>${esc(L(i, lang))}</span></li>`).join('')}</ul>`
+    ? `<ul class="plan-list ${cls}">${items.map((i) => `<li>${icon(iconName)}<span>${bidi(L(i, lang), lang)}</span></li>`).join('')}</ul>`
     : '';
 
   const facts = [
@@ -122,7 +131,7 @@ function renderPlan(ctx, lang, tool, plan, pageUrl) {
           <p class="plan-best">${esc(t(lang, 'tool.bestFor'))}: ${esc(L(plan.best_for, lang))}</p>
         </div>
         ${priceBlock}
-        ${g.headline ? `<p class="plan-headline">${esc(L(g.headline, lang))}</p>` : ''}
+        ${g.headline ? `<p class="plan-headline">${bidi(L(g.headline, lang), lang)}</p>` : ''}
         ${quotas ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.quotas'))}</h4><div class="quotas">${quotas}</div></div>` : ''}
         ${g.unlocked_features?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.unlocked'))}</h4>${list(g.unlocked_features, 'is-yes', 'check')}</div>` : ''}
         ${g.limits_and_caps?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.limits'))}</h4>${list(g.limits_and_caps, 'is-up', 'info')}</div>` : ''}
@@ -130,7 +139,7 @@ function renderPlan(ctx, lang, tool, plan, pageUrl) {
         ${plan.upgrade_triggers?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.upgradeWhen'))}</h4>${list(plan.upgrade_triggers, 'is-up', 'arrow')}</div>` : ''}
         ${g.models_access?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.models'))}</h4><div class="chips">${g.models_access.map((m) => `<span class="badge">${esc(m)}</span>`).join('')}</div></div>` : ''}
         <div class="plan-block"><h4>${esc(t(lang, 'tool.entitlements'))}</h4><div class="plan-facts">${facts}${trainingFact}${textFacts}${g.sla ? `<div class="plan-fact"><span>${esc(t(lang, 'tool.sla'))}</span><b>${esc(g.sla)}</b></div>` : ''}</div></div>
-        ${plan.value_verdict ? `<p class="plan-verdict"><strong>${esc(t(lang, 'tool.verdictPlan'))}</strong>${esc(L(plan.value_verdict, lang))}</p>` : ''}
+        ${plan.value_verdict ? `<p class="plan-verdict"><strong>${esc(t(lang, 'tool.verdictPlan'))}</strong>${bidi(L(plan.value_verdict, lang), lang)}</p>` : ''}
         ${hasPrice && plan.cta?.url ? `<div class="plan-cta"><a class="btn btn-primary btn-block" href="${escAttr(plan.cta.url)}" target="_blank" rel="noopener noreferrer">${esc(t(lang, 'pricing.btnDirect'))}${icon('external')}<span class="sr-only"> — ${esc(t(lang, 'common.external'))}</span></a></div>` : ''}
       </article>`;
 }
@@ -153,13 +162,13 @@ function renderAdminOffer(ctx, lang, tool, offer, pageUrl) {
         <div class="plan-price">
           <div class="contact-block">
             <span class="badge badge-warning">${icon('chat')}${esc(t(lang, 'pricing.contactBadge'))}</span>
-            <strong>${esc(L(offer.headline, lang))}</strong>
+            <strong>${bidi(L(offer.headline, lang), lang)}</strong>
             <p>${esc(t(lang, 'pricing.contactDesc'))}</p>
             ${wa.enabled ? `<a class="btn btn-wa btn-block" href="${escAttr(waHref({ number: wa.number, text }))}" target="_blank" rel="noopener noreferrer" aria-label="${escAttr(`${t(lang, 'pricing.btnWhatsapp')} — ${L(offer.name, lang)} — ${t(lang, 'common.external')}`)}">${icon('whatsapp')}${esc(t(lang, 'pricing.btnWhatsapp'))}</a>` : ''}
             ${fb.enabled ? `<a class="btn btn-fb btn-block" href="${escAttr(fb.messenger)}" target="_blank" rel="noopener noreferrer">${icon('facebook')}${esc(t(lang, 'pricing.btnMessenger'))}</a>` : ''}
           </div>
         </div>
-        ${offer.includes?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.unlocked'))}</h4><ul class="plan-list is-yes">${offer.includes.map((i) => `<li>${icon('check')}<span>${esc(L(i, lang))}</span></li>`).join('')}</ul></div>` : ''}
+        ${offer.includes?.length ? `<div class="plan-block"><h4>${esc(t(lang, 'tool.unlocked'))}</h4><ul class="plan-list is-yes">${offer.includes.map((i) => `<li>${icon('check')}<span>${bidi(L(i, lang), lang)}</span></li>`).join('')}</ul></div>` : ''}
         <p class="plan-verdict"><strong>${esc(t(lang, 'pricing.adminOffer'))}</strong>${esc(L(offer.disclaimer, lang))}</p>
       </article>`;
 }
@@ -167,6 +176,7 @@ function renderAdminOffer(ctx, lang, tool, offer, pageUrl) {
 export function renderTool(ctx, lang, tool) {
   const { config, t, defaultLang, languages } = ctx;
   const locale = languages.find((l) => l.code === lang).locale;
+  const ax = axisCounter(ctx, lang);
   const relPath = `tools/${tool.slug}.html`;
   const pageUrl = config.baseUrl + urlFor(lang, defaultLang, relPath);
   const isDraft = tool.meta?.status !== 'published';
@@ -199,13 +209,13 @@ export function renderTool(ctx, lang, tool) {
 
   const features = (tool.key_features || []).map((f) => `<article class="card feature-card spot reveal">
         <h3><span class="feature-icon">${icon(hasIcon(f.icon) ? f.icon : 'sparkles')}</span>${esc(L(f.title, lang))}</h3>
-        <p>${esc(L(f.description, lang))}</p>
+        <p>${bidi(L(f.description, lang), lang)}</p>
         ${f.impact ? `<span class="badge badge-accent">${esc(t(lang, 'impact.label'))}: ${esc(t(lang, `impact.${f.impact}`))}</span>` : ''}
       </article>`).join('\n      ');
 
   const useCases = (tool.use_cases || []).map((u) => `<article class="card spot reveal">
         <h3>${esc(L(u.persona, lang))}</h3>
-        <p class="muted" style="font-size:var(--fs-sm)">${esc(L(u.scenario, lang))}</p>
+        <p class="muted" class="muted u-sm">${esc(L(u.scenario, lang))}</p>
         <ul class="icon-list" style="margin-block-start:var(--s-12)">
           <li>${icon('check', 'i-yes')}<span>${esc(L(u.outcome, lang))}</span></li>
           ${u.time_saved ? `<li>${icon('clock', 'i-dot')}<span>${esc(t(lang, 'tool.timeSaved'))}: ${esc(L(u.time_saved, lang))}</span></li>` : ''}
@@ -221,25 +231,25 @@ export function renderTool(ctx, lang, tool) {
 
   const timeline = (tool.how_to_start || []).map((s) => `<li>
           <h3>${esc(t(lang, 'tool.step'))} ${s.step} — ${esc(L(s.title, lang))}</h3>
-          <p>${esc(L(s.detail, lang))}</p>
+          <p>${bidi(L(s.detail, lang), lang)}</p>
         </li>`).join('\n        ');
 
   const bullets = (items, iconName, cls) => (items || []).length
-    ? `<ul class="icon-list">${items.map((i) => `<li>${icon(iconName, cls)}<span>${esc(L(i, lang))}</span></li>`).join('')}</ul>`
+    ? `<ul class="icon-list">${items.map((i) => `<li>${icon(iconName, cls)}<span>${bidi(L(i, lang), lang)}</span></li>`).join('')}</ul>`
     : '';
 
   const ratings = Object.entries(tool.ratings || {}).map(([key, value]) => {
     const pct = Math.round((Number(value) / 5) * 100);
     return `<div class="rating-row">
           <span>${esc(t(lang, `ratings.${key}`))}</span>
-          <b>${esc(value)}<span class="muted" style="font-size:var(--fs-xs)"> / 5</span></b>
+          <b>${esc(value)}<span class="muted" class="muted u-xs"> / 5</span></b>
           <span class="bar" data-bar="${pct}" role="img" aria-label="${escAttr(`${t(lang, `ratings.${key}`)}: ${value} / 5`)}"><i></i></span>
         </div>`;
   }).join('\n        ');
 
   const faq = (tool.faq || []).map((item) => `<details>
           <summary>${esc(L(item.q, lang))}${icon('chevron')}</summary>
-          <p>${esc(L(item.a, lang))}</p>
+          <p>${bidi(L(item.a, lang), lang)}</p>
         </details>`).join('\n        ');
 
   const compareTable = pricing.comparison_rows?.length ? `<div style="overflow-x:auto;margin-block-start:var(--s-32)">
@@ -279,7 +289,7 @@ export function renderTool(ctx, lang, tool) {
         : `<span class="monogram" aria-hidden="true">${esc(L(tool.name, lang).trim().charAt(0))}</span>`}</span>
       <div>
         <h1>${esc(L(tool.name, lang))}</h1>
-        <p class="muted" style="font-size:var(--fs-sm)">${esc(tool.vendor?.name)} · ${esc(L(tool.vendor?.country, lang))} · ${esc(tool.vendor?.founded)}</p>
+        <p class="muted" class="muted u-sm">${esc(tool.vendor?.name)} · ${esc(L(tool.vendor?.country, lang))} · ${esc(tool.vendor?.founded)}</p>
       </div>
     </div>
     <p class="lead">${esc(L(tool.tagline, lang))}</p>
@@ -310,31 +320,31 @@ export function renderTool(ctx, lang, tool) {
 
 <section class="section" id="overview">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.overview'))}</h2></div>
+    ${ax('tool.overview')}
     <div class="prose reveal">
-      <p>${esc(L(tool.summary, lang))}</p>
+      <p>${bidi(L(tool.summary, lang), lang)}</p>
       ${L(tool.long_description, lang).split('\n\n').filter(Boolean).map((p) => `<p>${esc(p)}</p>`).join('\n      ')}
     </div>
   </div>
 </section>
 
-${renderFacts(ctx, lang, tool)}
-${renderFit(ctx, lang, tool, pageUrl)}
+${renderFacts(ctx, lang, tool, ax)}
+${renderFit(ctx, lang, tool, pageUrl, ax)}
 
 <section class="section" id="what-it-does">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.whatItDoes'))}</h2></div>
+    ${ax('tool.whatItDoes')}
     <div class="reveal">${bullets(tool.what_it_does, 'check', 'i-yes')}</div>
-    ${tool.how_it_works ? `<div class="card spot reveal" style="margin-block-start:var(--s-32);max-inline-size:78ch">
+    ${tool.how_it_works ? `<div class="card spot reveal" class="card spot reveal u-mt-32 u-prose">
       <h3 style="margin-block-end:var(--s-8)">${esc(t(lang, 'tool.howItWorks'))}</h3>
-      <p class="muted" style="font-size:var(--fs-sm)">${esc(L(tool.how_it_works, lang))}</p>
+      <p class="muted" class="muted u-sm">${esc(L(tool.how_it_works, lang))}</p>
     </div>` : ''}
   </div>
 </section>
 
 <section class="section" id="features">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.features'))}</h2></div>
+    ${ax('tool.features')}
     <div class="grid grid-3">
       ${features}
     </div>
@@ -343,7 +353,7 @@ ${renderFit(ctx, lang, tool, pageUrl)}
 
 <section class="section" id="use-cases">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.useCases'))}</h2></div>
+    ${ax('tool.useCases')}
     <div class="grid grid-3">
       ${useCases}
     </div>
@@ -352,7 +362,7 @@ ${renderFit(ctx, lang, tool, pageUrl)}
 
 ${gallery ? `<section class="section" id="gallery">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.gallery'))}</h2></div>
+    ${ax('tool.gallery')}
     <div class="gallery">
         ${gallery}
     </div>
@@ -361,12 +371,12 @@ ${gallery ? `<section class="section" id="gallery">
 
 <section class="section" id="start">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.start'))}</h2></div>
+    ${ax('tool.start')}
     <ol class="timeline reveal">
         ${timeline}
     </ol>
-    ${tool.pro_tips?.length ? `<div class="card spot reveal" style="margin-block-start:var(--s-32);max-inline-size:78ch">
-      <h3 style="margin-block-end:var(--s-12)">${esc(t(lang, 'tool.tips'))}</h3>
+    ${tool.pro_tips?.length ? `<div class="card spot reveal" class="card spot reveal u-mt-32 u-prose">
+      <h3 class="u-mb-12">${esc(t(lang, 'tool.tips'))}</h3>
       ${bullets(tool.pro_tips, 'sparkles', 'i-dot')}
     </div>` : ''}
   </div>
@@ -375,7 +385,8 @@ ${gallery ? `<section class="section" id="gallery">
 <section class="section" id="pricing" data-pricing data-cycle="monthly">
   <div class="container">
     <div class="pricing-head reveal">
-      <div class="section-head" style="margin-block-end:0">
+      ${ax('tool.pricing', 'tool.pricingLead')}
+      <div class="section-head">
         <p class="eyebrow">${esc(t(lang, 'tool.pricing'))}</p>
         <h2>${esc(t(lang, 'tool.pricing'))}</h2>
         <p class="muted">${esc(t(lang, 'tool.pricingLead'))}</p>
@@ -404,19 +415,19 @@ ${gallery ? `<section class="section" id="gallery">
 
 <section class="section" id="pros-cons">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.prosCons'))}</h2></div>
+    ${ax('tool.prosCons')}
     <div class="two-col">
       <div class="card spot reveal">
-        <h3 style="margin-block-end:var(--s-12)">${esc(t(lang, 'tool.strengths'))}</h3>
+        <h3 class="u-mb-12">${esc(t(lang, 'tool.strengths'))}</h3>
         ${bullets(tool.strengths, 'check', 'i-yes')}
       </div>
       <div class="card spot reveal">
-        <h3 style="margin-block-end:var(--s-12)">${esc(t(lang, 'tool.limitations'))}</h3>
+        <h3 class="u-mb-12">${esc(t(lang, 'tool.limitations'))}</h3>
         ${bullets(tool.limitations, 'x', 'i-no')}
       </div>
     </div>
     ${tool.not_good_for?.length ? `<div class="card spot reveal" style="margin-block-start:var(--s-24)">
-      <h3 style="margin-block-end:var(--s-12)">${esc(t(lang, 'tool.notGoodFor'))}</h3>
+      <h3 class="u-mb-12">${esc(t(lang, 'tool.notGoodFor'))}</h3>
       ${bullets(tool.not_good_for, 'x', 'i-no')}
     </div>` : ''}
   </div>
@@ -424,7 +435,7 @@ ${gallery ? `<section class="section" id="gallery">
 
 <section class="section" id="privacy">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.privacy'))}</h2></div>
+    ${ax('tool.privacy')}
     <div class="card spot reveal" style="max-inline-size:78ch">
       <table class="info-table">
         <tbody>
@@ -438,7 +449,7 @@ ${gallery ? `<section class="section" id="gallery">
 
 <section class="section" id="ratings">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.ratings'))}</h2></div>
+    ${ax('tool.ratings')}
     <div class="ratings reveal">
         ${ratings}
     </div>
@@ -447,7 +458,7 @@ ${gallery ? `<section class="section" id="gallery">
 
 ${faq ? `<section class="section" id="faq">
   <div class="container">
-    <div class="section-head reveal"><h2>${esc(t(lang, 'tool.faq'))}</h2></div>
+    ${ax('tool.faq')}
     <div class="faq reveal">
         ${faq}
     </div>
@@ -478,7 +489,7 @@ ${faq ? `<section class="section" id="faq">
     <img src="" alt="">
     <figcaption></figcaption>
   </figure>
-  <button class="lightbox-close" type="button" aria-label="${escAttr(t(lang, 'common.toTop'))}">${icon('x')}</button>
+  <button class="lightbox-close" type="button" aria-label="${escAttr(t(lang, 'common.close'))}">${icon('x')}</button>
 </dialog>`;
 
   // JSON-LD: offers للخطط ذات السعر الرقمي فقط — لا سعر وهمي للخطط بالتواصل

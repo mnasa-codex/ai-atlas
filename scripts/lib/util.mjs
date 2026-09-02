@@ -58,6 +58,20 @@ export function filePathFor(lang, defaultLang, rel) {
   return lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`;
 }
 
+/** عزل المقاطع اللاتينية داخل النص العربي لمنع تشوّه bidi. */
+export function bidi(value, lang) {
+  const raw = value === null || value === undefined ? '' : String(value);
+  if (lang !== 'ar' || !raw) return esc(raw);
+  const latin = /[A-Za-z][A-Za-z0-9]*(?:[._:/+\-][A-Za-z0-9]+)*(?:[ ,]+[A-Za-z0-9][A-Za-z0-9]*(?:[._:/+\-][A-Za-z0-9]+)*)*/g;
+  let out = ''; let cursor = 0;
+  for (const match of raw.matchAll(latin)) {
+    out += esc(raw.slice(cursor, match.index));
+    out += `<span class="lat">${esc(match[0])}</span>`;
+    cursor = match.index + match[0].length;
+  }
+  return out + esc(raw.slice(cursor));
+}
+
 export function waHref({ number, text }) {
   return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }

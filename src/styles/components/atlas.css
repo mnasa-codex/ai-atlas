@@ -1,3 +1,16 @@
+/* عزل ثنائي الاتجاه للنص العربي المختلط باللاتينية والأرقام. */
+:where(code, kbd, samp, time, .lat, .num, .price-value, .quota-value, .fit-num, [dir="ltr"]) { unicode-bidi: isolate; }
+.lat { font-family: var(--font-en); direction: ltr; unicode-bidi: isolate; font-size: .96em; }
+code.tok { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; white-space: nowrap; font-size: .88em; padding: 1px 6px; border-radius: 4px; background: var(--surface-2); border: 1px solid var(--border-soft); }
+.axis { display: grid; grid-template-columns: auto 1fr; gap: var(--s-4) var(--s-16); align-items: baseline; margin-block-end: var(--s-32); padding-block-end: var(--s-16); border-block-end: 1px solid var(--border-soft); }
+.axis__id { font-family: var(--font-mono); font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--a2); padding-block-start: .42em; }
+.axis__title { grid-column: 2; font-size: var(--fs-h2); }
+.axis__lead { grid-column: 2; color: var(--fg-muted); font-size: var(--fs-sm); max-inline-size: 64ch; }
+@media (max-width: 560px) { .axis { grid-template-columns: 1fr; gap: var(--s-8); } .axis__title, .axis__lead { grid-column: 1; } }
+.u-mt-8 { margin-block-start: var(--s-8); } .u-mt-16 { margin-block-start: var(--s-16); } .u-mt-24 { margin-block-start: var(--s-24); } .u-mt-32 { margin-block-start: var(--s-32); }
+.u-mb-12 { margin-block-end: var(--s-12); } .u-prose { max-inline-size: 72ch; } .u-narrow { max-inline-size: 64ch; }
+.u-xs { font-size: var(--fs-xs); } .u-sm { font-size: var(--fs-sm); } .u-mono { font-family: var(--font-mono); }
+.u-stack-8 { display: grid; gap: var(--s-8); } .u-stack-12 { display: grid; gap: var(--s-12); }
 /* Atlas measurement interface */
 .num, .price-value, .quota-value, .score, .stat b, .fit-num {
   font-family: var(--font-mono);

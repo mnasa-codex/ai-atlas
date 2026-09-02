@@ -13,6 +13,7 @@
   --surface-3: #1d212f;
   --border: #20242f;
   --border-subtle: #171b26;
+  --border-soft: var(--border-subtle);
 
   --fg: #f4f6fb;
   --fg-muted: #9aa3b2;
