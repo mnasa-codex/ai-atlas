@@ -58,18 +58,37 @@ export function filePathFor(lang, defaultLang, rel) {
   return lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`;
 }
 
-/** عزل المقاطع اللاتينية داخل النص العربي لمنع تشوّه bidi. */
+/**
+ * يعزل المقاطع اللاتينية داخل النص العربي منعاً لتشوّه ترتيب العرض،
+ * ويحوّل ما بين علامتي backtick إلى وسم شيفرة معزول الاتجاه.
+ * المحتوى مهرَّب في كل المسارات، فلا يمرّ HTML من ملفات المحتوى.
+ */
 export function bidi(value, lang) {
   const raw = value === null || value === undefined ? '' : String(value);
-  if (lang !== 'ar' || !raw) return esc(raw);
-  const latin = /[A-Za-z][A-Za-z0-9]*(?:[._:/+\-][A-Za-z0-9]+)*(?:[ ,]+[A-Za-z0-9][A-Za-z0-9]*(?:[._:/+\-][A-Za-z0-9]+)*)*/g;
-  let out = ''; let cursor = 0;
-  for (const match of raw.matchAll(latin)) {
-    out += esc(raw.slice(cursor, match.index));
-    out += `<span class="lat">${esc(match[0])}</span>`;
-    cursor = match.index + match[0].length;
+  if (!raw) return '';
+
+  const LATIN = /[A-Za-z][A-Za-z0-9]*(?:[._:/+\-][A-Za-z0-9]+)*(?:[ ,]+[A-Za-z0-9][A-Za-z0-9]*(?:[._:/+\-][A-Za-z0-9]+)*)*/g;
+
+  const isolate = (text) => {
+    if (lang !== 'ar') return esc(text);
+    let out = '';
+    let cursor = 0;
+    for (const m of text.matchAll(LATIN)) {
+      out += esc(text.slice(cursor, m.index));
+      out += `<span class="lat">${esc(m[0])}</span>`;
+      cursor = m.index + m[0].length;
+    }
+    return out + esc(text.slice(cursor));
+  };
+
+  let out = '';
+  let cursor = 0;
+  for (const m of raw.matchAll(/`([^`\n]{1,80})`/g)) {
+    out += isolate(raw.slice(cursor, m.index));
+    out += `<code class="tok">${esc(m[1])}</code>`;
+    cursor = m.index + m[0].length;
   }
-  return out + esc(raw.slice(cursor));
+  return out + isolate(raw.slice(cursor));
 }
 
 export function waHref({ number, text }) {
