@@ -1,17 +1,1 @@
-import { $ } from './lib/dom.js';
-import { initTheme } from './modules/theme.js';
-import { initReveal } from './modules/reveal.js';
-import { initSpotlight } from './modules/spotlight.js';
-import { initScrollProgress, initToTop } from './modules/scroll-progress.js';
-import { initCatalog } from './modules/catalog.js';
-import { initFab } from './modules/fab.js';
-import { initLangSwitch } from './modules/lang-switch.js';
-
-initTheme($('[data-theme-toggle]'));
-initLangSwitch();
-initReveal();
-initSpotlight();
-initScrollProgress($('.read-progress'));
-initToTop($('.to-top'));
-initCatalog();
-initFab();
+import { $ } from './lib/dom.js';import { initTheme } from './modules/theme.js';import { initReveal } from './modules/reveal.js';import { initTilt } from './modules/tilt.js';import { initScrollProgress,initToTop } from './modules/scroll-progress.js';import { initCatalog } from './modules/catalog.js';import { initFab } from './modules/fab.js';import { initLangSwitch } from './modules/lang-switch.js';initTheme($('[data-theme-toggle]'));initLangSwitch();initReveal();initTilt();initScrollProgress($('.read-progress'));initToTop($('.to-top'));initCatalog();initFab();
