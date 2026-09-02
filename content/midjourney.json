@@ -1,0 +1,420 @@
+{
+  "slug": "midjourney",
+  "name": {
+    "ar": "ميدجورني",
+    "en": "Midjourney"
+  },
+  "vendor": {
+    "name": "Midjourney, Inc.",
+    "country": "الولايات المتحدة",
+    "founded": 2021
+  },
+  "tagline": {
+    "ar": "المنصة الرائدة عالمياً في توليد الصور الفنية والسينمائية فائقة الجودة.",
+    "en": "Leading generative AI platform creating photorealistic and cinematic imagery."
+  },
+  "category": "image-generation",
+  "subcategories": [
+    "concept-art",
+    "photorealism"
+  ],
+  "maturity": "stable",
+  "platforms": [
+    "web",
+    "discord"
+  ],
+  "arabic_support": {
+    "ui": false,
+    "prompt_quality": "good",
+    "note": {
+      "ar": "يفهم الأوامر العربية بدقة عالية.",
+      "en": "Understands Arabic accurately."
+    }
+  },
+  "summary": {
+    "ar": "ميدجورني هو المعيار الذهبي لتوليد الفنون البصرية والصور الواقعية بالذكاء الاصطناعي للمصممين والمخرجين.",
+    "en": "Midjourney is the industry gold standard for text-to-image synthesis."
+  },
+  "long_description": {
+    "ar": "يمثل ميدجورني القوة الإنتاجية الأكثر موثوقية في توليد الصور بالذكاء الاصطناعي عبر محرك V6.1 المتطور.\n\nتتيح المنصة للمحترفين إنتاج أعمال فوتوغرافية وسينمائية بدرجات إضاءة وتفاصيل بشرية طبيعية للغاية.\n\nتوفر واجهة الويب مرونة كاملة للتحكم في معايير التوليد والتعديل الموضعي دون الحاجة لتطبيق ديسكورد.",
+    "en": "Midjourney delivers industry-leading image synthesis through its latest v6.1 generation engine."
+  },
+  "what_it_does": [
+    {
+      "ar": "توليد تصاميم وصور فوتوغرافية واقعية بدقة 4K",
+      "en": "Generate 4K photorealistic imagery"
+    },
+    {
+      "ar": "إعادة رسم وتعديل أجزاء مخصصة في الصورة (Inpainting)",
+      "en": "Inpaint and modify localized regions"
+    },
+    {
+      "ar": "استنساخ الأسلوب الفني للصور عبر Style Reference",
+      "en": "Transfer artistic signatures via --sref"
+    }
+  ],
+  "how_it_works": {
+    "ar": "يعتمد على شبكات الانتشار العميقة المدربة على بلايين المتجهات البصرية المرتبطة دلالياً بنصوص مفاهيمية.",
+    "en": "Proprietary deep diffusion models mapped to massive semantic embeddings."
+  },
+  "key_features": [
+    {
+      "title": {
+        "ar": "محرك v6.1 فائق الواقعية",
+        "en": "v6.1 Neural Engine"
+      },
+      "description": {
+        "ar": "دقة استثنائية في رسم تفاصيل البشر والأقمشة والإضاءة.",
+        "en": "Exceptional biological fidelity and lighting."
+      },
+      "icon": "Sparkles",
+      "tier_required": "Standard",
+      "impact": "high"
+    }
+  ],
+  "use_cases": [
+    {
+      "persona": {
+        "ar": "مدير فني في وكالة دعاية",
+        "en": "Creative Agency Director"
+      },
+      "scenario": {
+        "ar": "إنتاج لوحات الإلهام وتصور المشاهد الإعلانية للعملاء.",
+        "en": "Drafting moodboards and concept pitches."
+      },
+      "outcome": {
+        "ar": "تسريع وتيرة اعتماد الحملات بنسبة 80%.",
+        "en": "Shortening approval loops by 80%."
+      },
+      "time_saved": {
+        "ar": "25 ساعة أسبوعياً",
+        "en": "25 hrs/week"
+      }
+    }
+  ],
+  "how_to_start": [
+    {
+      "step": 1,
+      "title": {
+        "ar": "تسجيل الحساب",
+        "en": "Sign Up"
+      },
+      "detail": {
+        "ar": "سجل الدخول على الموقع الرسمي.",
+        "en": "Sign in on Midjourney.com."
+      }
+    }
+  ],
+  "pro_tips": [
+    {
+      "ar": "استخدم معامل --ar 16:9 للقطات السينمائية العريضة.",
+      "en": "Use --ar 16:9 for widescreen frames."
+    }
+  ],
+  "strengths": [
+    {
+      "ar": "أعلى جودة جمالية وتناغم لوني في السوق",
+      "en": "Unmatched aesthetic cohesion"
+    },
+    {
+      "ar": "توليد غير محدود في وضع Relax للخطط المتقدمة",
+      "en": "Unlimited relaxed generations on Standard tier"
+    }
+  ],
+  "limitations": [
+    {
+      "ar": "لا تتوفر خطة تجريبية مجانية مستمرة",
+      "en": "No free perpetual tier available"
+    },
+    {
+      "ar": "الصور عامة في الخطة الأساسية والقياسية",
+      "en": "Generations are public on Standard plan"
+    }
+  ],
+  "not_good_for": [
+    {
+      "ar": "التعديل البكسلي للصور العائلية الحقيقية",
+      "en": "Pixel-level photographic touchups"
+    }
+  ],
+  "pricing": {
+    "source": "manual",
+    "updated_at": "2026-09-02",
+    "updated_by": "admin",
+    "note": {
+      "ar": "الأسعار مدخلة يدوياً بعد مطابقتها مع وثائق الفوترة الرسمية.",
+      "en": "Prices manually audited."
+    },
+    "plans": [
+      {
+        "id": "standard",
+        "name": {
+          "ar": "القياسية (Standard)",
+          "en": "Standard"
+        },
+        "highlight": true,
+        "order": 1,
+        "price": {
+          "amount": 30,
+          "currency": "USD",
+          "cycle": "monthly",
+          "annual_amount": 288
+        },
+        "is_free": false,
+        "contact_for_price": false,
+        "best_for": {
+          "ar": "المصممين المستقلين والمحترفين",
+          "en": "Freelancers and creatives"
+        },
+        "what_you_get": {
+          "headline": {
+            "ar": "15 ساعة سريعة شهرياً + توليد غير محدود بالوضع الهادئ (Relax Mode).",
+            "en": "15 Fast GPU hours + Unlimited Relax."
+          },
+          "quotas": [
+            {
+              "label": {
+                "ar": "ساعات المعالجة السريعة",
+                "en": "Fast GPU Hours"
+              },
+              "value": "15",
+              "unit": {
+                "ar": "ساعة/شهر",
+                "en": "hrs/mo"
+              }
+            },
+            {
+              "label": {
+                "ar": "التوليد غير المحدود (Relax)",
+                "en": "Unlimited Relax"
+              },
+              "value": "لا نهائي",
+              "unit": {
+                "ar": "صور/شهر",
+                "en": "images/mo"
+              }
+            }
+          ],
+          "unlocked_features": [
+            {
+              "ar": "توليد لا نهائي للصور دون القلق من نفاد الرصيد",
+              "en": "Unlimited relax image generations"
+            },
+            {
+              "ar": "الحق التجاري الكامل في بيع واستغلال الصور",
+              "en": "Full commercial ownership rights"
+            }
+          ],
+          "models_access": [
+            "v6.1",
+            "niji 6"
+          ],
+          "speed_and_priority": {
+            "ar": "معالجة فورية للساعات السريعة",
+            "en": "Instant fast queue priority"
+          },
+          "limits_and_caps": [
+            {
+              "ar": "حد التزامن: 3 مهام سريعة متزامنة",
+              "en": "3 concurrent fast jobs"
+            }
+          ],
+          "support": {
+            "ar": "دعم مجتمعي وتذاكر فنية",
+            "en": "Community & ticket support"
+          },
+          "commercial_use": true,
+          "data_used_for_training": false,
+          "privacy_mode": false,
+          "api_access": false,
+          "sla": null
+        },
+        "not_included": [
+          {
+            "ar": "وضع التخفي (Stealth Mode)",
+            "en": "Stealth Mode"
+          }
+        ],
+        "upgrade_triggers": [
+          {
+            "ar": "الحاجة لضمان سرية صور ومشاريع العملاء",
+            "en": "Client NDA privacy needs"
+          }
+        ],
+        "value_verdict": {
+          "ar": "الخطة ذات القيمة الأعلى بفضل التوليد غير المحدود.",
+          "en": "Highest value tier."
+        },
+        "cta": {
+          "type": "external",
+          "url": "https://midjourney.com"
+        }
+      },
+      {
+        "id": "enterprise",
+        "name": {
+          "ar": "المؤسسات واستوديوهات الإنتاج",
+          "en": "Enterprise / Studio"
+        },
+        "highlight": false,
+        "order": 2,
+        "price": {
+          "amount": null,
+          "currency": "USD",
+          "cycle": "custom",
+          "annual_amount": null
+        },
+        "is_free": false,
+        "contact_for_price": true,
+        "best_for": {
+          "ar": "الشركات الكبرى واستوديوهات الإنتاج السينمائي",
+          "en": "Enterprises and studios"
+        },
+        "what_you_get": {
+          "headline": {
+            "ar": "تخصيص كامل لساعات المعالجة، وضع التخفي التام، وإدارة المقاعد المركزية.",
+            "en": "Custom GPU pooling and stealth."
+          },
+          "quotas": [
+            {
+              "label": {
+                "ar": "ساعات GPU سريعة مخصصة",
+                "en": "Dedicated Fast Pool"
+              },
+              "value": "مخصص",
+              "unit": {
+                "ar": "حسب العقد",
+                "en": "contractual"
+              }
+            }
+          ],
+          "unlocked_features": [
+            {
+              "ar": "تفعيل دائم لوضع التخفي (Stealth Mode) لكافة الفريق",
+              "en": "Stealth generation mode enforced"
+            },
+            {
+              "ar": "إدارة مركزية للفواتير والوصول عبر المشرف",
+              "en": "Centralized invoice delegation"
+            }
+          ],
+          "models_access": [
+            "v6.1 Cluster"
+          ],
+          "speed_and_priority": {
+            "ar": "أولوية قصوى مخصصة للشبكة",
+            "en": "Dedicated compute priority"
+          },
+          "limits_and_caps": [
+            {
+              "ar": "تزامن غير محدود للمهام",
+              "en": "High concurrent pipeline"
+            }
+          ],
+          "support": {
+            "ar": "مدير حساب مخصص + دعم فني 24/7",
+            "en": "Dedicated account manager"
+          },
+          "commercial_use": true,
+          "data_used_for_training": false,
+          "privacy_mode": true,
+          "api_access": true,
+          "sla": "99.95%"
+        },
+        "not_included": [],
+        "upgrade_triggers": [],
+        "value_verdict": {
+          "ar": "الخيار الإلزامي للمؤسسات التي تتطلب حماية وسرية تامة.",
+          "en": "Essential for corporate studios."
+        },
+        "cta": {
+          "type": "contact",
+          "url": null
+        }
+      }
+    ]
+  },
+  "ratings": {
+    "ease_of_use": 4.2,
+    "output_quality": 4.9,
+    "value_for_money": 4.8,
+    "arabic_quality": 4,
+    "learning_curve": 3.4,
+    "overall": 4.8
+  },
+  "verdict": {
+    "ar": "ميدجورني لا يزال يتربع على قمة جودة الصور الفنية. اختر القياسية للعمل اليومي أو تواصل معنا لخطة الاستوديوهات.",
+    "en": "The definitive king of visual AI."
+  },
+  "alternatives": [],
+  "media": {
+    "logo": {
+      "url": "https://cdn.worldvectorlogo.com/logos/midjourney.svg",
+      "dominant_color": "#07080B"
+    },
+    "screenshots": [
+      {
+        "id": "s1",
+        "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&auto=format&fit=crop&q=80",
+        "width": 1600,
+        "height": 900,
+        "alt": {
+          "ar": "واجهة التوليد البصري",
+          "en": "Workspace"
+        },
+        "caption": {
+          "ar": "لوحة التوليد بالمتصفح",
+          "en": "Web Generation Suite"
+        }
+      }
+    ],
+    "og_image": {
+      "ar": "",
+      "en": ""
+    }
+  },
+  "links": {
+    "website": "https://www.midjourney.com",
+    "pricing": "https://docs.midjourney.com",
+    "docs": "https://docs.midjourney.com"
+  },
+  "faq": [
+    {
+      "q": {
+        "ar": "هل أمتلك الحقوق التجارية للصور؟",
+        "en": "Do I hold commercial rights?"
+      },
+      "a": {
+        "ar": "نعم، كافة الاشتراكات المدفوعة تمنحك ملكية تجارية كاملة.",
+        "en": "Yes, all paid subscriptions grant full commercial rights."
+      }
+    }
+  ],
+  "seo": {
+    "ar": {
+      "title": "ميدجورني (Midjourney) — ميزات وخطط وأسعار 2026",
+      "description": "دليل ميدجورني الشامل للخطط والميزات",
+      "keywords": [
+        "ميدجورني",
+        "أسعار ميدجورني"
+      ]
+    },
+    "en": {
+      "title": "Midjourney — Complete Features & Pricing 2026",
+      "description": "Comprehensive Midjourney review",
+      "keywords": [
+        "Midjourney"
+      ]
+    }
+  },
+  "meta": {
+    "confidence": 0.98,
+    "sources": [
+      "https://docs.midjourney.com"
+    ],
+    "generated_at": "2026-09-02",
+    "needs_review": [],
+    "status": "published",
+    "last_verified": "2026-09-02"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "siteName": {
+    "ar": "أطلس الذكاء الاصطناعي",
+    "en": "AI ATLAS"
+  },
+  "baseUrl": "https://ai-atlas.example.com",
+  "defaultLang": "ar",
+  "languages": [
+    {
+      "code": "ar",
+      "dir": "rtl",
+      "label": "العربية",
+      "short": "ع",
+      "numerals": "latn"
+    },
+    {
+      "code": "en",
+      "dir": "ltr",
+      "label": "English",
+      "short": "EN",
+      "numerals": "latn"
+    }
+  ],
+  "contact": {
+    "whatsapp": {
+      "enabled": true,
+      "number": "963987654321",
+      "display": "+963 987 654 321"
+    },
+    "facebook": {
+      "enabled": true,
+      "profile": "https://facebook.com/aiatlas.official",
+      "messenger": "https://m.me/aiatlas.official"
+    },
+    "hours": {
+      "ar": "يومياً 10:00 ص – 10:00 م بتوقيت دمشق (UTC+3)",
+      "en": "Daily 10:00 AM – 10:00 PM (UTC+3)"
+    },
+    "response_time": {
+      "ar": "الرد خلال أقل من ساعة واحدة",
+      "en": "Usually replies within 1 hour"
+    }
+  }
+}

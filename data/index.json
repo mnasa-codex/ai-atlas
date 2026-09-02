@@ -1,0 +1,15 @@
+[
+  {
+    "slug": "midjourney",
+    "name": {
+      "ar": "ميدجورني",
+      "en": "Midjourney"
+    },
+    "tagline": {
+      "ar": "المنصة الرائدة عالمياً في توليد الصور الفنية والسينمائية فائقة الجودة.",
+      "en": "Leading generative AI platform creating photorealistic and cinematic imagery."
+    },
+    "category": "image-generation",
+    "logo": "https://cdn.worldvectorlogo.com/logos/midjourney.svg"
+  }
+]

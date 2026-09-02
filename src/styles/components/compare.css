@@ -1,0 +1,2 @@
+.compare-table { inline-size: 100%; border-collapse: collapse; }
+.compare-table th, .compare-table td { border-block-end: 1px solid var(--border); padding: var(--space-12); text-align: start; }

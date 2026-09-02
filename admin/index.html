@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>AI ATLAS — لوحة المولد التلقائي</title>
+  <style>
+    body { background: #07080b; color: #f4f6fb; font-family: system-ui; padding: 48px 24px; display: flex; justify-content: center; }
+    .card { background: #0e1016; border: 1px solid #20242f; border-radius: 16px; padding: 32px; inline-size: 100%; max-inline-size: 600px; }
+    input { inline-size: 70%; background: #151822; border: 1px solid #20242f; padding: 12px; border-radius: 8px; color: #fff; }
+    button { background: #6d5cff; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .log { background: #151822; border: 1px solid #20242f; padding: 16px; border-radius: 8px; margin-block-start: 16px; font-family: monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>⚡ مولد تطبيقات الذكاء الاصطناعي (Gemini)</h2>
+    <p style="color:#9aa3b2; margin-block: 12px;">اكتب اسم التطبيق وسيقوم Gemini بإنشاء الصفحة فورياً:</p>
+    <div style="display:flex; gap:8px;">
+      <input type="text" id="tool" placeholder="مثال: Claude أو Flux..." autofocus>
+      <button id="btn">توليد ونشر</button>
+    </div>
+    <div class="log" id="log">جاهز للبدء...</div>
+  </div>
+  <script>
+    const btn = document.getElementById("btn");
+    const input = document.getElementById("tool");
+    const log = document.getElementById("log");
+    btn.onclick = async () => {
+      const toolName = input.value.trim();
+      if (!toolName) return;
+      btn.disabled = true;
+      log.innerHTML = "⏳ جاري المعالجة...";
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ toolName })
+      });
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const text = dec.decode(value);
+        log.innerHTML += "<br>" + text;
+      }
+      btn.disabled = false;
+    };
+  </script>
+</body>
+</html>

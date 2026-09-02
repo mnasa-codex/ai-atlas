@@ -1,0 +1,4 @@
+.tool-page { padding-block: var(--space-64); }
+.tool-summary { color: var(--fg-muted); max-inline-size: 760px; }
+.tool-meta { display: flex; flex-wrap: wrap; gap: var(--space-8); margin-block: var(--space-24); }
+.tool-chip { border: 1px solid var(--border); border-radius: var(--r-full); padding: var(--space-4) var(--space-12); color: var(--fg-muted); }

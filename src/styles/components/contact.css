@@ -1,0 +1,9 @@
+.contact-pricing-block { background: var(--surface-2); border: 1px dashed var(--border); border-radius: var(--r-lg); padding: var(--space-24); text-align: center; margin-block: var(--space-16); display: flex; flex-direction: column; gap: var(--space-12); }
+.contact-badge { background: var(--warning-subtle); color: var(--warning); font-size: 0.75rem; font-weight: 700; padding: var(--space-4) var(--space-12); border-radius: var(--r-full); align-self: center; }
+.btn-contact { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8); padding: var(--space-12); border-radius: var(--r-md); font-weight: 600; font-size: 0.875rem; inline-size: 100%; transition: transform 0.15s ease; }
+.btn-contact:active { transform: scale(0.98); }
+.btn-whatsapp { background: var(--brand-wa); color: #052e16; }
+.btn-messenger { background: var(--brand-fb-bg); color: var(--fg); border: 1px solid var(--brand-fb); }
+.contact-fab { position: fixed; inset-block-end: var(--space-32); inset-inline-end: var(--space-32); z-index: 900; }
+.fab-trigger { inline-size: 56px; block-size: 56px; border-radius: var(--r-full); background: var(--a1); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); font-size: 1.5rem; }
+.lang-flip-btn { display: inline-flex; padding: var(--space-4) var(--space-12); border-radius: var(--r-full); background: var(--surface-2); border: 1px solid var(--border); font-size: 0.8125rem; font-weight: 700; color: var(--fg); }
