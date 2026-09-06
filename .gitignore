@@ -1,6 +1,7 @@
-node_modules/
-dist/
+node_modules
+.next
+out
 .env
-content/.backups/
+.env.local
+.env.*.local
 .DS_Store
-*.log

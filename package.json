@@ -1,14 +1,28 @@
 {
-  "name": "ai-atlas",
+  "name": "atlas-ai-directory",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
-  "engines": { "node": ">=18.17" },
   "scripts": {
-    "validate": "node scripts/validate.mjs",
-    "build": "node scripts/validate.mjs && node scripts/build.mjs",
-    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
-    "serve": "node scripts/serve.mjs",
-    "admin": "node admin/server.mjs"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.468.0",
+    "next": "^15.5.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
   }
 }
