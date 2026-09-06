@@ -7,6 +7,7 @@ create table if not exists public.tools (
 create table if not exists public.pricing_plans (
   id uuid primary key default gen_random_uuid(), tool_id uuid references public.tools(id) on delete cascade, plan_name text not null,
   price_monthly numeric, price_annual numeric, currency text default 'USD', is_custom_price boolean default false,
+  best_for text not null default '', included text[] default '{}', usage_note text, is_popular boolean default false,
   features text[] not null, last_verified_at date not null, source_url text not null, display_order int default 0
 );
 create table if not exists public.site_settings (key text primary key, value text not null, updated_at timestamptz default now());
