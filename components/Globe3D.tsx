@@ -1,6 +1,6 @@
 'use client';
-import { useMemo, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -82,7 +82,7 @@ const atmosphereFragment = /* glsl */ `
   varying vec3 vNormal;
   uniform vec3 uColor;
   void main() {
-    float intensity = pow(0.62 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.2);
+    float intensity = pow(max(0.62 - dot(normalize(vNormal), vec3(0.0, 0.0, 1.0)), 0.0), 3.2);
     gl_FragColor = vec4(uColor, 1.0) * intensity;
   }
 `;
@@ -90,15 +90,17 @@ const atmosphereFragment = /* glsl */ `
 function clamp01(x: number) { return Math.min(1, Math.max(0, x)); }
 function smoothstep01(x: number) { const t = clamp01(x); return t * t * (3 - 2 * t); }
 
-function GlobeMesh() {
+function GlobeMesh({ onFirstMorph }: { onFirstMorph: () => void }) {
+  const elapsed = useRef(0);
+  const announced = useRef(false);
   const meshRef = useRef<THREE.Mesh>(null);
   const matRef = useRef<THREE.ShaderMaterial>(null);
 
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
     uMorph: { value: 0 },
-    uColorA: { value: new THREE.Color('#3a2f7a') },
-    uColorB: { value: new THREE.Color('#d8b545') },
+    uColorA: { value: new THREE.Color('#7B61FF').multiplyScalar(.4) },
+    uColorB: { value: new THREE.Color('#C9A227') },
   }), []);
 
   const atmosphereUniforms = useMemo(() => ({
@@ -106,8 +108,12 @@ function GlobeMesh() {
   }), []);
 
   // دورة الحركة: يثبت كرة ~3.5 ثانية، يتحول لموجة خلال 1.5 ثانية، يثبت موجة ثانيتين، يرجع كرة خلال ثانيتين
-  useFrame((state, delta) => {
-    const t = state.clock.elapsedTime;
+  useFrame((_, delta) => {
+    // Accumulate active time only: returning to a tab must not jump the morph.
+    const step = Math.min(delta, .05);
+    elapsed.current += step;
+    const t = elapsed.current;
+    if (!announced.current && t >= 3.5) { announced.current = true; onFirstMorph(); }
     const cycle = t % 9;
     let morph = 0;
     if (cycle < 3.5) morph = 0;
@@ -119,17 +125,17 @@ function GlobeMesh() {
       matRef.current.uniforms.uTime.value = t;
       matRef.current.uniforms.uMorph.value = morph;
     }
-    if (meshRef.current) meshRef.current.rotation.y += delta * 0.12;
+    if (meshRef.current) meshRef.current.rotation.y += step * 0.12;
   });
 
   return (
     <group>
       <mesh ref={meshRef}>
-        <sphereGeometry args={[1.5, 110, 110]} />
+        <sphereGeometry args={[1.5, 64, 64]} />
         <shaderMaterial ref={matRef} vertexShader={vertexShader} fragmentShader={fragmentShader} uniforms={uniforms} />
       </mesh>
       <mesh scale={1.18}>
-        <sphereGeometry args={[1.5, 48, 48]} />
+        <sphereGeometry args={[1.5, 32, 32]} />
         <shaderMaterial
           vertexShader={atmosphereVertex}
           fragmentShader={atmosphereFragment}
@@ -144,11 +150,36 @@ function GlobeMesh() {
   );
 }
 
-export default function Globe3D() {
+function ContextGuard({ onUnavailable }: { onUnavailable: () => void }) {
+  const canvas = useThree(state => state.gl.domElement);
+  useEffect(() => {
+    const lost = (event: Event) => { event.preventDefault(); onUnavailable(); };
+    canvas.addEventListener('webglcontextlost', lost);
+    return () => canvas.removeEventListener('webglcontextlost', lost);
+  }, [canvas, onUnavailable]);
+  return null;
+}
+
+export default function Globe3D({ active, onFirstMorph, onUnavailable }: {
+  active: boolean; onFirstMorph: () => void; onUnavailable: () => void;
+}) {
+  const [finePointer, setFinePointer] = useState(false);
+  useEffect(() => {
+    const pointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const update = () => setFinePointer(pointer.matches);
+    update(); pointer.addEventListener('change', update);
+    return () => pointer.removeEventListener('change', update);
+  }, []);
   return (
-    <Canvas camera={{ position: [0, 0, 4.2], fov: 42 }} dpr={[1, 1.6]} gl={{ antialias: true, alpha: true }}>
-      <GlobeMesh />
-      <OrbitControls enableZoom={false} enablePan={false} rotateSpeed={0.35} />
+    <Canvas camera={{ position: [0, 0, 4.8], fov: 42 }} dpr={[1, 1.4]}
+      frameloop={active ? 'always' : 'never'}
+      gl={{ antialias: true, alpha: true, powerPreference: 'low-power' }}
+      style={{ touchAction: 'pan-y', pointerEvents: finePointer ? 'auto' : 'none' }}
+      fallback={<div className="atlas-globe-fallback" />}>
+      <GlobeMesh onFirstMorph={onFirstMorph} />
+      <ContextGuard onUnavailable={onUnavailable} />
+      <OrbitControls enabled={active && finePointer} enableDamping={false}
+        enableZoom={false} enablePan={false} rotateSpeed={0.35} />
     </Canvas>
   );
 }

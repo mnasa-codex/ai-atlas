@@ -1,11 +1,13 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useExperience } from './Experience';
 import { ArrowUpRight, Check, ChevronDown, Sparkles, X } from 'lucide-react';
 import type { Tool } from '@/lib/tools';
 import { demoSettings } from '@/lib/tools';
 
 export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>void}){
+ const {motionAllowed}=useExperience();
  const dialog=useRef<HTMLDialogElement>(null);
  useEffect(()=>{const node=dialog.current;if(!node)return;const previous=document.activeElement as HTMLElement|null;node.showModal();const overflow=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{node.close();document.body.style.overflow=overflow;previous?.focus()};},[]);
  const hasAnnual = useMemo(()=>tool?.plans.some(p=>p.annual!=null) ?? false,[tool]);
@@ -31,7 +33,7 @@ export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>voi
         <div className="h-16 w-16 rounded-2xl overflow-hidden grid place-items-center bg-purple/10 gold-border text-xl font-bold shrink-0">
           {tool.logoUrl ? <img src={tool.logoUrl} alt={tool.name} className="h-full w-full object-contain p-2" /> : tool.logo}
         </div>
-        <div><div className="text-xs text-gold mb-1">{tool.vendor}</div><h3 id="tool-title" className="text-3xl font-extrabold">{tool.name}</h3></div>
+        <div><div className="text-xs text-gold mb-1">{tool.vendor}</div><h3 dir="auto" id="tool-title" className="text-3xl font-extrabold">{tool.name}</h3></div>
       </div>
       <button aria-label="إغلاق التفاصيل" onClick={onClose} className="p-2 text-muted hover:text-ink"><X/></button>
     </div>
@@ -43,20 +45,20 @@ export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>voi
         <h4 className="font-bold">الخطط والأسعار</h4>
         <div className="flex items-center gap-3">
           {hasAnnual && <div className="inline-flex rounded-xl border border-white/10 p-1 text-xs">
-            <button onClick={()=>setBilling('monthly')} className={`px-3 py-1.5 rounded-lg transition ${billing==='monthly'?'bg-gold text-[#090A0F] font-bold':'text-muted'}`}>شهري</button>
-            <button onClick={()=>setBilling('annual')} className={`px-3 py-1.5 rounded-lg transition ${billing==='annual'?'bg-gold text-[#090A0F] font-bold':'text-muted'}`}>سنوي</button>
+            <button aria-pressed={billing==='monthly'} onClick={()=>setBilling('monthly')} className={`px-3 py-1.5 rounded-lg transition ${billing==='monthly'?'bg-gold text-[#090A0F] font-bold':'text-muted'}`}>شهري</button>
+            <button aria-pressed={billing==='annual'} onClick={()=>setBilling('annual')} className={`px-3 py-1.5 rounded-lg transition ${billing==='annual'?'bg-gold text-[#090A0F] font-bold':'text-muted'}`}>سنوي</button>
           </div>}
           <span className="text-xs text-muted hidden sm:block">اضغط أي خطة لتفاصيلها</span>
         </div>
       </div>
 
       <div className="space-y-3">
-        {tool.plans.map(p=>{
+        {tool.plans.map((p,index)=>{
           const isOpen = openPlan===p.name;
           const price = p.custom ? 'مخصص' : p.monthly==null ? 'غير معلن' : p.monthly===0 ? 'مجاني' : billing==='annual' && p.annual!=null ? `$${p.annual}` : `$${p.monthly}`;
           const showsAnnualNote = billing==='annual' && p.annual!=null && p.monthly!=null;
           return <div key={p.name} className={`rounded-2xl border transition ${isOpen?'border-gold/35 bg-gold/[.03]':'border-white/7'}`}>
-            <button aria-expanded={isOpen} onClick={()=>setOpenPlan(isOpen?null:p.name)} className="w-full flex items-center justify-between gap-4 p-4 text-right">
+            <button id={`plan-trigger-${index}`} aria-controls={`plan-panel-${index}`} aria-expanded={isOpen} onClick={()=>setOpenPlan(isOpen?null:p.name)} className="w-full flex items-center justify-between gap-4 p-4 text-right">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="font-bold shrink-0">{p.name}</span>
                 {p.popular && <span className="inline-flex items-center gap-1 text-xs text-gold bg-gold/10 border border-gold/25 rounded-full px-2 py-0.5 shrink-0"><Sparkles size={10}/> خطة بارزة</span>}
@@ -71,8 +73,11 @@ export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>voi
               </div>
             </button>
 
-            <AnimatePresence initial={false}>
-              {isOpen && <motion.div initial={{height:0,opacity:0}} animate={{height:'auto',opacity:1}} exit={{height:0,opacity:0}} className="overflow-hidden">
+            <motion.div id={`plan-panel-${index}`} role="region" aria-labelledby={`plan-trigger-${index}`}
+              aria-hidden={!isOpen} inert={!isOpen} initial={false}
+              animate={isOpen ? {height:'auto',opacity:1} : {height:0,opacity:0}}
+              transition={{duration:motionAllowed ? .24 : 0, ease:[.2,.75,.25,1]}}
+              className="overflow-hidden">
                 <div className="px-4 pb-4 pt-1">
                   <p className="text-xs text-muted sm:hidden mb-3">{p.bestFor}</p>
                   {p.included && p.included.length>0 && <div className="mb-4">
@@ -86,8 +91,7 @@ export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>voi
                     <a href={p.source} target="_blank" rel="noreferrer" className="text-cyan hover:underline">مصدر السعر الرسمي</a>
                   </div>
                 </div>
-              </motion.div>}
-            </AnimatePresence>
+            </motion.div>
           </div>;
         })}
       </div>
