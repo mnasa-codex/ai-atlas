@@ -1,0 +1,462 @@
+[
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "vendor": "OpenAI",
+    "category": "chat",
+    "logo": "CG",
+    "hook": "المساعد الذي يفهمك بأي لغة، ويكتب ويحلل وينشئ الصور.",
+    "description": "يجمع في مساحة واحدة المحادثة الذكية، تحليل الملفات، إنشاء الصور، والبحث المتقدم. مناسب لمن يريد نقطة انطلاق واحدة لمعظم أعماله اليومية.",
+    "website": "https://chatgpt.com",
+    "featured": true,
+    "plans": [
+      {
+        "name": "Free",
+        "monthly": 0,
+        "bestFor": "تجربة الأداة والاستخدام العرضي",
+        "features": [
+          "نموذج أساسي بحدود رسائل يومية",
+          "ردود مع إعلانات"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://openai.com/chatgpt/pricing/"
+      },
+      {
+        "name": "Plus",
+        "monthly": 20,
+        "bestFor": "الاستخدام اليومي الاحترافي لمعظم المستخدمين",
+        "popular": true,
+        "included": [
+          "Sora (توليد فيديو)",
+          "Codex (مساعد برمجة)",
+          "Deep Research"
+        ],
+        "features": [
+          "استخدام موسّع بدون إعلانات",
+          "بحث عميق (Deep Research) بحدود موسّعة",
+          "توليد فيديو عبر Sora",
+          "مساعد برمجة Codex ووضع Agent",
+          "وضع صوتي متقدم وإنشاء صور داخل المحادثة"
+        ],
+        "limits": "حوالي 400–2000 رسالة كل 5 ساعات حسب النموذج المستخدم",
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://openai.com/chatgpt/pricing/"
+      },
+      {
+        "name": "Pro",
+        "monthly": 200,
+        "bestFor": "المستخدمين الأثقل استخدامًا يوميًا والباحثين",
+        "included": [
+          "كل ما في Plus",
+          "معالجة أولوية في أوقات الذروة"
+        ],
+        "features": [
+          "استخدام شبه غير محدود للنماذج",
+          "نافذة سياق تصل حتى مليون رمز",
+          "250 عملية بحث عميق شهريًا",
+          "أولوية قصوى وأداء أسرع بالمهام المعقدة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://openai.com/chatgpt/pricing/"
+      }
+    ]
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "vendor": "Anthropic",
+    "category": "chat",
+    "logo": "CL",
+    "hook": "كتابة احترافية، برمجة معقدة، وفهم قوي للمستندات الطويلة.",
+    "description": "يمتاز بجودة كتابة عالية ودقة في اتباع التعليمات، ويعد خياراً قوياً للمطورين وأصحاب الأعمال الذين يحتاجون إلى التعامل مع نصوص ومهام مركبة.",
+    "website": "https://claude.ai",
+    "featured": true,
+    "plans": [
+      {
+        "name": "Free",
+        "monthly": 0,
+        "bestFor": "التجربة والاستخدام الخفيف",
+        "features": [
+          "محادثة أساسية بحدود يومية تتجدد كل بضع ساعات"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.anthropic.com/pricing"
+      },
+      {
+        "name": "Pro",
+        "monthly": 20,
+        "annual": 17,
+        "bestFor": "المطورين وأصحاب الأعمال الذين يحتاجون دقة أعلى بالكتابة والبرمجة",
+        "popular": true,
+        "included": [
+          "Claude Code",
+          "Claude Cowork"
+        ],
+        "features": [
+          "Claude Code داخل الطرفية ومحرر الأكواد",
+          "مشاريع Projects غير محدودة مع ذاكرة مستمرة",
+          "تفكير موسّع (Extended Thinking) وبحث بالإنترنت",
+          "ربط أدوات خارجية عبر MCP",
+          "نافذة سياق 200 ألف رمز"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.anthropic.com/pricing"
+      },
+      {
+        "name": "Max 5x",
+        "monthly": 100,
+        "bestFor": "من يصطدم بحدود Pro بشكل متكرر خلال يوم العمل",
+        "included": [
+          "كل ميزات Pro"
+        ],
+        "features": [
+          "5 أضعاف حجم استخدام Pro لكل جلسة",
+          "أولوية أعلى بأوقات الذروة",
+          "مناسب لجلسات Claude Code الطويلة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.anthropic.com/pricing"
+      },
+      {
+        "name": "Max 20x",
+        "monthly": 200,
+        "bestFor": "الاستخدام المكثف طوال اليوم بلا انتظار",
+        "included": [
+          "كل ميزات Pro"
+        ],
+        "features": [
+          "20 ضعف حجم استخدام Pro",
+          "أولوية شبه فورية حتى بأوقات الذروة",
+          "أعلى إنتاجية ممكنة لفرق العمل الفردية الثقيلة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.anthropic.com/pricing"
+      }
+    ]
+  },
+  {
+    "id": "gemini",
+    "name": "Gemini",
+    "vendor": "Google",
+    "category": "chat",
+    "logo": "GE",
+    "hook": "ذكاء اصطناعي متصل بمنظومة Google، ويجيك معه Flow وNotebookLM وWhisk بنفس الاشتراك.",
+    "description": "مو مجرد شات بوت — الاشتراك بيفتحلك حزمة تطبيقات كاملة (كتابة، بحث، وتوليد فيديو) مدمجة مع Gmail والمستندات والتخزين السحابي.",
+    "website": "https://gemini.google.com",
+    "featured": true,
+    "plans": [
+      {
+        "name": "Free",
+        "monthly": 0,
+        "bestFor": "الاستخدام الأساسي داخل تطبيق Gemini",
+        "features": [
+          "نموذج Gemini بحدود يومية",
+          "15 جيجا تخزين سحابي"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://one.google.com/about/google-ai-plans/"
+      },
+      {
+        "name": "AI Plus",
+        "monthly": 4.99,
+        "bestFor": "ترقية اقتصادية أولى فوق الخطة المجانية",
+        "included": [
+          "NotebookLM",
+          "Whisk"
+        ],
+        "features": [
+          "استخدام أعلى بضعف نموذج Gemini المتقدم",
+          "توليد فيديو مبدئي عبر Whisk (بمحرك Veo 2)",
+          "NotebookLM مع أدوات ملخصات صوتية",
+          "Gemini داخل Gmail والمستندات",
+          "400 جيجا تخزين سحابي"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://one.google.com/about/google-ai-plans/"
+      },
+      {
+        "name": "AI Pro",
+        "monthly": 19.99,
+        "bestFor": "العمود الفقري لمستخدمي Google الذين يريدون إنتاج فيديو ومستندات معًا",
+        "popular": true,
+        "included": [
+          "Flow (صناعة أفلام AI)",
+          "Whisk",
+          "NotebookLM",
+          "Deep Research"
+        ],
+        "features": [
+          "Flow — أداة صناعة أفلام بالذكاء الاصطناعي بمحرك Veo 3",
+          "Whisk بحدود أعلى لتحويل الصور إلى فيديو",
+          "NotebookLM بحدود أعلى وملخصات صوتية أكثر",
+          "بحث عميق Deep Research على نموذج Gemini المتقدم",
+          "نافذة سياق تصل حتى مليون رمز",
+          "5 تيرابايت تخزين سحابي عبر Drive وGmail وPhotos"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://one.google.com/about/google-ai-plans/"
+      },
+      {
+        "name": "AI Ultra",
+        "monthly": 99.99,
+        "bestFor": "صناع محتوى الفيديو والباحثين الذين يريدون أعلى الحدود بكل شيء",
+        "included": [
+          "Flow (أعلى الحدود)",
+          "Whisk Animate",
+          "NotebookLM (أعلى الحدود)",
+          "Deep Think",
+          "YouTube Premium"
+        ],
+        "features": [
+          "أعلى حدود استخدام عبر Gemini وFlow وWhisk وNotebookLM دفعة واحدة",
+          "وضع Deep Think للاستدلال المتقدم بالرياضيات والبرمجة",
+          "فيديو Veo 3 بجودة 1080p وتحكم كاميرا متقدم",
+          "أدوات وكيلية (Agent Mode / Project Mariner) لتصفح وتنفيذ مهام تلقائيًا",
+          "YouTube Premium ضمن الاشتراك، وحتى 20–30 تيرابايت تخزين"
+        ],
+        "limits": "أعلى فئة سعرية (فئة ثانية تصل حتى 200$/شهر بحدود أعلى) — تحقق من الصفحة الرسمية لحظة النشر لأن هذه الفئة تغيّرت أكثر من مرة خلال 2026",
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://one.google.com/about/google-ai-plans/"
+      }
+    ]
+  },
+  {
+    "id": "midjourney",
+    "name": "Midjourney",
+    "vendor": "Midjourney",
+    "category": "image",
+    "logo": "MJ",
+    "hook": "صور فنية عالية الجودة للمصممين وصناع المحتوى البصري.",
+    "description": "أداة توليد صور قوية تستهدف العمل الإبداعي والمرئي، مع تحكم واسع في الأسلوب والتركيب والتفاصيل.",
+    "website": "https://www.midjourney.com",
+    "featured": true,
+    "plans": [
+      {
+        "name": "Basic",
+        "monthly": 10,
+        "annual": 8,
+        "bestFor": "تجربة الأداة أو الاستخدام الخفيف جدًا",
+        "features": [
+          "نحو 200 صورة شهريًا (3.3 ساعة توليد سريع)",
+          "بدون وضع Relax",
+          "فيديو بدقة SD فقط"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.midjourney.com/account/"
+      },
+      {
+        "name": "Standard",
+        "monthly": 30,
+        "annual": 24,
+        "popular": true,
+        "bestFor": "معظم المستخدمين الأفراد",
+        "features": [
+          "15 ساعة توليد سريع شهريًا",
+          "وضع Relax بتوليد صور غير محدود",
+          "فيديو بدقة SD وHD"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.midjourney.com/account/"
+      },
+      {
+        "name": "Pro",
+        "monthly": 60,
+        "annual": 48,
+        "bestFor": "العمل التجاري الذي يحتاج خصوصية للمشاريع",
+        "features": [
+          "30 ساعة توليد سريع شهريًا",
+          "وضع الخصوصية Stealth Mode",
+          "حتى 12 مهمة متزامنة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.midjourney.com/account/"
+      },
+      {
+        "name": "Mega",
+        "monthly": 120,
+        "annual": 96,
+        "bestFor": "الفرق والاستخدام الاحترافي عالي الحجم",
+        "features": [
+          "60 ساعة توليد سريع شهريًا",
+          "كل ميزات Pro",
+          "أعلى طاقة إنتاجية متاحة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.midjourney.com/account/"
+      }
+    ]
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "vendor": "Perplexity AI",
+    "category": "research",
+    "logo": "PX",
+    "hook": "بحث ذكي يجيبك مع مصادر بدل قائمة نتائج فقط.",
+    "description": "يركز على البحث والاستدلال وتجميع المعلومات مع إظهار المصادر، وهو مناسب للأبحاث السريعة والمقارنات وصناعة المسودات الموثقة.",
+    "website": "https://www.perplexity.ai",
+    "featured": true,
+    "plans": [
+      {
+        "name": "Free",
+        "monthly": 0,
+        "bestFor": "أسئلة سريعة وبحث خفيف",
+        "features": [
+          "نحو 5 عمليات بحث Pro يوميًا",
+          "بدون اختيار نموذج أو بحث عميق"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.perplexity.ai/pro"
+      },
+      {
+        "name": "Pro",
+        "monthly": 20,
+        "annual": 17,
+        "popular": true,
+        "bestFor": "الباحثين والصحفيين ومن يريد إجابات موثقة بمصادر",
+        "features": [
+          "بحث Pro غير محدود",
+          "اختيار النموذج (GPT، Claude، Gemini) من نفس الواجهة",
+          "20 عملية بحث عميق يوميًا و50 مهمة Labs شهريًا",
+          "رفع وتحليل ملفات غير محدود",
+          "رصيد 5$ شهريًا على واجهة Sonar API"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.perplexity.ai/pro"
+      },
+      {
+        "name": "Max",
+        "monthly": 200,
+        "bestFor": "فرق البحث المكثف والاستخدام الأثقل",
+        "features": [
+          "أعلى الحدود في كل الميزات",
+          "Model Council لمقارنة عدة نماذج بنفس السؤال",
+          "10,000 رصيد حوسبة شهريًا",
+          "فيديو Sora 2 Pro وأولوية بالوصول لميزات جديدة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://www.perplexity.ai/pro"
+      }
+    ]
+  },
+  {
+    "id": "copilot",
+    "name": "GitHub Copilot",
+    "vendor": "GitHub",
+    "category": "code",
+    "logo": "GH",
+    "hook": "مساعدك البرمجي داخل محرر الكود أثناء العمل.",
+    "description": "يندمج مباشرة مع بيئة التطوير لمساعدتك في الإكمال والشرح وتوليد الكود وتسريع دورة التطوير اليومية.",
+    "website": "https://github.com/features/copilot",
+    "featured": true,
+    "plans": [
+      {
+        "name": "Free",
+        "monthly": 0,
+        "bestFor": "تجربة المساعد البرمجي",
+        "features": [
+          "2000 إكمال كود شهريًا",
+          "50 رسالة محادثة شهريًا"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://github.com/features/copilot#pricing"
+      },
+      {
+        "name": "Pro",
+        "monthly": 10,
+        "popular": true,
+        "bestFor": "المطورين الأفراد",
+        "features": [
+          "إكمال أكواد غير محدود",
+          "وضع الوكيل Agent Mode داخل IDE",
+          "رصيد شهري من طلبات النماذج المتقدمة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://github.com/features/copilot#pricing"
+      },
+      {
+        "name": "Business",
+        "monthly": 19,
+        "bestFor": "فرق التطوير الصغيرة والمتوسطة",
+        "features": [
+          "إدارة سياسات الاستخدام على مستوى الفريق",
+          "سجلات تدقيق Audit logs",
+          "تعويض حماية الملكية الفكرية (IP indemnity)"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://github.com/features/copilot#pricing"
+      }
+    ]
+  },
+  {
+    "id": "runway",
+    "name": "Runway",
+    "vendor": "Runway",
+    "category": "video",
+    "logo": "RW",
+    "hook": "مختبر إبداعي لتحويل الأفكار إلى فيديو بالذكاء الاصطناعي.",
+    "description": "منصة متخصصة في إنشاء وتحرير الفيديو بالذكاء الاصطناعي، مناسبة لصناع المحتوى والحملات الإبداعية والنماذج الأولية.",
+    "website": "https://runwayml.com",
+    "featured": false,
+    "plans": [
+      {
+        "name": "Standard",
+        "monthly": 15,
+        "bestFor": "صناع المحتوى المستقلين",
+        "features": [
+          "رصيد شهري لتوليد الفيديو",
+          "أدوات تحرير وتحكم إبداعي أساسية"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://runwayml.com/pricing/"
+      },
+      {
+        "name": "Pro",
+        "monthly": 35,
+        "bestFor": "الاستخدام الاحترافي المتكرر",
+        "features": [
+          "رصيد شهري أعلى",
+          "أولوية بمعالجة المهام"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://runwayml.com/pricing/"
+      }
+    ]
+  },
+  {
+    "id": "elevenlabs",
+    "name": "ElevenLabs",
+    "vendor": "ElevenLabs",
+    "category": "audio",
+    "logo": "EL",
+    "hook": "أصوات طبيعية لإنشاء التعليق الصوتي والمحتوى السمعي.",
+    "description": "حل قوي للصوت التوليدي والتعليق الصوتي والدبلجة والتطبيقات التي تحتاج إلى أصوات طبيعية قابلة للتخصيص.",
+    "website": "https://elevenlabs.io",
+    "featured": false,
+    "plans": [
+      {
+        "name": "Starter",
+        "monthly": 5,
+        "bestFor": "المحتوى الفردي الخفيف",
+        "features": [
+          "دقائق توليد صوت شهرية محدودة",
+          "مكتبة أصوات جاهزة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://elevenlabs.io/pricing"
+      },
+      {
+        "name": "Creator",
+        "monthly": 22,
+        "bestFor": "صناع المحتوى المنتظمين",
+        "features": [
+          "دقائق توليد أعلى",
+          "استنساخ صوتي أساسي",
+          "استخدام تجاري ضمن حدود الخطة"
+        ],
+        "verified": "تحتاج مراجعة المصدر",
+        "source": "https://elevenlabs.io/pricing"
+      }
+    ]
+  }
+]

@@ -7,11 +7,11 @@ const config: Config = {
       colors: {
         space: '#05060A',
         panel: '#12142B',
-        gold: '#C9A227',
-        purple: '#7B61FF',
+        gold: '#A7F3D0',
+        purple: '#A99AFF',
         cyan: '#4CC9F0',
         ink: '#F5F5F7',
-        muted: '#9A9DB0'
+        muted: '#A5ADC2'
       },
       boxShadow: {
         'gold-glow': '0 0 40px rgba(201,162,39,.18)',

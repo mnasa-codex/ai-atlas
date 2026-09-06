@@ -1,48 +1,6 @@
-import Link from 'next/link';
-import SectionHeading from '@/components/SectionHeading';
-import { seedTools } from '@/lib/tools';
-
-export default function Pricing() {
-  const rows = seedTools.flatMap(t => t.plans.map(p => ({
-    tool: t.name,
-    plan: p.name,
-    popular: !!p.popular,
-    bestFor: p.bestFor,
-    price: p.custom ? 'مخصص' : p.monthly != null ? `$${p.monthly}` : 'مجاني',
-    annual: p.annual != null ? `$${p.annual}` : '—',
-    features: p.features.slice(0, 3).join(' • '),
-    verified: p.verified,
-    source: p.source
-  })));
-
-  return <div className="mx-auto max-w-7xl px-5 md:px-8 pt-36 pb-24">
-    <SectionHeading eyebrow="مقارنة الأسعار" title="شوف الخطط في مكان واحد" desc="اضغط على أي أداة من صفحة الأدوات لتشوف كل تفاصيل خطتها والتطبيقات المرفقة معها. الجدول هنا للمقارنة السريعة فقط." />
-    <div className="glass rounded-[28px] overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full text-right text-sm">
-          <thead className="bg-white/5"><tr>
-            <th className="p-4">الأداة</th>
-            <th className="p-4">الخطة</th>
-            <th className="p-4">شهري</th>
-            <th className="p-4">سنوي (شهر)</th>
-            <th className="p-4">لمن تناسب</th>
-            <th className="p-4">أبرز المزايا</th>
-            <th className="p-4">التحقق</th>
-            <th className="p-4">المصدر</th>
-          </tr></thead>
-          <tbody>{rows.map((r, i) => <tr key={i} className="border-t border-white/5">
-            <td className="p-4 font-bold">{r.tool}</td>
-            <td className="p-4">{r.plan}{r.popular && <span className="mr-2 text-[10px] text-gold bg-gold/10 border border-gold/25 rounded-full px-2 py-0.5">الأكثر طلبًا</span>}</td>
-            <td className="p-4 font-mono text-gold">{r.price}</td>
-            <td className="p-4 font-mono text-muted">{r.annual}</td>
-            <td className="p-4 text-muted min-w-[200px]">{r.bestFor}</td>
-            <td className="p-4 text-muted min-w-[260px]">{r.features}</td>
-            <td className="p-4 text-xs text-muted min-w-[140px]">{r.verified}</td>
-            <td className="p-4"><a href={r.source} target="_blank" rel="noreferrer" className="text-cyan hover:underline">الرابط الرسمي</a></td>
-          </tr>)}</tbody>
-        </table>
-      </div>
-    </div>
-    <div className="mt-8 text-center text-xs text-muted">للاستفسار أو المساعدة في التفعيل <Link href="/contact" className="text-gold hover:underline">تواصل معنا</Link></div>
-  </div>;
-}
+'use client';
+import {useMemo,useState} from 'react';
+import {Search,ArrowUpLeft} from 'lucide-react';
+import {seedTools,type Tool} from '@/lib/tools';
+import ToolModal from '@/components/ToolModal';
+export default function Pricing(){const [q,setQ]=useState('');const [billing,setBilling]=useState<'monthly'|'annual'>('monthly');const [selected,setSelected]=useState<Tool|null>(null);const rows=useMemo(()=>seedTools.filter(t=>`${t.name} ${t.vendor}`.toLowerCase().includes(q.trim().toLowerCase())).flatMap(tool=>tool.plans.map(plan=>({tool,plan}))),[q]);return <div className="workspace"><header className="page-heading"><div className="eyebrow">PLAN COMPARISON</div><h1>اختَر الخطة. بثقة أكبر.</h1><p>المزايا، التكلفة، والمصدر الرسمي في مكان واحد. البيانات المرفقة تحتاج مراجعة قبل الاشتراك.</p></header><div className="discovery-bar"><div className="search-field"><Search size={20}/><input aria-label="البحث في الخطط" placeholder="ابحث باسم الأداة أو الشركة…" value={q} onChange={e=>setQ(e.target.value)}/></div></div><div className="catalog-toolbar"><div><h2>الخطط المتاحة في الدليل</h2><span role="status">{rows.length} خطة</span></div><div className="flex gap-2 text-sm">{(['monthly','annual'] as const).map(b=><button key={b} aria-pressed={billing===b} onClick={()=>setBilling(b)} className={`rounded-xl px-4 py-2 ${billing===b?'bg-gold text-space':'bg-white/5 text-muted'}`}>{b==='monthly'?'شهري':'سنوي'}</button>)}</div></div><div className="glass rounded-2xl overflow-hidden"><div className="overflow-x-auto" tabIndex={0} role="region" aria-label="جدول مقارنة الخطط"><table className="w-full text-right text-sm"><caption className="text-right p-5 text-muted border-b border-white/10">{billing==='annual'?'السعر السنوي معروض كمعدل شهري، مع توضيح إجمالي السنة.':'الأسعار بالدولار الأمريكي شهريًا؛ الضرائب والعروض قد تختلف.'}</caption><thead className="bg-white/5"><tr>{['الأداة / الخطة','التكلفة','الاستخدام المناسب','المراجعة','التفاصيل'].map(h=><th key={h} scope="col" className="p-5 whitespace-nowrap">{h}</th>)}</tr></thead><tbody>{rows.map(({tool,plan:p})=>{const amount=billing==='annual'?p.annual:p.monthly;return <tr key={`${tool.id}-${p.name}`} className="border-t border-white/5 hover:bg-white/[.025]"><th scope="row" className="p-5 min-w-40"><div dir="ltr" className="text-right">{tool.name}</div><div className="text-muted font-normal mt-1">{p.name}</div></th><td className="p-5 min-w-40"><div className="text-gold font-bold">{p.custom?'مخصص':p.monthly===0?'مجاني':amount==null?'غير مدرج':`$${amount} / شهر`}</div>{billing==='annual'&&p.annual!=null&&p.monthly!==0&&<div className="text-xs text-muted mt-1">${(p.annual*12).toFixed(2)} سنويًا</div>}</td><td className="p-5 min-w-64 text-muted">{p.bestFor}</td><td className="p-5 min-w-44"><div className="text-xs text-muted">{p.verified}</div><a href={p.source} rel="noopener noreferrer" target="_blank" className="inline-block mt-2 text-cyan">المصدر الرسمي ↗</a></td><td className="p-5"><button onClick={()=>setSelected(tool)} aria-label={`تفاصيل ${tool.name}`} className="rounded-xl bg-white/5 p-3"><ArrowUpLeft size={19}/></button></td></tr>})}</tbody></table></div>{!rows.length&&<div className="empty-state"><p>لا توجد خطط مطابقة.</p><button onClick={()=>setQ('')}>عرض كل الخطط</button></div>}</div>{selected&&<ToolModal key={selected.id} tool={selected} onClose={()=>setSelected(null)}/>}</div>}

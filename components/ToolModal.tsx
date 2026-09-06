@@ -1,11 +1,13 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUpRight, Check, ChevronDown, Sparkles, X } from 'lucide-react';
 import type { Tool } from '@/lib/tools';
 import { demoSettings } from '@/lib/tools';
 
 export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>void}){
+ const dialog=useRef<HTMLDialogElement>(null);
+ useEffect(()=>{const node=dialog.current;if(!node)return;const previous=document.activeElement as HTMLElement|null;node.showModal();const overflow=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{node.close();document.body.style.overflow=overflow;previous?.focus()};},[]);
  const hasAnnual = useMemo(()=>tool?.plans.some(p=>p.annual!=null) ?? false,[tool]);
  const [billing,setBilling] = useState<'monthly'|'annual'>('monthly');
  const defaultPlan = useMemo(()=>{
@@ -21,17 +23,17 @@ export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>voi
    : `مرحبا، بدي استفسر عن ${tool.name} عبر منصة أطلس`;
  const whatsapp = `https://wa.me/${demoSettings.whatsappNumber}?text=${encodeURIComponent(waText)}`;
 
- return <AnimatePresence>{tool&&<motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-[60] bg-black/70 p-4 md:p-8 grid place-items-center" onMouseDown={e=>{if(e.target===e.currentTarget)onClose()}}>
-   <motion.div initial={{opacity:0,y:24,scale:.98}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:24,scale:.98}} className="w-full max-w-3xl max-h-[88vh] overflow-auto glass rounded-[32px] p-6 md:p-8 shadow-purple-glow">
+ return <dialog ref={dialog} className="modal-backdrop" aria-labelledby="tool-title" onCancel={e=>{e.preventDefault();onClose()}} onClick={e=>{if(e.target===e.currentTarget)onClose()}}><div className="modal-panel">
+
 
     <div className="flex items-start justify-between">
       <div className="flex items-center gap-4">
         <div className="h-16 w-16 rounded-2xl overflow-hidden grid place-items-center bg-purple/10 gold-border text-xl font-bold shrink-0">
           {tool.logoUrl ? <img src={tool.logoUrl} alt={tool.name} className="h-full w-full object-contain p-2" /> : tool.logo}
         </div>
-        <div><div className="text-xs text-gold mb-1">{tool.vendor}</div><h3 className="text-3xl font-extrabold">{tool.name}</h3></div>
+        <div><div className="text-xs text-gold mb-1">{tool.vendor}</div><h3 id="tool-title" className="text-3xl font-extrabold">{tool.name}</h3></div>
       </div>
-      <button onClick={onClose} className="p-2 text-muted hover:text-ink"><X/></button>
+      <button aria-label="إغلاق التفاصيل" onClick={onClose} className="p-2 text-muted hover:text-ink"><X/></button>
     </div>
 
     <p className="mt-6 text-muted leading-8">{tool.description}</p>
@@ -44,26 +46,26 @@ export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>voi
             <button onClick={()=>setBilling('monthly')} className={`px-3 py-1.5 rounded-lg transition ${billing==='monthly'?'bg-gold text-[#090A0F] font-bold':'text-muted'}`}>شهري</button>
             <button onClick={()=>setBilling('annual')} className={`px-3 py-1.5 rounded-lg transition ${billing==='annual'?'bg-gold text-[#090A0F] font-bold':'text-muted'}`}>سنوي</button>
           </div>}
-          <span className="text-[11px] text-muted hidden sm:block">اضغط أي خطة لتفاصيلها</span>
+          <span className="text-xs text-muted hidden sm:block">اضغط أي خطة لتفاصيلها</span>
         </div>
       </div>
 
       <div className="space-y-3">
         {tool.plans.map(p=>{
           const isOpen = openPlan===p.name;
-          const price = p.custom ? 'مخصص' : p.monthly==null ? 'مجاني' : billing==='annual' && p.annual!=null ? `$${p.annual}` : `$${p.monthly}`;
+          const price = p.custom ? 'مخصص' : p.monthly==null ? 'غير معلن' : p.monthly===0 ? 'مجاني' : billing==='annual' && p.annual!=null ? `$${p.annual}` : `$${p.monthly}`;
           const showsAnnualNote = billing==='annual' && p.annual!=null && p.monthly!=null;
           return <div key={p.name} className={`rounded-2xl border transition ${isOpen?'border-gold/35 bg-gold/[.03]':'border-white/7'}`}>
-            <button onClick={()=>setOpenPlan(isOpen?null:p.name)} className="w-full flex items-center justify-between gap-4 p-4 text-right">
+            <button aria-expanded={isOpen} onClick={()=>setOpenPlan(isOpen?null:p.name)} className="w-full flex items-center justify-between gap-4 p-4 text-right">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="font-bold shrink-0">{p.name}</span>
-                {p.popular && <span className="inline-flex items-center gap-1 text-[10px] text-gold bg-gold/10 border border-gold/25 rounded-full px-2 py-0.5 shrink-0"><Sparkles size={10}/> الأكثر طلبًا</span>}
+                {p.popular && <span className="inline-flex items-center gap-1 text-xs text-gold bg-gold/10 border border-gold/25 rounded-full px-2 py-0.5 shrink-0"><Sparkles size={10}/> خطة بارزة</span>}
                 <span className="text-xs text-muted truncate hidden sm:block">— {p.bestFor}</span>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <div className="text-right">
                   <div className="font-mono text-gold text-lg leading-none">{price}{p.monthly?' / شهر':''}</div>
-                  {showsAnnualNote && <div className="text-[10px] text-muted mt-1">بدل ${p.monthly} — يُدفع سنويًا</div>}
+                  {billing==='annual' && p.annual==null && !!p.monthly && <div className="text-xs text-muted mt-1">سعر شهري؛ السنوي غير مدرج</div>}{showsAnnualNote && <div className="text-xs text-muted mt-1">بدل ${p.monthly} — يُدفع سنويًا</div>}
                 </div>
                 <ChevronDown size={18} className={`text-muted transition-transform ${isOpen?'rotate-180':''}`} />
               </div>
@@ -74,13 +76,13 @@ export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>voi
                 <div className="px-4 pb-4 pt-1">
                   <p className="text-xs text-muted sm:hidden mb-3">{p.bestFor}</p>
                   {p.included && p.included.length>0 && <div className="mb-4">
-                    <div className="text-[11px] text-muted mb-2">يتضمن الاشتراك أيضًا</div>
-                    <div className="flex flex-wrap gap-2">{p.included.map(i=><span key={i} className="text-[11px] rounded-full border border-purple/25 bg-purple/10 text-purple px-3 py-1">{i}</span>)}</div>
+                    <div className="text-xs text-muted mb-2">يتضمن الاشتراك أيضًا</div>
+                    <div className="flex flex-wrap gap-2">{p.included.map(i=><span key={i} className="text-xs rounded-full border border-purple/25 bg-purple/10 text-purple px-3 py-1">{i}</span>)}</div>
                   </div>}
                   <div className="grid sm:grid-cols-2 gap-x-4 gap-y-2">{p.features.map(f=><div key={f} className="flex items-start gap-2 text-sm text-muted"><Check size={14} className="text-gold mt-1 shrink-0"/><span>{f}</span></div>)}</div>
                   {p.limits && <div className="mt-4 text-xs text-muted bg-white/[.03] rounded-xl p-3">{p.limits}</div>}
-                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-[11px] text-muted">
-                    <span>آخر تحقق: {p.verified}</span>
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
+                    <span>حالة المراجعة: {p.verified}</span>
                     <a href={p.source} target="_blank" rel="noreferrer" className="text-cyan hover:underline">مصدر السعر الرسمي</a>
                   </div>
                 </div>
@@ -92,9 +94,9 @@ export default function ToolModal({tool,onClose}:{tool:Tool|null;onClose:()=>voi
     </div>
 
     <div className="mt-8 flex flex-col sm:flex-row gap-3">
-      <a href={whatsapp} target="_blank" rel="noreferrer" className="flex-1 rounded-2xl bg-gold text-[#090A0F] font-extrabold py-3.5 text-center hover:brightness-110 transition">{openPlan?`فعّلها لي — ${openPlan}`:'فعّلها لي عبر واتساب'}</a>
+      <a href={whatsapp} target="_blank" rel="noreferrer" className="flex-1 rounded-2xl bg-gold text-[#090A0F] font-extrabold py-3.5 text-center hover:brightness-110 transition">{openPlan?`استفسر عن ${openPlan}`:'استفسر عبر واتساب'}</a>
       <a href={tool.website} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 px-5 py-3.5 text-center text-sm hover:bg-white/5 transition">الموقع الرسمي <ArrowUpRight className="inline" size={15}/></a>
     </div>
-   </motion.div>
- </motion.div>}</AnimatePresence>
+   </div>
+ </dialog>
 }

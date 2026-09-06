@@ -1,20 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Compass, Menu, X } from 'lucide-react';
-import { useState } from 'react';
-
-export default function Navbar(){
-  const [open,setOpen]=useState(false);
-  const links=[['الرئيسية','/'],['الأدوات','/tools'],['الأسعار','/pricing'],['تواصل','/contact']];
-  return <header className="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#05060A]/65 backdrop-blur-xl">
-    <div className="mx-auto max-w-7xl px-5 md:px-8 h-20 flex items-center justify-between">
-      <Link href="/" className="flex items-center gap-3 font-extrabold tracking-wide">
-        <span className="relative grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-gold/30 to-purple/20 gold-border shadow-gold-glow"><Compass size={21}/><span className="absolute h-2 w-2 rounded-full bg-gold blur-[1px]"/></span>
-        <span className="text-xl">أطلس</span><span className="hidden sm:block text-xs font-medium text-muted">AI DIRECTORY</span>
-      </Link>
-      <nav className="hidden md:flex items-center gap-2">{links.map(([label,href])=><Link key={href} href={href} className="px-4 py-2 rounded-full text-sm text-muted hover:text-ink hover:bg-white/5 transition">{label}</Link>)}</nav>
-      <button onClick={()=>setOpen(v=>!v)} className="md:hidden p-2 text-muted" aria-label="القائمة">{open?<X/>:<Menu/>}</button>
-    </div>
-    {open&&<nav className="md:hidden border-t border-white/5 bg-[#080912]/95 p-4">{links.map(([label,href])=><Link onClick={()=>setOpen(false)} key={href} href={href} className="block py-3 text-muted hover:text-ink">{label}</Link>)}</nav>}
-  </header>
-}
+import {usePathname} from 'next/navigation';
+import {Compass, LayoutGrid, Layers3, MessageCircle, ArrowUpLeft, Menu, X} from 'lucide-react';
+import {useState} from 'react';
+export default function Navbar(){const rawPath=usePathname();const base=process.env.NEXT_PUBLIC_BASE_PATH||'';const path=(base&&rawPath.startsWith(base)?rawPath.slice(base.length):rawPath).replace(/\/$/,'')||'/';const [open,setOpen]=useState(false);const links=[{name:'نظرة عامة',href:'/',icon:Compass},{name:'مكتبة الأدوات',href:'/tools',icon:LayoutGrid},{name:'مقارنة الخطط',href:'/pricing',icon:Layers3},{name:'تواصل معنا',href:'/contact',icon:MessageCircle}];return <><header className="mobile-header"><Link href="/" className="brand">أطلس <span>ATLAS</span></Link><button aria-label="القائمة" aria-expanded={open} aria-controls="main-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></header>{open&&<button aria-label="إغلاق القائمة" className="nav-scrim" onClick={()=>setOpen(false)}/>}<aside id="main-navigation" className={`sidebar ${open?'is-open':''}`}><Link href="/" className="brand" onClick={()=>setOpen(false)}><span className="brand-symbol"><Compass size={27}/></span><div>أطلس<small>ATLAS INTELLIGENCE</small></div></Link><div className="sidebar-caption">مساحة الاكتشاف</div><nav aria-label="التنقل الرئيسي">{links.map(({name,href,icon:Icon})=><Link key={href} href={href} onClick={()=>setOpen(false)} aria-current={path===href?'page':undefined} className={`nav-item ${path===href?'active':''}`}><Icon size={19}/><span>{name}</span>{path===href&&<span className="nav-marker"/>}</Link>)}</nav><div className="sidebar-bottom"><div className="help-card"><MessageCircle size={22}/><h3>اختيارك القادم أوضح</h3><p>مساعدة مباشرة لاختيار الأداة المناسبة لعملك.</p><Link href="/contact" onClick={()=>setOpen(false)}>تحدث معنا <ArrowUpLeft size={17}/></Link></div><div className="sidebar-foot"><span>عربي / AR</span><span>دليل أطلس</span></div></div></aside></>}
