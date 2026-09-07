@@ -1,3 +1,3 @@
-const fs=require('node:fs');
-// Keep the admin route in the static export.
-// Access control is handled by Supabase Auth inside /admin.
+const fs = require('node:fs');
+// Admin is a public sign-in shell. Authorization lives in RLS and Edge Functions.
+fs.writeFileSync('out/.nojekyll', '');

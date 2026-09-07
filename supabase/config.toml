@@ -1,0 +1,3 @@
+[functions.research-tool]
+# Validate the session with auth.getUser inside the function (supports asymmetric JWTs).
+verify_jwt = false

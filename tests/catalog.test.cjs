@@ -1,5 +1,49 @@
-const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const ts=require('typescript');const vm=require('node:vm');const context={exports:{},URL};vm.runInNewContext(ts.transpileModule(fs.readFileSync('lib/validate.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,context);const {validCatalog}=context.exports;const catalog=JSON.parse(fs.readFileSync('data/catalog.json'));
-test('published catalog is valid',()=>assert.equal(validCatalog(catalog),true));
-test('reject executable and malformed links',()=>{for(const url of ['javascript:alert(1)','data:text/html,test','http://example.com','https://user:pass@example.com']){const data=structuredClone(catalog);data[0].website=url;assert.equal(validCatalog(data),false)}});
-test('reject negative prices, duplicate IDs, missing data and duplicate plans',()=>{let data=structuredClone(catalog);data[0].plans[0].monthly=-1;assert.equal(validCatalog(data),false);data=structuredClone(catalog);data[1].id=data[0].id;assert.equal(validCatalog(data),false);assert.equal(validCatalog([{}]),false);data=structuredClone(catalog);data[0].plans.push(data[0].plans[0]);assert.equal(validCatalog(data),false)});
-test('allow a valid free or custom plan',()=>{const data=structuredClone(catalog);data[0].plans[0].monthly=0;assert.equal(validCatalog(data),true);delete data[0].plans[0].monthly;data[0].plans[0].custom=true;assert.equal(validCatalog(data),true)});
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const ts = require("typescript");
+const vm = require("node:vm");
+const context = { exports: {}, URL };
+vm.runInNewContext(
+  ts.transpileModule(
+    fs.readFileSync("supabase/functions/_shared/catalog.ts", "utf8"),
+    { compilerOptions: { module: ts.ModuleKind.CommonJS } },
+  ).outputText,
+  context,
+);
+const { validCatalog } = context.exports;
+const catalog = JSON.parse(fs.readFileSync("data/catalog.json"));
+test("published catalog is valid", () =>
+  assert.equal(validCatalog(catalog), true));
+test("reject executable and malformed links", () => {
+  for (const url of [
+    "javascript:alert(1)",
+    "data:text/html,test",
+    "http://example.com",
+    "https://user:pass@example.com",
+  ]) {
+    const data = structuredClone(catalog);
+    data[0].website = url;
+    assert.equal(validCatalog(data), false);
+  }
+});
+test("reject negative prices, duplicate IDs, missing data and duplicate plans", () => {
+  let data = structuredClone(catalog);
+  data[0].plans[0].monthly = -1;
+  assert.equal(validCatalog(data), false);
+  data = structuredClone(catalog);
+  data[1].id = data[0].id;
+  assert.equal(validCatalog(data), false);
+  assert.equal(validCatalog([{}]), false);
+  data = structuredClone(catalog);
+  data[0].plans.push(data[0].plans[0]);
+  assert.equal(validCatalog(data), false);
+});
+test("allow a valid free or custom plan", () => {
+  const data = structuredClone(catalog);
+  data[0].plans[0].monthly = 0;
+  assert.equal(validCatalog(data), true);
+  delete data[0].plans[0].monthly;
+  data[0].plans[0].custom = true;
+  assert.equal(validCatalog(data), true);
+});
