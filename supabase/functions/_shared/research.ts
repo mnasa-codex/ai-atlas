@@ -66,34 +66,6 @@ function safeProviderDetail(raw: string, apiKey: string) {
     .slice(0, 240);
 }
 
-async function modelHint(
-  baseUrl: string,
-  apiKey: string,
-  configuredModel: string,
-  request: typeof fetch,
-) {
-  try {
-    const response = await request(modelsUrl(baseUrl), {
-      headers: { Authorization: `Bearer ${apiKey}` },
-      signal: AbortSignal.timeout(12000),
-    });
-    if (!response.ok) return "";
-    const payload = await response.json();
-    const ids = Array.isArray(payload?.data)
-      ? payload.data
-        .map((item: { id?: unknown }) => item?.id)
-        .filter((id: unknown): id is string => typeof id === "string")
-      : [];
-    if (ids.includes(configuredModel)) return "";
-    const glm = ids.filter((id: string) => /glm|zhipu/i.test(id)).slice(0, 8);
-    return glm.length
-      ? ` النموذج "${configuredModel}" غير ظاهر ضمن حسابك. نماذج GLM المتاحة: ${glm.join(", ")}.`
-      : ` النموذج "${configuredModel}" غير ظاهر ضمن قائمة نماذج حسابك.`;
-  } catch {
-    return "";
-  }
-}
-
 async function availableModels(
   baseUrl: string,
   apiKey: string,
@@ -117,10 +89,13 @@ async function availableModels(
 }
 
 function candidateModels(configured: string, available: string[]) {
+  // The selected Flash model belongs to KiosAPI's Free group. Never route a
+  // free-mode request to a paid GLM model without an explicit configuration.
+  if (configured === "glm-5.3-flash") return [configured];
+
   const score = (id: string) =>
     (/flash/i.test(id) ? 100 : 0) +
-    (/5[._-]?3/i.test(id) ? 50 : 0) +
-    (/free/i.test(id) ? 10 : 0);
+    (/5[._-]?3/i.test(id) ? 50 : 0);
   const alternatives = available
     .filter((id) => id !== configured && /glm|zhipu/i.test(id))
     .sort((a, b) => score(b) - score(a) || a.localeCompare(b));
@@ -149,39 +124,42 @@ function parseJsonObject(value: string) {
   }
 }
 
-function errorMessage(
-  status: number,
-  detail: string,
-  hint = "",
-) {
+function errorMessage(status: number, detail: string) {
   if (status === 401 || status === 403)
     return new ResearchError(
-      "رفض KiosAPI المفتاح. تحقق من KIOSAPI_API_KEY.",
+      "رفض KiosAPI المفتاح. تحقق من المفتاح في إعدادات الخادم.",
       503,
     );
+
+  if (
+    /no available channel/i.test(detail) &&
+    /group\s+default|default\s+group/i.test(detail)
+  )
+    return new ResearchError(
+      "مفتاح KiosAPI مضبوط على مجموعة default. افتح Token Management في KiosAPI وغيّر مجموعة المفتاح إلى Free لتشغيل GLM-5.3-Flash.",
+      503,
+    );
+
   if (status === 400 || status === 404)
     return new ResearchError(
-      `رفض KiosAPI إعداد الطلب (رمز ${status}).${hint}${
-        detail ? ` التفاصيل: ${detail}` : ""
-      }`,
+      "إعداد نموذج KiosAPI غير متاح لهذا المفتاح. تحقق من أن النموذج glm-5.3-flash ومجموعة المفتاح Free.",
       503,
     );
+
   if (status === 429)
     return new ResearchError(
-      "وصل KiosAPI إلى حد الاستخدام أو الرصيد. حاول لاحقاً.",
+      "وصل KiosAPI إلى حد الاستخدام المؤقت. حاول لاحقاً.",
       429,
     );
+
   if (status >= 500)
     return new ResearchError(
-      `خدمة KiosAPI لم تستطع تشغيل النموذج (رمز ${status}).${
-        hint || ""
-      }${detail ? ` التفاصيل: ${detail}` : " حاول لاحقاً."}`,
-      502,
+      "نموذج GLM-5.3-Flash المجاني غير متاح مؤقتاً لدى KiosAPI. حاول بعد قليل.",
+      503,
     );
+
   return new ResearchError(
-    `تعذّر الاتصال بـ KiosAPI (رمز ${status}).${
-      detail ? ` التفاصيل: ${detail}` : ""
-    }`,
+    "تعذّر الاتصال بـ KiosAPI. لم يتم حفظ أي تغيير.",
     502,
   );
 }
@@ -299,15 +277,8 @@ or {"found":false,"report":"Arabic reason","tool":null}.`;
     console.warn(
       `KiosAPI attempt failed: status=${response.status} model=${modelUsed} detail=${detail}`,
     );
-    if (!retryable || attempt === candidates.length - 1) {
-      const listed = available
-        .filter((id) => /glm|zhipu/i.test(id))
-        .slice(0, 8);
-      const hint = listed.length
-        ? ` نماذج GLM التي أعلنها الحساب: ${listed.join(", ")}.`
-        : "";
-      throw errorMessage(response.status, detail, hint);
-    }
+    if (!retryable || attempt === candidates.length - 1)
+      throw errorMessage(response.status, detail);
   }
 
   if (!response?.ok) {
