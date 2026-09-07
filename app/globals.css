@@ -923,68 +923,139 @@ a {
 }
 .globe-showcase {
   position: relative;
-  height: 365px;
+  height: 385px;
   min-width: 0;
+  isolation: isolate;
+}
+.globe-showcase::before {
+  content: "";
+  position: absolute;
+  inset: 8% 10% 9%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 35%, #9fc8ff20, transparent 32%),
+    radial-gradient(circle, #6246cf24 0%, #183e8620 40%, transparent 72%);
+  filter: blur(18px);
+  transform: scale(1.08);
+}
+.globe-showcase::after {
+  content: "";
+  position: absolute;
+  inset: 13% 5% 18%;
+  z-index: 2;
+  border: 1px solid #b9caff16;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: rotate(-13deg) scaleX(1.08);
+  box-shadow:
+    inset 0 0 34px #7f75ff0a,
+    0 0 45px #5885ff0b;
+  animation: atlas-orbit-pulse 5.5s ease-in-out infinite;
+}
+@keyframes atlas-orbit-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.9;
+  }
 }
 .globe-canvas {
   position: absolute;
-  inset: -20px -20px 5px;
+  inset: -28px -28px -2px;
+  z-index: 1;
   touch-action: pan-y;
-  filter: drop-shadow(0 0 35px #5078ff25);
+  filter:
+    drop-shadow(0 0 28px #4d78ff30)
+    drop-shadow(0 18px 55px #0008);
 }
 .globe-canvas canvas {
   touch-action: pan-y !important;
 }
 .earth-fallback {
-  width: 75%;
-  height: 75%;
+  display: block;
+  width: 72%;
+  aspect-ratio: 1;
   object-fit: cover;
   border-radius: 50%;
-  margin: 7% auto;
-  opacity: 0.6;
-  mask-image: radial-gradient(circle, #000 50%, transparent 72%);
+  margin: 8% auto;
+  opacity: 0.78;
+  box-shadow:
+    inset -24px -14px 40px #060914,
+    0 0 42px #5686ff38,
+    0 25px 70px #0009;
 }
 .globe-coordinate {
   position: absolute;
-  right: 8%;
-  top: 18%;
-  color: #9ab1d5;
+  right: 7%;
+  top: 17%;
+  z-index: 3;
+  color: #b8c9e6;
   font:
     11px ui-monospace,
     monospace;
   letter-spacing: 2px;
+  padding: 5px 9px;
+  border: 1px solid #b7c8ff1c;
+  border-radius: 999px;
+  background: #09102080;
+  backdrop-filter: blur(10px);
 }
 .globe-caption {
   position: absolute;
-  bottom: 8px;
+  bottom: 2px;
   left: 0;
   right: 0;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  color: #bac8e4;
+  color: #d1dcf0;
   font-size: 13px;
-  gap: 5px;
+  gap: 4px;
   pointer-events: none;
+  text-shadow: 0 2px 16px #000;
+}
+.globe-caption::before {
+  content: "";
+  width: 52px;
+  height: 1px;
+  margin-bottom: 4px;
+  background: linear-gradient(90deg, transparent, #aebfff80, transparent);
 }
 .globe-caption-en {
   font-size: 9px;
-  letter-spacing: 3px;
-  color: #7085ad;
+  letter-spacing: 3.5px;
+  color: #7f96bd;
 }
 .globe-pause {
   position: absolute;
-  bottom: 5px;
-  left: 12%;
+  bottom: 2px;
+  left: 10%;
+  z-index: 4;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid var(--border);
-  width: 34px;
-  height: 34px;
-  min-height: 34px;
-  color: #9eafd0;
+  border: 1px solid #b8c9ff2a;
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  background: #0b1327ad;
+  color: #c3d2ee;
+  box-shadow: inset 0 1px 0 #ffffff12;
+  backdrop-filter: blur(12px);
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.2s;
+}
+.globe-pause:hover {
+  color: white;
+  border-color: #b8a7ff70;
+  transform: translateY(-2px);
 }
 .discovery-bar {
   background: linear-gradient(110deg, #191d38de, #121c32e8);
@@ -1361,13 +1432,26 @@ a {
   }
   .globe-showcase {
     position: absolute;
-    left: -12px;
-    top: 8px;
-    width: 175px;
-    height: 175px;
-    opacity: 0.42;
+    left: -54px;
+    top: 28px;
+    width: 238px;
+    height: 238px;
+    opacity: 0.74;
     pointer-events: none;
     z-index: 0;
+  }
+  .globe-showcase::before {
+    inset: 2%;
+    filter: blur(14px);
+  }
+  .globe-showcase::after {
+    inset: 13% 1% 16%;
+  }
+  .globe-canvas {
+    inset: -22px;
+    filter:
+      drop-shadow(0 0 24px #527fff35)
+      drop-shadow(0 14px 35px #0008);
   }
   .globe-coordinate,
   .globe-caption,
