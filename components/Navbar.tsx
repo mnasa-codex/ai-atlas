@@ -1,6 +1,98 @@
-'use client';
-import Link from 'next/link';
-import {usePathname} from 'next/navigation';
-import {Compass, LayoutGrid, Layers3, MessageCircle, ArrowUpLeft, Menu, X} from 'lucide-react';
-import {useState} from 'react';
-export default function Navbar(){const rawPath=usePathname();const base=process.env.NEXT_PUBLIC_BASE_PATH||'';const path=(base&&rawPath.startsWith(base)?rawPath.slice(base.length):rawPath).replace(/\/$/,'')||'/';const [open,setOpen]=useState(false);const links=[{name:'نظرة عامة',href:'/',icon:Compass},{name:'مكتبة الأدوات',href:'/tools',icon:LayoutGrid},{name:'مقارنة الخطط',href:'/pricing',icon:Layers3},{name:'تواصل معنا',href:'/contact',icon:MessageCircle}];return <><header className="mobile-header"><Link href="/" className="brand">أطلس <span>ATLAS</span></Link><button aria-label="القائمة" aria-expanded={open} aria-controls="main-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></header>{open&&<button aria-label="إغلاق القائمة" className="nav-scrim" onClick={()=>setOpen(false)}/>}<aside id="main-navigation" className={`sidebar ${open?'is-open':''}`}><Link href="/" className="brand" onClick={()=>setOpen(false)}><span className="brand-symbol"><Compass size={27}/></span><div>أطلس<small>ATLAS INTELLIGENCE</small></div></Link><div className="sidebar-caption">مساحة الاكتشاف</div><nav aria-label="التنقل الرئيسي">{links.map(({name,href,icon:Icon})=><Link key={href} href={href} onClick={()=>setOpen(false)} aria-current={path===href?'page':undefined} className={`nav-item ${path===href?'active':''}`}><Icon size={19}/><span>{name}</span>{path===href&&<span className="nav-marker"/>}</Link>)}</nav><div className="sidebar-bottom"><div className="help-card"><MessageCircle size={22}/><h3>اختيارك القادم أوضح</h3><p>مساعدة مباشرة لاختيار الأداة المناسبة لعملك.</p><Link href="/contact" onClick={()=>setOpen(false)}>تحدث معنا <ArrowUpLeft size={17}/></Link></div><div className="sidebar-foot"><span>عربي / AR</span><span>دليل أطلس</span></div></div></aside></>}
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Compass,
+  LayoutGrid,
+  Layers3,
+  MessageCircle,
+  ShieldCheck,
+  ArrowUpLeft,
+  Menu,
+  X,
+} from "lucide-react";
+import { useState } from "react";
+export default function Navbar() {
+  const rawPath = usePathname();
+  const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const path =
+    (base && rawPath.startsWith(base)
+      ? rawPath.slice(base.length)
+      : rawPath
+    ).replace(/\/$/, "") || "/";
+  const [open, setOpen] = useState(false);
+  const links = [
+    { name: "نظرة عامة", href: "/", icon: Compass },
+    { name: "مكتبة الأدوات", href: "/tools", icon: LayoutGrid },
+    { name: "مقارنة الخطط", href: "/pricing", icon: Layers3 },
+    { name: "تواصل معنا", href: "/contact", icon: MessageCircle },
+    { name: "استوديو أطلس", href: "/admin", icon: ShieldCheck },
+  ];
+  return (
+    <>
+      <header className="mobile-header">
+        <Link href="/" className="brand">
+          أطلس <span>ATLAS</span>
+        </Link>
+        <button
+          aria-label="القائمة"
+          aria-expanded={open}
+          aria-controls="main-navigation"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <X /> : <Menu />}
+        </button>
+      </header>
+      {open && (
+        <button
+          aria-label="إغلاق القائمة"
+          className="nav-scrim"
+          onClick={() => setOpen(false)}
+        />
+      )}
+      <aside
+        id="main-navigation"
+        className={`sidebar ${open ? "is-open" : ""}`}
+      >
+        <Link href="/" className="brand" onClick={() => setOpen(false)}>
+          <span className="brand-symbol">
+            <Compass size={27} />
+          </span>
+          <div>
+            أطلس<small>ATLAS INTELLIGENCE</small>
+          </div>
+        </Link>
+        <div className="sidebar-caption">مساحة الاكتشاف</div>
+        <nav aria-label="التنقل الرئيسي">
+          {links.map(({ name, href, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setOpen(false)}
+              aria-current={path === href ? "page" : undefined}
+              className={`nav-item ${path === href ? "active" : ""}`}
+            >
+              <Icon size={19} />
+              <span>{name}</span>
+              {path === href && <span className="nav-marker" />}
+            </Link>
+          ))}
+        </nav>
+        <div className="sidebar-bottom">
+          <div className="help-card">
+            <MessageCircle size={22} />
+            <h3>اختيارك القادم أوضح</h3>
+            <p>مساعدة مباشرة لاختيار الأداة المناسبة لعملك.</p>
+            <Link href="/contact" onClick={() => setOpen(false)}>
+              تحدث معنا <ArrowUpLeft size={17} />
+            </Link>
+          </div>
+          <div className="sidebar-foot">
+            <span>عربي / AR</span>
+            <span>دليل أطلس</span>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+}

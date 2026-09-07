@@ -1,6 +1,172 @@
-'use client';
-import {useMemo,useState} from 'react';
-import {Search,ArrowUpLeft} from 'lucide-react';
-import {seedTools,type Tool} from '@/lib/tools';
-import ToolModal from '@/components/ToolModal';
-export default function Pricing(){const [q,setQ]=useState('');const [billing,setBilling]=useState<'monthly'|'annual'>('monthly');const [selected,setSelected]=useState<Tool|null>(null);const rows=useMemo(()=>seedTools.filter(t=>`${t.name} ${t.vendor}`.toLowerCase().includes(q.trim().toLowerCase())).flatMap(tool=>tool.plans.map(plan=>({tool,plan}))),[q]);return <div className="workspace"><header className="page-heading"><div className="eyebrow">PLAN COMPARISON</div><h1>اختَر الخطة. بثقة أكبر.</h1><p>المزايا، التكلفة، والمصدر الرسمي في مكان واحد. البيانات المرفقة تحتاج مراجعة قبل الاشتراك.</p></header><div className="discovery-bar"><div className="search-field"><Search size={20}/><input aria-label="البحث في الخطط" placeholder="ابحث باسم الأداة أو الشركة…" value={q} onChange={e=>setQ(e.target.value)}/></div></div><div className="catalog-toolbar"><div><h2>الخطط المتاحة في الدليل</h2><span role="status">{rows.length} خطة</span></div><div className="flex gap-2 text-sm">{(['monthly','annual'] as const).map(b=><button key={b} aria-pressed={billing===b} onClick={()=>setBilling(b)} className={`rounded-xl px-4 py-2 ${billing===b?'bg-gold text-space':'bg-white/5 text-muted'}`}>{b==='monthly'?'شهري':'سنوي'}</button>)}</div></div><div className="glass rounded-2xl overflow-hidden"><div className="overflow-x-auto" tabIndex={0} role="region" aria-label="جدول مقارنة الخطط"><table className="w-full text-right text-sm"><caption className="text-right p-5 text-muted border-b border-white/10">{billing==='annual'?'السعر السنوي معروض كمعدل شهري، مع توضيح إجمالي السنة.':'الأسعار بالدولار الأمريكي شهريًا؛ الضرائب والعروض قد تختلف.'}</caption><thead className="bg-white/5"><tr>{['الأداة / الخطة','التكلفة','الاستخدام المناسب','المراجعة','التفاصيل'].map(h=><th key={h} scope="col" className="p-5 whitespace-nowrap">{h}</th>)}</tr></thead><tbody>{rows.map(({tool,plan:p})=>{const amount=billing==='annual'?p.annual:p.monthly;return <tr key={`${tool.id}-${p.name}`} className="border-t border-white/5 hover:bg-white/[.025]"><th scope="row" className="p-5 min-w-40"><div dir="ltr" className="text-right">{tool.name}</div><div className="text-muted font-normal mt-1">{p.name}</div></th><td className="p-5 min-w-40"><div className="text-gold font-bold">{p.custom?'مخصص':p.monthly===0?'مجاني':amount==null?'غير مدرج':`$${amount} / شهر`}</div>{billing==='annual'&&p.annual!=null&&p.monthly!==0&&<div className="text-xs text-muted mt-1">${(p.annual*12).toFixed(2)} سنويًا</div>}</td><td className="p-5 min-w-64 text-muted">{p.bestFor}</td><td className="p-5 min-w-44"><div className="text-xs text-muted">{p.verified}</div><a href={p.source} rel="noopener noreferrer" target="_blank" className="inline-block mt-2 text-cyan">المصدر الرسمي ↗</a></td><td className="p-5"><button onClick={()=>setSelected(tool)} aria-label={`تفاصيل ${tool.name}`} className="rounded-xl bg-white/5 p-3"><ArrowUpLeft size={19}/></button></td></tr>})}</tbody></table></div>{!rows.length&&<div className="empty-state"><p>لا توجد خطط مطابقة.</p><button onClick={()=>setQ('')}>عرض كل الخطط</button></div>}</div>{selected&&<ToolModal key={selected.id} tool={selected} onClose={()=>setSelected(null)}/>}</div>}
+"use client";
+import { useMemo, useState } from "react";
+import { Search, ArrowUpLeft } from "lucide-react";
+import { seedTools, type Tool } from "@/lib/tools";
+import ToolModal from "@/components/ToolModal";
+import { useCatalog } from "@/components/CatalogProvider";
+export default function Pricing() {
+  const { tools: catalog, error } = useCatalog();
+  const [q, setQ] = useState("");
+  const [billing, setBilling] = useState<"monthly" | "annual">("monthly");
+  const [selected, setSelected] = useState<Tool | null>(null);
+  const rows = useMemo(
+    () =>
+      catalog
+        .filter((t) =>
+          `${t.name} ${t.vendor}`
+            .toLowerCase()
+            .includes(q.trim().toLowerCase()),
+        )
+        .flatMap((tool) => tool.plans.map((plan) => ({ tool, plan }))),
+    [q, catalog],
+  );
+  return (
+    <div className="workspace">
+      {error && (
+        <p className="catalog-notice" role="status">
+          {error}
+        </p>
+      )}
+      <header className="page-heading">
+        <div className="eyebrow">PLAN COMPARISON</div>
+        <h1>اختَر الخطة. بثقة أكبر.</h1>
+        <p>
+          المزايا، التكلفة، والمصدر الرسمي في مكان واحد. البيانات المرفقة تحتاج
+          مراجعة قبل الاشتراك.
+        </p>
+      </header>
+      <div className="discovery-bar">
+        <div className="search-field">
+          <Search size={20} />
+          <input
+            aria-label="البحث في الخطط"
+            placeholder="ابحث باسم الأداة أو الشركة…"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="catalog-toolbar">
+        <div>
+          <h2>الخطط المتاحة في الدليل</h2>
+          <span role="status">{rows.length} خطة</span>
+        </div>
+        <div className="flex gap-2 text-sm">
+          {(["monthly", "annual"] as const).map((b) => (
+            <button
+              key={b}
+              aria-pressed={billing === b}
+              onClick={() => setBilling(b)}
+              className={`rounded-xl px-4 py-2 ${billing === b ? "bg-gold text-space" : "bg-white/5 text-muted"}`}
+            >
+              {b === "monthly" ? "شهري" : "سنوي"}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="glass rounded-2xl overflow-hidden">
+        <div
+          className="overflow-x-auto"
+          tabIndex={0}
+          role="region"
+          aria-label="جدول مقارنة الخطط"
+        >
+          <table className="w-full text-right text-sm">
+            <caption className="text-right p-5 text-muted border-b border-white/10">
+              {billing === "annual"
+                ? "السعر السنوي معروض كمعدل شهري، مع توضيح إجمالي السنة."
+                : "الأسعار بالدولار الأمريكي شهريًا؛ الضرائب والعروض قد تختلف."}
+            </caption>
+            <thead className="bg-white/5">
+              <tr>
+                {[
+                  "الأداة / الخطة",
+                  "التكلفة",
+                  "الاستخدام المناسب",
+                  "المراجعة",
+                  "التفاصيل",
+                ].map((h) => (
+                  <th key={h} scope="col" className="p-5 whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map(({ tool, plan: p }) => {
+                const amount = billing === "annual" ? p.annual : p.monthly;
+                return (
+                  <tr
+                    key={`${tool.id}-${p.name}`}
+                    className="border-t border-white/5 hover:bg-white/[.025]"
+                  >
+                    <th scope="row" className="p-5 min-w-40">
+                      <div dir="ltr" className="text-right">
+                        {tool.name}
+                      </div>
+                      <div className="text-muted font-normal mt-1">
+                        {p.name}
+                      </div>
+                    </th>
+                    <td className="p-5 min-w-40">
+                      <div className="text-gold font-bold">
+                        {p.custom
+                          ? "مخصص"
+                          : p.monthly === 0
+                            ? "مجاني"
+                            : amount == null
+                              ? "غير مدرج"
+                              : `$${Number(amount.toFixed(2))} / شهر`}
+                      </div>
+                      {billing === "annual" &&
+                        p.annual != null &&
+                        p.monthly !== 0 && (
+                          <div className="text-xs text-muted mt-1">
+                            ${(p.annual * 12).toFixed(2)} سنويًا
+                          </div>
+                        )}
+                    </td>
+                    <td className="p-5 min-w-64 text-muted">{p.bestFor}</td>
+                    <td className="p-5 min-w-44">
+                      <div className="text-xs text-muted">{p.verified}</div>
+                      <a
+                        href={p.source}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="inline-block mt-2 text-cyan"
+                      >
+                        المصدر الرسمي ↗
+                      </a>
+                    </td>
+                    <td className="p-5">
+                      <button
+                        onClick={() => setSelected(tool)}
+                        aria-label={`تفاصيل ${tool.name}`}
+                        className="rounded-xl bg-white/5 p-3"
+                      >
+                        <ArrowUpLeft size={19} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        {!rows.length && (
+          <div className="empty-state">
+            <p>لا توجد خطط مطابقة.</p>
+            <button onClick={() => setQ("")}>عرض كل الخطط</button>
+          </div>
+        )}
+      </div>
+      {selected && (
+        <ToolModal
+          key={selected.id}
+          tool={selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
+    </div>
+  );
+}

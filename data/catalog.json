@@ -12,18 +12,17 @@
     "plans": [
       {
         "name": "Free",
-        "monthly": 0,
         "bestFor": "تجربة الأداة والاستخدام العرضي",
         "features": [
           "نموذج أساسي بحدود رسائل يومية",
           "ردود مع إعلانات"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://openai.com/chatgpt/pricing/"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://openai.com/chatgpt/pricing/",
+        "monthly": 0
       },
       {
         "name": "Plus",
-        "monthly": 20,
         "bestFor": "الاستخدام اليومي الاحترافي لمعظم المستخدمين",
         "popular": true,
         "included": [
@@ -39,12 +38,11 @@
           "وضع صوتي متقدم وإنشاء صور داخل المحادثة"
         ],
         "limits": "حوالي 400–2000 رسالة كل 5 ساعات حسب النموذج المستخدم",
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://openai.com/chatgpt/pricing/"
       },
       {
         "name": "Pro",
-        "monthly": 200,
         "bestFor": "المستخدمين الأثقل استخدامًا يوميًا والباحثين",
         "included": [
           "كل ما في Plus",
@@ -56,7 +54,7 @@
           "250 عملية بحث عميق شهريًا",
           "أولوية قصوى وأداء أسرع بالمهام المعقدة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://openai.com/chatgpt/pricing/"
       }
     ]
@@ -74,18 +72,16 @@
     "plans": [
       {
         "name": "Free",
-        "monthly": 0,
         "bestFor": "التجربة والاستخدام الخفيف",
         "features": [
           "محادثة أساسية بحدود يومية تتجدد كل بضع ساعات"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://www.anthropic.com/pricing"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://www.anthropic.com/pricing",
+        "monthly": 0
       },
       {
         "name": "Pro",
-        "monthly": 20,
-        "annual": 17,
         "bestFor": "المطورين وأصحاب الأعمال الذين يحتاجون دقة أعلى بالكتابة والبرمجة",
         "popular": true,
         "included": [
@@ -99,12 +95,13 @@
           "ربط أدوات خارجية عبر MCP",
           "نافذة سياق 200 ألف رمز"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://www.anthropic.com/pricing"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://www.anthropic.com/pricing",
+        "monthly": 20,
+        "annual": 16.666666666666668
       },
       {
         "name": "Max 5x",
-        "monthly": 100,
         "bestFor": "من يصطدم بحدود Pro بشكل متكرر خلال يوم العمل",
         "included": [
           "كل ميزات Pro"
@@ -114,12 +111,11 @@
           "أولوية أعلى بأوقات الذروة",
           "مناسب لجلسات Claude Code الطويلة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://www.anthropic.com/pricing"
       },
       {
         "name": "Max 20x",
-        "monthly": 200,
         "bestFor": "الاستخدام المكثف طوال اليوم بلا انتظار",
         "included": [
           "كل ميزات Pro"
@@ -129,7 +125,7 @@
           "أولوية شبه فورية حتى بأوقات الذروة",
           "أعلى إنتاجية ممكنة لفرق العمل الفردية الثقيلة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://www.anthropic.com/pricing"
       }
     ]
@@ -147,18 +143,16 @@
     "plans": [
       {
         "name": "Free",
-        "monthly": 0,
         "bestFor": "الاستخدام الأساسي داخل تطبيق Gemini",
         "features": [
           "نموذج Gemini بحدود يومية",
           "15 جيجا تخزين سحابي"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://one.google.com/about/google-ai-plans/"
       },
       {
         "name": "AI Plus",
-        "monthly": 4.99,
         "bestFor": "ترقية اقتصادية أولى فوق الخطة المجانية",
         "included": [
           "NotebookLM",
@@ -171,12 +165,11 @@
           "Gemini داخل Gmail والمستندات",
           "400 جيجا تخزين سحابي"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://one.google.com/about/google-ai-plans/"
       },
       {
         "name": "AI Pro",
-        "monthly": 19.99,
         "bestFor": "العمود الفقري لمستخدمي Google الذين يريدون إنتاج فيديو ومستندات معًا",
         "popular": true,
         "included": [
@@ -193,12 +186,11 @@
           "نافذة سياق تصل حتى مليون رمز",
           "5 تيرابايت تخزين سحابي عبر Drive وGmail وPhotos"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://one.google.com/about/google-ai-plans/"
       },
       {
         "name": "AI Ultra",
-        "monthly": 99.99,
         "bestFor": "صناع محتوى الفيديو والباحثين الذين يريدون أعلى الحدود بكل شيء",
         "included": [
           "Flow (أعلى الحدود)",
@@ -215,7 +207,7 @@
           "YouTube Premium ضمن الاشتراك، وحتى 20–30 تيرابايت تخزين"
         ],
         "limits": "أعلى فئة سعرية (فئة ثانية تصل حتى 200$/شهر بحدود أعلى) — تحقق من الصفحة الرسمية لحظة النشر لأن هذه الفئة تغيّرت أكثر من مرة خلال 2026",
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://one.google.com/about/google-ai-plans/"
       }
     ]
@@ -233,21 +225,19 @@
     "plans": [
       {
         "name": "Basic",
-        "monthly": 10,
-        "annual": 8,
         "bestFor": "تجربة الأداة أو الاستخدام الخفيف جدًا",
         "features": [
           "نحو 200 صورة شهريًا (3.3 ساعة توليد سريع)",
           "بدون وضع Relax",
           "فيديو بدقة SD فقط"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://www.midjourney.com/account/"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
+        "monthly": 10,
+        "annual": 8
       },
       {
         "name": "Standard",
-        "monthly": 30,
-        "annual": 24,
         "popular": true,
         "bestFor": "معظم المستخدمين الأفراد",
         "features": [
@@ -255,34 +245,36 @@
           "وضع Relax بتوليد صور غير محدود",
           "فيديو بدقة SD وHD"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://www.midjourney.com/account/"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
+        "monthly": 30,
+        "annual": 24
       },
       {
         "name": "Pro",
-        "monthly": 60,
-        "annual": 48,
         "bestFor": "العمل التجاري الذي يحتاج خصوصية للمشاريع",
         "features": [
           "30 ساعة توليد سريع شهريًا",
           "وضع الخصوصية Stealth Mode",
           "حتى 12 مهمة متزامنة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://www.midjourney.com/account/"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
+        "monthly": 60,
+        "annual": 48
       },
       {
         "name": "Mega",
-        "monthly": 120,
-        "annual": 96,
         "bestFor": "الفرق والاستخدام الاحترافي عالي الحجم",
         "features": [
           "60 ساعة توليد سريع شهريًا",
           "كل ميزات Pro",
           "أعلى طاقة إنتاجية متاحة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://www.midjourney.com/account/"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
+        "monthly": 120,
+        "annual": 96
       }
     ]
   },
@@ -299,19 +291,16 @@
     "plans": [
       {
         "name": "Free",
-        "monthly": 0,
         "bestFor": "أسئلة سريعة وبحث خفيف",
         "features": [
           "نحو 5 عمليات بحث Pro يوميًا",
           "بدون اختيار نموذج أو بحث عميق"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://www.perplexity.ai/pro"
       },
       {
         "name": "Pro",
-        "monthly": 20,
-        "annual": 17,
         "popular": true,
         "bestFor": "الباحثين والصحفيين ومن يريد إجابات موثقة بمصادر",
         "features": [
@@ -321,12 +310,11 @@
           "رفع وتحليل ملفات غير محدود",
           "رصيد 5$ شهريًا على واجهة Sonar API"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://www.perplexity.ai/pro"
       },
       {
         "name": "Max",
-        "monthly": 200,
         "bestFor": "فرق البحث المكثف والاستخدام الأثقل",
         "features": [
           "أعلى الحدود في كل الميزات",
@@ -334,7 +322,7 @@
           "10,000 رصيد حوسبة شهريًا",
           "فيديو Sora 2 Pro وأولوية بالوصول لميزات جديدة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
         "source": "https://www.perplexity.ai/pro"
       }
     ]
@@ -352,18 +340,17 @@
     "plans": [
       {
         "name": "Free",
-        "monthly": 0,
         "bestFor": "تجربة المساعد البرمجي",
         "features": [
           "2000 إكمال كود شهريًا",
           "50 رسالة محادثة شهريًا"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://github.com/features/copilot#pricing"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://github.com/features/copilot/plans",
+        "monthly": 0
       },
       {
         "name": "Pro",
-        "monthly": 10,
         "popular": true,
         "bestFor": "المطورين الأفراد",
         "features": [
@@ -371,20 +358,20 @@
           "وضع الوكيل Agent Mode داخل IDE",
           "رصيد شهري من طلبات النماذج المتقدمة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://github.com/features/copilot#pricing"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://github.com/features/copilot/plans",
+        "monthly": 10
       },
       {
         "name": "Business",
-        "monthly": 19,
         "bestFor": "فرق التطوير الصغيرة والمتوسطة",
         "features": [
           "إدارة سياسات الاستخدام على مستوى الفريق",
           "سجلات تدقيق Audit logs",
           "تعويض حماية الملكية الفكرية (IP indemnity)"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://github.com/features/copilot#pricing"
+        "verified": "السعر غير مؤكد — راجع المصدر الرسمي",
+        "source": "https://github.com/features/copilot/plans"
       }
     ]
   },
@@ -401,25 +388,27 @@
     "plans": [
       {
         "name": "Standard",
-        "monthly": 15,
         "bestFor": "صناع المحتوى المستقلين",
         "features": [
           "رصيد شهري لتوليد الفيديو",
           "أدوات تحرير وتحكم إبداعي أساسية"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://runwayml.com/pricing/"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://runwayml.com/pricing/",
+        "monthly": 15,
+        "annual": 12
       },
       {
         "name": "Pro",
-        "monthly": 35,
         "bestFor": "الاستخدام الاحترافي المتكرر",
         "features": [
           "رصيد شهري أعلى",
           "أولوية بمعالجة المهام"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://runwayml.com/pricing/"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://runwayml.com/pricing/",
+        "monthly": 35,
+        "annual": 28
       }
     ]
   },
@@ -436,26 +425,27 @@
     "plans": [
       {
         "name": "Starter",
-        "monthly": 5,
         "bestFor": "المحتوى الفردي الخفيف",
         "features": [
           "دقائق توليد صوت شهرية محدودة",
           "مكتبة أصوات جاهزة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://elevenlabs.io/pricing"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://elevenlabs.io/pricing",
+        "monthly": 6
       },
       {
         "name": "Creator",
-        "monthly": 22,
         "bestFor": "صناع المحتوى المنتظمين",
         "features": [
           "دقائق توليد أعلى",
           "استنساخ صوتي أساسي",
           "استخدام تجاري ضمن حدود الخطة"
         ],
-        "verified": "تحتاج مراجعة المصدر",
-        "source": "https://elevenlabs.io/pricing"
+        "verified": "السعر روجع 2026-09-07؛ المزايا تحتاج مراجعة",
+        "source": "https://elevenlabs.io/pricing",
+        "monthly": 22,
+        "limits": "السعر المعروض للاشتراك المعتاد؛ تعرض الصفحة الرسمية خصماً للشهر الأول. الضرائب غير مشمولة."
       }
     ]
   }

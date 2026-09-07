@@ -1,9 +1,178 @@
-'use client';
-import {useMemo,useState} from 'react';
-import {Search,ArrowLeft,SlidersHorizontal,RotateCcw,Layers3} from 'lucide-react';
-import Link from 'next/link';
-import {categories,seedTools,type Category,type Tool} from '@/lib/tools';
-import ToolCard from './ToolCard';
-import ToolModal from './ToolModal';
-const normalize=(s:string)=>s.toLowerCase().normalize('NFKD').replace(/[\u064B-\u065F]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').trim();
-export default function ToolsExplorer({compact=false}:{compact?:boolean}){const[q,setQ]=useState('');const[cat,setCat]=useState<'all'|Category>('all');const[free,setFree]=useState(false);const[sort,setSort]=useState('featured');const[selected,setSelected]=useState<Tool|null>(null);const tools=useMemo(()=>seedTools.filter(t=>(cat==='all'||t.category===cat)&&(!free||t.plans.some(p=>!p.custom&&p.monthly===0))&&normalize(`${t.name} ${t.vendor} ${t.hook} ${t.description}`).includes(normalize(q))).sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):Number(b.featured)-Number(a.featured)).slice(0,compact?6:undefined),[q,cat,free,sort,compact]);const clear=()=>{setQ('');setCat('all');setFree(false)};return <><div className="discovery-bar"><div className="search-field"><Search size={22}/><input aria-label="ابحث في الأدوات" value={q} onChange={e=>setQ(e.target.value)} placeholder="ما الذي تريد إنجازه اليوم؟ ابحث عن أداة أو استخدام…"/>{q&&<button aria-label="مسح البحث" onClick={()=>setQ('')}>×</button>}</div><span className="search-count">{seedTools.length} أداة في دليلك</span></div><div className="discovery-layout"><section className="catalog"><div className="category-tabs" aria-label="تصنيفات الأدوات">{categories.map(c=><button key={c.id} aria-pressed={cat===c.id} className={cat===c.id?'selected':''} onClick={()=>setCat(c.id)}>{c.label}</button>)}</div><div className="catalog-toolbar"><div><h2>{cat==='all'?'اكتشف مكتبتك القادمة':categories.find(c=>c.id===cat)?.label}</h2><span role="status">{tools.length} أدوات تطابق اختيارك</span></div><label className="sort-label"><SlidersHorizontal size={16}/><select aria-label="ترتيب الأدوات" value={sort} onChange={e=>setSort(e.target.value)}><option value="featured">المختارة أولاً</option><option value="name">الاسم: A–Z</option></select></label></div><div className="tool-grid">{tools.map(t=><ToolCard key={t.id} tool={t} onOpen={setSelected}/>)}</div>{!tools.length&&<div className="empty-state"><Search size={32}/><h3>لم نعثر على أدوات مطابقة</h3><p>جرّب اسمًا آخر أو أزل بعض الفلاتر.</p><button onClick={clear}><RotateCcw size={16}/> إعادة ضبط البحث</button></div>}</section><aside className="discovery-aside"><div className="editorial-card"><span className="eyebrow">خطوتك التالية</span><Layers3 size={30}/><h2>أداة مناسبة.<br/>فرق كبير.</h2><p>افهم المزايا وحدود الاستخدام قبل اختيار خطتك.</p><Link href="/pricing">استعرض الخطط <ArrowLeft size={17}/></Link></div><div className="filter-card"><h3>خصص اكتشافك</h3><label><input type="checkbox" checked={free} onChange={e=>setFree(e.target.checked)}/> أدوات بخطة مجانية</label><p>الأسعار والمزايا من بيانات الدليل. راجع المصدر الرسمي قبل الاشتراك.</p></div><div className="guide-note"><span>01 — اكتشف</span><span>02 — افهم الخطط</span><span>03 — اختر ما يناسبك</span></div></aside></div>{selected&&<ToolModal key={selected.id} tool={selected} onClose={()=>setSelected(null)}/>}</>}
+"use client";
+import { useMemo, useState } from "react";
+import {
+  Search,
+  ArrowLeft,
+  SlidersHorizontal,
+  RotateCcw,
+  Layers3,
+} from "lucide-react";
+import Link from "next/link";
+import { categories, seedTools, type Category, type Tool } from "@/lib/tools";
+import ToolCard from "./ToolCard";
+import { useCatalog } from "./CatalogProvider";
+import ToolModal from "./ToolModal";
+const normalize = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u064B-\u065F]/g, "")
+    .replace(/[أإآ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .trim();
+export default function ToolsExplorer({
+  compact = false,
+}: {
+  compact?: boolean;
+}) {
+  const { tools: catalog, error } = useCatalog();
+  const [q, setQ] = useState("");
+  const [cat, setCat] = useState<"all" | Category>("all");
+  const [free, setFree] = useState(false);
+  const [sort, setSort] = useState("featured");
+  const [selected, setSelected] = useState<Tool | null>(null);
+  const tools = useMemo(
+    () =>
+      catalog
+        .filter(
+          (t) =>
+            (cat === "all" || t.category === cat) &&
+            (!free || t.plans.some((p) => !p.custom && p.monthly === 0)) &&
+            normalize(
+              `${t.name} ${t.vendor} ${t.hook} ${t.description}`,
+            ).includes(normalize(q)),
+        )
+        .sort((a, b) =>
+          sort === "name"
+            ? a.name.localeCompare(b.name)
+            : Number(b.featured) - Number(a.featured),
+        )
+        .slice(0, compact ? 6 : undefined),
+    [q, cat, free, sort, compact, catalog],
+  );
+  const clear = () => {
+    setQ("");
+    setCat("all");
+    setFree(false);
+  };
+  return (
+    <>
+      {error && (
+        <p className="catalog-notice" role="status">
+          {error}
+        </p>
+      )}
+      <div className="discovery-bar">
+        <div className="search-field">
+          <Search size={22} />
+          <input
+            aria-label="ابحث في الأدوات"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="ما الذي تريد إنجازه اليوم؟ ابحث عن أداة أو استخدام…"
+          />
+          {q && (
+            <button aria-label="مسح البحث" onClick={() => setQ("")}>
+              ×
+            </button>
+          )}
+        </div>
+        <span className="search-count">{catalog.length} أداة في دليلك</span>
+      </div>
+      <div className="discovery-layout">
+        <section className="catalog">
+          <div className="category-tabs" aria-label="تصنيفات الأدوات">
+            {categories.map((c) => (
+              <button
+                key={c.id}
+                aria-pressed={cat === c.id}
+                className={cat === c.id ? "selected" : ""}
+                onClick={() => setCat(c.id)}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+          <div className="catalog-toolbar">
+            <div>
+              <h2>
+                {cat === "all"
+                  ? "اكتشف مكتبتك القادمة"
+                  : categories.find((c) => c.id === cat)?.label}
+              </h2>
+              <span role="status">{tools.length} أدوات تطابق اختيارك</span>
+            </div>
+            <label className="sort-label">
+              <SlidersHorizontal size={16} />
+              <select
+                aria-label="ترتيب الأدوات"
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+              >
+                <option value="featured">المختارة أولاً</option>
+                <option value="name">الاسم: A–Z</option>
+              </select>
+            </label>
+          </div>
+          <div className="tool-grid">
+            {tools.map((t) => (
+              <ToolCard key={t.id} tool={t} onOpen={setSelected} />
+            ))}
+          </div>
+          {!tools.length && (
+            <div className="empty-state">
+              <Search size={32} />
+              <h3>لم نعثر على أدوات مطابقة</h3>
+              <p>جرّب اسمًا آخر أو أزل بعض الفلاتر.</p>
+              <button onClick={clear}>
+                <RotateCcw size={16} /> إعادة ضبط البحث
+              </button>
+            </div>
+          )}
+        </section>
+        <aside className="discovery-aside">
+          <div className="editorial-card">
+            <span className="eyebrow">خطوتك التالية</span>
+            <Layers3 size={30} />
+            <h2>
+              أداة مناسبة.
+              <br />
+              فرق كبير.
+            </h2>
+            <p>افهم المزايا وحدود الاستخدام قبل اختيار خطتك.</p>
+            <Link href="/pricing">
+              استعرض الخطط <ArrowLeft size={17} />
+            </Link>
+          </div>
+          <div className="filter-card">
+            <h3>خصص اكتشافك</h3>
+            <label>
+              <input
+                type="checkbox"
+                checked={free}
+                onChange={(e) => setFree(e.target.checked)}
+              />{" "}
+              أدوات بخطة مجانية
+            </label>
+            <p>
+              الأسعار والمزايا من بيانات الدليل. راجع المصدر الرسمي قبل
+              الاشتراك.
+            </p>
+          </div>
+          <div className="guide-note">
+            <span>01 — اكتشف</span>
+            <span>02 — افهم الخطط</span>
+            <span>03 — اختر ما يناسبك</span>
+          </div>
+        </aside>
+      </div>
+      {selected && (
+        <ToolModal
+          key={selected.id}
+          tool={selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
+    </>
+  );
+}
