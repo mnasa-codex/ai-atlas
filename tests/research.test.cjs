@@ -232,3 +232,15 @@ test("temporary provider failures do not expose upstream diagnostics", async () 
       !error.message.includes("hidden-123"),
   );
 });
+
+
+test("free GLM timeout accommodates the provider's slower response time", () => {
+  const source = fs.readFileSync(
+    path.resolve("supabase/functions/_shared/research.ts"),
+    "utf8",
+  );
+  assert.match(source, /AbortSignal\.timeout\(95000\)/);
+  assert.doesNotMatch(source, /AbortSignal\.timeout\(30000\)/);
+  assert.match(source, /max_tokens: 2600/);
+  assert.match(source, /at most 6 plans/);
+});
