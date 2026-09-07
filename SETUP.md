@@ -1,3 +1,7 @@
+# حالة التفعيل
+
+طُبق ترحيل أطلس على مشروع `manasa` (`mwsrxmzyifomtbegcqqs`) ونُشرت خدمة `research-tool` بنجاح. حساب المسؤول الموجود محفوظ. أضف فقط `GEMINI_API_KEY` في [أسرار الخدمة](https://supabase.com/dashboard/project/mwsrxmzyifomtbegcqqs/functions/secrets). النموذج وأصل الموقع مضبوطتان افتراضياً في الخدمة المنشورة، ويمكن تغييرهما اختيارياً بالمتغيرات أدناه. يتطلب اختبار البحث الحقيقي مفتاحاً صالحاً.
+
 # تفعيل Supabase وGemini
 
 ## 1. قاعدة البيانات
@@ -23,8 +27,8 @@
 من Supabase Dashboard → Edge Functions → Secrets، أضف:
 
 - `GEMINI_API_KEY`: مفتاح Gemini API. لا ترسله في المحادثة ولا تضعه في المستودع.
-- `GEMINI_MODEL`: معرّف نموذج متاح لحسابك يدعم `generateContent` وGoogle Search وJSON schema. مثال موثق عند التنفيذ: `gemini-3.7-flash`؛ تحقق من توفره في حسابك. لا يُفترض النموذج تلقائياً.
-- `ALLOWED_ORIGINS`: أصول الواجهة مفصولة بفواصل، دون مسار أو شرطة نهائية. مثال الإنتاج: `https://mnasa-codex.github.io`. أضف `http://localhost:3000` للتطوير عند الحاجة.
+- `GEMINI_MODEL`: معرّف نموذج متاح لحسابك يدعم `generateContent` وGoogle Search وJSON schema. مثال موثق عند التنفيذ: `gemini-3.7-flash`؛ تحقق من توفره في حسابك. النموذج الافتراضي المضبوط هو `gemini-3.7-flash`، وهذا المتغير اختياري لتغييره.
+- `ALLOWED_ORIGINS` (اختياري؛ الافتراضي `https://mnasa-codex.github.io`): أصول الواجهة مفصولة بفواصل، دون مسار أو شرطة نهائية. مثال الإنتاج: `https://mnasa-codex.github.io`. أضف `http://localhost:3000` للتطوير عند الحاجة.
 
 `SUPABASE_URL` و`SUPABASE_ANON_KEY` يوفرهما Supabase داخل Edge Functions.
 

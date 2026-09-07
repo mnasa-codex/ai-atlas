@@ -3,7 +3,7 @@ import { researchTool, ResearchError } from "../_shared/research.ts";
 
 Deno.serve(async (req: Request) => {
   const origin = req.headers.get("origin") || "";
-  const allowed = (Deno.env.get("ALLOWED_ORIGINS") || "")
+  const allowed = (Deno.env.get("ALLOWED_ORIGINS") || "https://mnasa-codex.github.io")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
@@ -83,7 +83,7 @@ Deno.serve(async (req: Request) => {
     )
       return json({ error: "اكتب اسم أداة من 2 إلى 160 حرفاً." }, 400);
     const key = Deno.env.get("GEMINI_API_KEY"),
-      model = Deno.env.get("GEMINI_MODEL");
+      model = Deno.env.get("GEMINI_MODEL") || "gemini-3.7-flash";
     if (!key || !model)
       return json(
         {
