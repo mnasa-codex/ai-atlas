@@ -86,7 +86,7 @@ test("creates a review-only draft without inventing unknown prices", async () =>
 
   assert.equal(result.tool.plans[0].monthly, undefined);
   assert.equal(result.tool.featured, false);
-  assert.match(result.tool.plans[0].verified, /يحتاج مراجعة بشرية/);
+  assert.match(result.tool.plans[0].verified, /تحتاج مراجعة بشرية/);
   assert.equal(result.provider, "kiosapi");
   assert.equal(result.modelUsed, "glm-test");
   assert.equal(result.verificationMode, "model_knowledge_only");
