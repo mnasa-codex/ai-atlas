@@ -181,3 +181,54 @@ test("uses a listed GLM fallback after a temporary model failure", async () => {
   assert.equal(result.modelUsed, "glm-5.3-flash-backup");
   assert.equal(result.fallbackUsed, true);
 });
+
+
+test("free GLM mode never falls back to a paid model", async () => {
+  const attempted = [];
+  await assert.rejects(
+    () =>
+      researchTool(
+        "Test",
+        "secret",
+        "https://kiosapi.com/v1/",
+        "glm-5.3-flash",
+        async (url, opts = {}) => {
+          if (url.endsWith("/models"))
+            return modelList("glm-5.3-flash", "glm-5.3", "glm-5.2");
+          attempted.push(JSON.parse(opts.body).model);
+          return new Response(
+            "No available channel for model glm-5.3-flash under group default (request id: private-id)",
+            { status: 503 },
+          );
+        },
+      ),
+    (error) =>
+      error.status === 503 &&
+      error.message.includes("Free") &&
+      error.message.includes("default") &&
+      !error.message.includes("private-id"),
+  );
+  assert.deepEqual(attempted, ["glm-5.3-flash"]);
+});
+
+test("temporary provider failures do not expose upstream diagnostics", async () => {
+  await assert.rejects(
+    () =>
+      researchTool(
+        "Test",
+        "secret",
+        "https://kiosapi.com/v1/",
+        "glm-5.3-flash",
+        async (url) =>
+          url.endsWith("/models")
+            ? modelList("glm-5.3-flash")
+            : new Response("internal route and request id: hidden-123", {
+                status: 503,
+              }),
+      ),
+    (error) =>
+      error.status === 503 &&
+      /غير متاح مؤقتاً/.test(error.message) &&
+      !error.message.includes("hidden-123"),
+  );
+});
