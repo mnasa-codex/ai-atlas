@@ -190,6 +190,7 @@ All URLs must be official HTTPS URLs.
 Prices are USD only. monthly is the month-to-month price. annual is the effective monthly price when billed annually.
 Omit an unknown numeric price. custom=true only when official pricing requires contacting sales.
 For each plan, include: name, bestFor in Arabic, features as an Arabic string array, source as an official HTTPS URL, and optional monthly, annual, custom, limits.
+Include at most 6 plans and at most 6 concise features per plan.
 Return this shape:
 {"found":true,"report":"Arabic summary including explicit uncertainties","tool":{"id":"slug","name":"Official name","vendor":"Company","category":"chat","logo":"ABC","hook":"Arabic","description":"Arabic","website":"https://official.example","plans":[{"name":"Plan","bestFor":"Arabic","features":["Arabic"],"source":"https://official.example/pricing"}]}}
 or {"found":false,"report":"Arabic reason","tool":null}.`;
@@ -214,7 +215,7 @@ or {"found":false,"report":"Arabic reason","tool":null}.`;
         },
       ],
       temperature: 0.1,
-      max_tokens: 5000,
+      max_tokens: 2600,
       response_format: { type: "json_object" },
     };
 
@@ -226,12 +227,12 @@ or {"found":false,"report":"Arabic reason","tool":null}.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(30000),
+        signal: AbortSignal.timeout(95000),
       });
     } catch {
       if (attempt < candidates.length - 1) continue;
       throw new ResearchError(
-        "انتهت مهلة الاتصال بكل نماذج GLM المتاحة. حاول لاحقاً.",
+        "انتهت مهلة اتصال KiosAPI بالنموذج المجاني. حاول لاحقاً.",
         504,
       );
     }
@@ -254,13 +255,13 @@ or {"found":false,"report":"Arabic reason","tool":null}.`;
             ...payload,
             response_format: undefined,
           }),
-          signal: AbortSignal.timeout(30000),
+          signal: AbortSignal.timeout(95000),
         });
         failure = response.ok ? "" : await response.text();
       } catch {
         if (attempt < candidates.length - 1) continue;
         throw new ResearchError(
-          "انتهت مهلة الاتصال بكل نماذج GLM المتاحة. حاول لاحقاً.",
+          "انتهت مهلة اتصال KiosAPI بالنموذج المجاني. حاول لاحقاً.",
           504,
         );
       }
