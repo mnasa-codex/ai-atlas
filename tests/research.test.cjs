@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const ts = require("typescript");
 const vm = require("node:vm");
 const path = require("node:path");
+
 function load(file) {
   const context = {
     exports: {},
@@ -26,33 +27,14 @@ function load(file) {
   );
   return context.exports;
 }
+
 const { researchTool } = load(
   path.resolve("supabase/functions/_shared/research.ts"),
 );
-const candidate = (text, grounded = false) => ({
-  candidates: [
-    {
-      finishReason: "STOP",
-      content: { parts: [{ text }] },
-      ...(grounded
-        ? {
-            groundingMetadata: {
-              groundingChunks: [
-                {
-                  web: {
-                    title: "Official source",
-                    uri: "https://example.com/pricing",
-                  },
-                },
-              ],
-            },
-          }
-        : {}),
-    },
-  ],
-});
+
 const draft = {
   found: true,
+  report: "ملخص آلي يحتاج مراجعة.",
   tool: {
     id: "test-ai",
     name: "Test AI",
@@ -72,80 +54,130 @@ const draft = {
     ],
   },
 };
-test("research requires grounding and does not invent unknown prices or claim human verification", async () => {
+
+const completion = (value = draft) =>
+  new Response(
+    JSON.stringify({
+      choices: [{ message: { content: JSON.stringify(value) } }],
+    }),
+    { status: 200, headers: { "Content-Type": "application/json" } },
+  );
+
+const modelList = (...ids) =>
+  new Response(JSON.stringify({ data: ids.map((id) => ({ id })) }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+
+test("creates a review-only draft without inventing unknown prices", async () => {
   const calls = [];
-  const mock = async (url, opts) => {
-    calls.push({ url, body: JSON.parse(opts.body), headers: opts.headers });
-    return new Response(
-      JSON.stringify(
-        calls.length === 1
-          ? candidate("Official research report", true)
-          : candidate(JSON.stringify(draft)),
-      ),
-      { status: 200 },
-    );
+  const mock = async (url, opts = {}) => {
+    calls.push({ url, opts });
+    return url.endsWith("/models") ? modelList("glm-test") : completion();
   };
+
   const result = await researchTool(
     "Test AI",
     "test-secret",
-    "gemini-test",
+    "https://kiosapi.com/v1/",
+    "glm-test",
     mock,
   );
+
   assert.equal(result.tool.plans[0].monthly, undefined);
   assert.equal(result.tool.featured, false);
-  assert.match(result.tool.plans[0].verified, /يحتاج مراجعة بشرية/);
+  assert.match(result.tool.plans[0].verified, /تحتاج مراجعة بشرية/);
+  assert.equal(result.provider, "kiosapi");
+  assert.equal(result.modelUsed, "glm-test");
+  assert.equal(result.verificationMode, "model_knowledge_only");
   assert.equal(calls.length, 2);
-  assert.ok(calls[0].body.tools[0].google_search);
-  assert.equal(calls[0].url.includes("test-secret"), false);
+  assert.equal(calls[1].url, "https://kiosapi.com/v1/chat/completions");
+  assert.equal(JSON.parse(calls[1].opts.body).model, "glm-test");
+  assert.equal(calls.some((call) => call.url.includes("test-secret")), false);
   assert.equal(JSON.stringify(result).includes("test-secret"), false);
 });
-test("ungrounded answer never becomes a draft", async () => {
-  let calls = 0;
+
+test("an uncertain model answer never becomes a draft", async () => {
   await assert.rejects(
     () =>
-      researchTool("Test", "key", "gemini-test", async () => {
-        calls++;
-        return new Response(JSON.stringify(candidate("No sources")));
-      }),
-    /مصادر/,
+      researchTool(
+        "Unknown",
+        "key",
+        "https://kiosapi.com/v1/",
+        "glm-test",
+        async (url) =>
+          url.endsWith("/models")
+            ? modelList("glm-test")
+            : completion({
+                found: false,
+                report: "لا يمكن تحديد الأداة من الاسم وحده.",
+                tool: null,
+              }),
+      ),
+    /لا يمكن تحديد الأداة/,
   );
-  assert.equal(calls, 1);
 });
+
 test("malformed or unsafe generated data is rejected", async () => {
   for (const change of [
-    (t) => (t.tool.website = "javascript:alert(1)"),
-    (t) => (t.tool.plans[0].monthly = -1),
-    (t) => (t.found = false),
+    (value) => (value.tool.website = "javascript:alert(1)"),
+    (value) => (value.tool.plans[0].monthly = -1),
+    (value) => (value.found = false),
   ]) {
     const bad = structuredClone(draft);
     change(bad);
-    let calls = 0;
     await assert.rejects(() =>
       researchTool(
         "Test",
         "key",
-        "gemini-test",
-        async () =>
-          new Response(
-            JSON.stringify(
-              ++calls === 1
-                ? candidate("Report", true)
-                : candidate(JSON.stringify(bad)),
-            ),
-          ),
+        "https://kiosapi.com/v1/",
+        "glm-test",
+        async (url) =>
+          url.endsWith("/models") ? modelList("glm-test") : completion(bad),
       ),
     );
   }
 });
+
 test("upstream rate limit is reported without leaking provider response or key", async () => {
   await assert.rejects(
     () =>
       researchTool(
         "Test",
         "secret",
-        "gemini-test",
-        async () => new Response("sensitive provider error", { status: 429 }),
+        "https://kiosapi.com/v1/",
+        "glm-test",
+        async (url) =>
+          url.endsWith("/models")
+            ? new Response("unavailable", { status: 503 })
+            : new Response("sensitive provider error", { status: 429 }),
       ),
-    (e) => e.status === 429 && !e.message.includes("secret"),
+    (error) =>
+      error.status === 429 &&
+      !error.message.includes("secret") &&
+      !error.message.includes("sensitive provider error"),
   );
+});
+
+test("uses a listed GLM fallback after a temporary model failure", async () => {
+  const models = [];
+  const result = await researchTool(
+    "Test",
+    "secret",
+    "https://kiosapi.com/v1/",
+    "glm-primary",
+    async (url, opts = {}) => {
+      if (url.endsWith("/models"))
+        return modelList("glm-primary", "glm-5.3-flash-backup");
+      const model = JSON.parse(opts.body).model;
+      models.push(model);
+      return model === "glm-primary"
+        ? new Response("temporarily unavailable", { status: 503 })
+        : completion();
+    },
+  );
+
+  assert.deepEqual(models, ["glm-primary", "glm-5.3-flash-backup"]);
+  assert.equal(result.modelUsed, "glm-5.3-flash-backup");
+  assert.equal(result.fallbackUsed, true);
 });

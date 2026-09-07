@@ -82,13 +82,16 @@ Deno.serve(async (req: Request) => {
       body.name.length > 160
     )
       return json({ error: "اكتب اسم أداة من 2 إلى 160 حرفاً." }, 400);
-    const key = Deno.env.get("GEMINI_API_KEY"),
-      model = Deno.env.get("GEMINI_MODEL") || "gemini-3.7-flash";
-    if (!key || !model)
+    const key = Deno.env.get("KIOSAPI_API_KEY");
+    const baseUrl =
+      Deno.env.get("KIOSAPI_BASE_URL") || "https://kiosapi.com/v1/";
+    const model =
+      Deno.env.get("KIOSAPI_MODEL") || "glm-5.3-flash";
+    if (!key || !baseUrl || !model)
       return json(
         {
           error:
-            "لم يُفعّل اتصال Gemini بعد. أضف مفتاح الخدمة والنموذج في إعدادات الخادم.",
+            "لم يُفعّل اتصال KiosAPI بعد. تحقق من المفتاح والرابط واسم النموذج في أسرار الخادم.",
         },
         503,
       );
@@ -103,7 +106,9 @@ Deno.serve(async (req: Request) => {
         { error: "بلغت حد 10 عمليات بحث في الساعة. حاول لاحقاً." },
         429,
       );
-    return json(await researchTool(body.name.trim(), key, model));
+    return json(
+      await researchTool(body.name.trim(), key, baseUrl, model),
+    );
   } catch (error) {
     if (error instanceof ResearchError)
       return json({ error: error.message }, error.status);

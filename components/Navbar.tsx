@@ -11,7 +11,16 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+
+const publicLinks = [
+  { name: "نظرة عامة", href: "/", icon: Compass },
+  { name: "مكتبة الأدوات", href: "/tools", icon: LayoutGrid },
+  { name: "مقارنة الخطط", href: "/pricing", icon: Layers3 },
+  { name: "تواصل معنا", href: "/contact", icon: MessageCircle },
+];
+
 export default function Navbar() {
   const rawPath = usePathname();
   const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -21,13 +30,48 @@ export default function Navbar() {
       : rawPath
     ).replace(/\/$/, "") || "/";
   const [open, setOpen] = useState(false);
-  const links = [
-    { name: "نظرة عامة", href: "/", icon: Compass },
-    { name: "مكتبة الأدوات", href: "/tools", icon: LayoutGrid },
-    { name: "مقارنة الخطط", href: "/pricing", icon: Layers3 },
-    { name: "تواصل معنا", href: "/contact", icon: MessageCircle },
-    { name: "استوديو أطلس", href: "/admin", icon: ShieldCheck },
-  ];
+  const [showAdmin, setShowAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!supabase) return;
+    const client = supabase;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    const checkAdmin = async () => {
+      const { data: auth } = await client.auth.getUser();
+      if (!auth.user) {
+        if (!cancelled) setShowAdmin(false);
+        return;
+      }
+      const { data, error } = await client
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", auth.user.id)
+        .maybeSingle();
+      if (!cancelled) setShowAdmin(!error && !!data);
+    };
+
+    void checkAdmin();
+    const { data: listener } = client.auth.onAuthStateChange(() => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => void checkAdmin(), 0);
+    });
+
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const links = showAdmin
+    ? [
+        ...publicLinks,
+        { name: "استوديو أطلس", href: "/admin", icon: ShieldCheck },
+      ]
+    : publicLinks;
+
   return (
     <>
       <header className="mobile-header">

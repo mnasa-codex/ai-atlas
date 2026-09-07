@@ -10,6 +10,10 @@ type Research = {
   report: string;
   searchSuggestions?: string;
   searchedAt: string;
+  provider?: string;
+  requestedModel?: string;
+  modelUsed?: string;
+  fallbackUsed?: boolean;
 };
 export default function AIImporter({
   onAdd,
@@ -42,7 +46,7 @@ export default function AIImporter({
             apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
           },
           body: JSON.stringify({ name: query.trim() }),
-          signal: AbortSignal.timeout(100000),
+          signal: AbortSignal.timeout(140000),
         },
       );
       const data = await response.json().catch(() => null);
@@ -81,8 +85,8 @@ export default function AIImporter({
         <Sparkles className="text-purple" /> أضف أداة، بالذكاء الاصطناعي
       </h2>
       <p>
-        اكتب اسم الأداة أو موقعها. يبحث Gemini عن مصادرها ويجهّز وصفاً عربياً
-        وخططاً قابلة للمراجعة.
+        اكتب اسم الأداة أو موقعها. يستخدم أطلس نماذج GLM عبر KiosAPI لإعداد
+        مسودة عربية منظّمة؛ راجع الروابط والأسعار قبل النشر.
       </p>
       <form className="ai-input-row" onSubmit={research}>
         <input
@@ -109,7 +113,7 @@ export default function AIImporter({
       </form>
       {busy && (
         <p className="ai-message" role="status">
-          قد يستغرق البحث نحو دقيقة. سنعرض المصادر قبل الإضافة.
+          قد يستغرق الإعداد نحو دقيقتين عند الانتقال تلقائياً إلى نموذج احتياطي.
         </p>
       )}
       {error && (
@@ -130,9 +134,17 @@ export default function AIImporter({
           </div>
           <p className="text-muted mt-4">{result.tool.description}</p>
           <p className="ai-message">
-            {result.tool.plans.length} خطط • بحث بتاريخ{" "}
+            {result.tool.plans.length} خطط • إعداد بتاريخ{" "}
             {result.searchedAt.slice(0, 10)} • الأسعار غير المؤكدة تُترك فارغة.
           </p>
+          {result.modelUsed && (
+            <p className="ai-message">
+              النموذج المستخدم: <span dir="ltr">{result.modelUsed}</span>
+              {result.fallbackUsed
+                ? " (بديل تلقائي لأن النموذج الأساسي لم يكن متاحاً)"
+                : ""}
+            </p>
+          )}
           <div className="ai-sources">
             {result.sources.map((s, i) => (
               <a key={i} href={s.url} target="_blank" rel="noopener noreferrer">
