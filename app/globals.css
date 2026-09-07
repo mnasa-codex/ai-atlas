@@ -921,6 +921,7 @@ a {
   display: grid;
   place-items: center;
 }
+/* Atlas globe: cinematic orbital presentation */
 .globe-showcase {
   position: relative;
   height: 385px;
