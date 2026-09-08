@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./sidebar-overrides.css";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import StarfieldBackground from "@/components/StarfieldBackground";
