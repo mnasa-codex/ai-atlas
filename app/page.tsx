@@ -1,6 +1,8 @@
 import ToolsExplorer from "@/components/ToolsExplorer";
 import GlobeShowcase from "@/components/GlobeShowcase";
+import AIChat from "@/components/AIChat";
 import { Sparkles } from "lucide-react";
+
 export default function Home() {
   return (
     <div className="workspace">
@@ -10,7 +12,7 @@ export default function Home() {
             <Sparkles size={15} /> اكتشف الذكاء. وسّع إمكانياتك.
           </div>
           <h1>
-            فكرتك القادمة،
+            فكرتك القادمة,
             <br />
             <span>أبعد مما تتخيّل.</span>
           </h1>
@@ -19,17 +21,16 @@ export default function Home() {
             <br />
             اكتشف، قارن، واختر ما يُطلق إمكانياتك.
           </p>
-          <a className="hero-link" href="#explore">
-            ابدأ الاكتشاف <span aria-hidden="true">↓</span>
+          <a className="hero-link" href="#atlas-intelligence">
+            جرّب ذكاء أطلس <span aria-hidden="true">↓</span>
           </a>
         </div>
         <GlobeShowcase />
       </header>
-      <section
-        id="explore"
-        className="explorer-section"
-        aria-label="اكتشاف الأدوات"
-      >
+      <section id="atlas-intelligence" aria-label="ذكاء أطلس">
+        <AIChat />
+      </section>
+      <section id="explore" className="explorer-section" aria-label="اكتشاف الأدوات">
         <ToolsExplorer />
       </section>
       <footer className="workspace-footer">
