@@ -101,23 +101,69 @@
   margin-right: 78px;
 }
 
-/* Real tool logo presentation */
-.tool-logo {
+/* Professional, fixed logo canvas — branding never pushes or hides the tool name. */
+.tool-logo-box {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  place-items: center;
   overflow: hidden;
+  border-radius: 14px;
   padding: 7px;
+  background: color-mix(in srgb, var(--accent) 10%, #101522);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  box-shadow: inset 0 0 0 1px #ffffff06;
 }
-.tool-logo img {
+.tool-logo-box img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
   display: block;
-  border-radius: 9px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 8px;
 }
+.tool-logo-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--accent);
+  font: 800 17px/1 system-ui, sans-serif;
+}
+
+/* Legacy/detail logo containers stay constrained as well. */
+.tool-logo,
+.tool-monogram {
+  overflow: hidden;
+}
+.tool-logo img,
 .tool-monogram img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
   display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.card-name {
+  min-width: 0;
+}
+.card-name h3 {
+  min-width: 0;
+  max-width: 100%;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.card-name svg {
+  flex: 0 0 auto;
 }
 
 @media (max-width: 1200px) and (min-width: 761px) {
@@ -167,5 +213,13 @@
   .main-content,
   .sidebar.is-collapsed ~ .main-content {
     margin-right: 0;
+  }
+
+  .tool-logo-box {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+    border-radius: 13px;
+    padding: 6px;
   }
 }
