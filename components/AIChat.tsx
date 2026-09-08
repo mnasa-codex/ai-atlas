@@ -26,7 +26,8 @@ export default function AIChat() {
     e.preventDefault();
     const text = input.trim();
     if (!text || busy || !apiUrl) return;
-    const next = [...messages, { role: "user" as const, content: text }].slice(-8);
+    const userMessage: Message = { role: "user", content: text };
+    const next: Message[] = [...messages, userMessage].slice(-8);
     setMessages(next);
     setInput("");
     setBusy(true);
@@ -37,10 +38,16 @@ export default function AIChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: next }),
       });
-      const data = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(data?.error || "تعذر الحصول على رد من المساعد.");
-      if (typeof data?.answer !== "string" || !data.answer.trim()) throw new Error("عاد رد غير مكتمل من المساعد.");
-      setMessages((current) => [...current, { role: "assistant", content: data.answer.trim() }].slice(-8));
+      const data: unknown = await response.json().catch(() => null);
+      const payload = data as { error?: unknown; answer?: unknown } | null;
+      if (!response.ok)
+        throw new Error(
+          typeof payload?.error === "string" ? payload.error : "تعذر الحصول على رد من المساعد.",
+        );
+      if (typeof payload?.answer !== "string" || !payload.answer.trim())
+        throw new Error("عاد رد غير مكتمل من المساعد.");
+      const assistantMessage: Message = { role: "assistant", content: payload.answer.trim() };
+      setMessages((current) => [...current, assistantMessage].slice(-8));
     } catch (issue) {
       setError(issue instanceof Error ? issue.message : "تعذر تشغيل المساعد الآن.");
     } finally {
