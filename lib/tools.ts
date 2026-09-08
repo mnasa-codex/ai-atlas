@@ -1,17 +1,9 @@
 import catalog from "@/data/catalog.json";
 import { validCatalog } from "./validate";
-export type {
-  Category,
-  PricingPlan,
-  Tool,
-} from "../supabase/functions/_shared/catalog";
+export type { Category, PricingPlan, Tool } from "../supabase/functions/_shared/catalog";
 import type { Category, Tool } from "../supabase/functions/_shared/catalog";
 
-export const categories: {
-  id: "all" | Category;
-  label: string;
-  icon: string;
-}[] = [
+export const categories: { id: "all" | Category; label: string; icon: string }[] = [
   { id: "all", label: "الكل", icon: "✦" },
   { id: "chat", label: "محادثة", icon: "◉" },
   { id: "image", label: "صور", icon: "◌" },
@@ -20,6 +12,16 @@ export const categories: {
   { id: "research", label: "بحث", icon: "⌕" },
   { id: "audio", label: "صوت", icon: "◖" },
 ];
+
+export function logoUrlForTool(tool: Pick<Tool, "logoUrl" | "website">): string | undefined {
+  if (tool.logoUrl) return tool.logoUrl;
+  try {
+    const hostname = new URL(tool.website).hostname;
+    return `https://www.google.com/s2/favicons?sz=128&domain=${encodeURIComponent(hostname)}`;
+  } catch {
+    return undefined;
+  }
+}
 
 if (!validCatalog(catalog)) throw new Error("Invalid data/catalog.json");
 export const seedTools: Tool[] = catalog;
