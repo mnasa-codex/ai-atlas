@@ -1,0 +1,171 @@
+/* Atlas collapsible desktop sidebar */
+.sidebar {
+  width: 236px;
+  transition: width .24s ease, transform .24s ease, padding .24s ease;
+}
+.sidebar-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.sidebar-collapse {
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+  flex: 0 0 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid #b5c7ff16;
+  background: #ffffff08;
+  color: #a8b4cf;
+  transition: transform .2s ease, background .2s ease, color .2s ease;
+}
+.sidebar-collapse:hover {
+  background: #ffffff12;
+  color: #fff;
+}
+.sidebar-collapse .rotate-180 {
+  transform: rotate(180deg);
+}
+.sidebar-brand-copy,
+.sidebar .sidebar-caption,
+.sidebar .nav-item span,
+.sidebar .help-card h3,
+.sidebar .help-card p,
+.sidebar .help-card a,
+.sidebar-foot {
+  transition: opacity .18s ease, max-width .24s ease, margin .24s ease;
+}
+.sidebar.is-collapsed {
+  width: 78px;
+  padding-inline: 12px;
+}
+.sidebar.is-collapsed .sidebar-brand-copy,
+.sidebar.is-collapsed .sidebar-caption,
+.sidebar.is-collapsed .nav-item span,
+.sidebar.is-collapsed .help-card h3,
+.sidebar.is-collapsed .help-card p,
+.sidebar.is-collapsed .help-card a,
+.sidebar.is-collapsed .sidebar-foot {
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  margin-left: 0;
+  margin-right: 0;
+  pointer-events: none;
+}
+.sidebar.is-collapsed .sidebar-head {
+  justify-content: center;
+}
+.sidebar.is-collapsed .brand {
+  justify-content: center;
+}
+.sidebar.is-collapsed .sidebar-collapse {
+  position: absolute;
+  left: -3px;
+  top: 2px;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  flex-basis: 28px;
+}
+.sidebar.is-collapsed .sidebar-caption {
+  margin: 42px 0 12px;
+  height: 1px;
+}
+.sidebar.is-collapsed .nav-item {
+  justify-content: center;
+  padding-inline: 0;
+}
+.sidebar.is-collapsed .nav-marker {
+  display: none;
+}
+.sidebar.is-collapsed .sidebar-bottom {
+  padding-top: 12px;
+}
+.sidebar.is-collapsed .help-card {
+  padding: 12px;
+  display: grid;
+  place-items: center;
+}
+.sidebar.is-collapsed .help-card > svg {
+  margin: 0;
+}
+.main-content {
+  transition: margin-right .24s ease;
+}
+.sidebar.is-collapsed ~ .main-content {
+  margin-right: 78px;
+}
+
+/* Real tool logo presentation */
+.tool-logo {
+  overflow: hidden;
+  padding: 7px;
+}
+.tool-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 9px;
+}
+.tool-monogram img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 1200px) and (min-width: 761px) {
+  .sidebar {
+    width: 215px;
+  }
+  .sidebar.is-collapsed {
+    width: 72px;
+  }
+  .sidebar.is-collapsed ~ .main-content {
+    margin-right: 72px;
+  }
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    width: 260px;
+    transition: transform .22s ease;
+  }
+  .sidebar.is-collapsed {
+    width: 260px;
+    padding-inline: 22px;
+  }
+  .sidebar.is-collapsed .sidebar-brand-copy,
+  .sidebar.is-collapsed .sidebar-caption,
+  .sidebar.is-collapsed .nav-item span,
+  .sidebar.is-collapsed .help-card h3,
+  .sidebar.is-collapsed .help-card p,
+  .sidebar.is-collapsed .help-card a,
+  .sidebar.is-collapsed .sidebar-foot {
+    opacity: 1;
+    max-width: none;
+    overflow: visible;
+    pointer-events: auto;
+  }
+  .sidebar.is-collapsed .sidebar-head,
+  .sidebar.is-collapsed .brand,
+  .sidebar.is-collapsed .nav-item,
+  .sidebar.is-collapsed .help-card {
+    justify-content: initial;
+  }
+  .sidebar.is-collapsed .sidebar-collapse {
+    position: static;
+    width: 34px;
+    height: 34px;
+  }
+  .main-content,
+  .sidebar.is-collapsed ~ .main-content {
+    margin-right: 0;
+  }
+}
