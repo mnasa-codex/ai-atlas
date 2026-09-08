@@ -1,18 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Compass,
-  LayoutGrid,
-  Layers3,
-  MessageCircle,
-  ShieldCheck,
-  ArrowUpLeft,
-  Menu,
-  X,
-} from "lucide-react";
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { Compass, LayoutGrid, Layers3, MessageCircle, ArrowUpLeft, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 const publicLinks = [
   { name: "نظرة عامة", href: "/", icon: Compass },
@@ -24,53 +14,8 @@ const publicLinks = [
 export default function Navbar() {
   const rawPath = usePathname();
   const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  const path =
-    (base && rawPath.startsWith(base)
-      ? rawPath.slice(base.length)
-      : rawPath
-    ).replace(/\/$/, "") || "/";
+  const path = (base && rawPath.startsWith(base) ? rawPath.slice(base.length) : rawPath).replace(/\/$/, "") || "/";
   const [open, setOpen] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false);
-
-  useEffect(() => {
-    if (!supabase) return;
-    const client = supabase;
-    let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-
-    const checkAdmin = async () => {
-      const { data: auth } = await client.auth.getUser();
-      if (!auth.user) {
-        if (!cancelled) setShowAdmin(false);
-        return;
-      }
-      const { data, error } = await client
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id", auth.user.id)
-        .maybeSingle();
-      if (!cancelled) setShowAdmin(!error && !!data);
-    };
-
-    void checkAdmin();
-    const { data: listener } = client.auth.onAuthStateChange(() => {
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(() => void checkAdmin(), 0);
-    });
-
-    return () => {
-      cancelled = true;
-      if (timer) clearTimeout(timer);
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
-  const links = showAdmin
-    ? [
-        ...publicLinks,
-        { name: "استوديو أطلس", href: "/admin", icon: ShieldCheck },
-      ]
-    : publicLinks;
 
   return (
     <>
@@ -78,44 +23,20 @@ export default function Navbar() {
         <Link href="/" className="brand">
           أطلس <span>ATLAS</span>
         </Link>
-        <button
-          aria-label="القائمة"
-          aria-expanded={open}
-          aria-controls="main-navigation"
-          onClick={() => setOpen(!open)}
-        >
+        <button aria-label="القائمة" aria-expanded={open} aria-controls="main-navigation" onClick={() => setOpen(!open)}>
           {open ? <X /> : <Menu />}
         </button>
       </header>
-      {open && (
-        <button
-          aria-label="إغلاق القائمة"
-          className="nav-scrim"
-          onClick={() => setOpen(false)}
-        />
-      )}
-      <aside
-        id="main-navigation"
-        className={`sidebar ${open ? "is-open" : ""}`}
-      >
+      {open && <button aria-label="إغلاق القائمة" className="nav-scrim" onClick={() => setOpen(false)} />}
+      <aside id="main-navigation" className={`sidebar ${open ? "is-open" : ""}`}>
         <Link href="/" className="brand" onClick={() => setOpen(false)}>
-          <span className="brand-symbol">
-            <Compass size={27} />
-          </span>
-          <div>
-            أطلس<small>ATLAS INTELLIGENCE</small>
-          </div>
+          <span className="brand-symbol"><Compass size={27} /></span>
+          <div>أطلس<small>ATLAS INTELLIGENCE</small></div>
         </Link>
         <div className="sidebar-caption">مساحة الاكتشاف</div>
         <nav aria-label="التنقل الرئيسي">
-          {links.map(({ name, href, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              aria-current={path === href ? "page" : undefined}
-              className={`nav-item ${path === href ? "active" : ""}`}
-            >
+          {publicLinks.map(({ name, href, icon: Icon }) => (
+            <Link key={href} href={href} onClick={() => setOpen(false)} aria-current={path === href ? "page" : undefined} className={`nav-item ${path === href ? "active" : ""}`}>
               <Icon size={19} />
               <span>{name}</span>
               {path === href && <span className="nav-marker" />}
@@ -127,14 +48,9 @@ export default function Navbar() {
             <MessageCircle size={22} />
             <h3>اختيارك القادم أوضح</h3>
             <p>مساعدة مباشرة لاختيار الأداة المناسبة لعملك.</p>
-            <Link href="/contact" onClick={() => setOpen(false)}>
-              تحدث معنا <ArrowUpLeft size={17} />
-            </Link>
+            <Link href="/contact" onClick={() => setOpen(false)}>تحدث معنا <ArrowUpLeft size={17} /></Link>
           </div>
-          <div className="sidebar-foot">
-            <span>عربي / AR</span>
-            <span>دليل أطلس</span>
-          </div>
+          <div className="sidebar-foot"><span>عربي / AR</span><span>دليل أطلس</span></div>
         </div>
       </aside>
     </>
