@@ -1,38 +1,18 @@
 "use client";
 import { useState } from "react";
 import { ArrowUpLeft, Sparkles } from "lucide-react";
-import { categories, type Tool } from "@/lib/tools";
-export default function ToolCard({
-  tool,
-  onOpen,
-}: {
-  tool: Tool;
-  onOpen: (t: Tool) => void;
-}) {
+import { categories, logoUrlForTool, type Tool } from "@/lib/tools";
+export default function ToolCard({ tool, onOpen }: { tool: Tool; onOpen: (t: Tool) => void }) {
   const [failedLogo, setFailedLogo] = useState<string>();
+  const logoUrl = logoUrlForTool(tool);
   const free = tool.plans.some((p) => !p.custom && p.monthly === 0);
   return (
-    <button
-      onClick={() => onOpen(tool)}
-      className={`tool-card accent-${tool.category}`}
-      aria-label={`تفاصيل ${tool.name}`}
-    >
+    <button onClick={() => onOpen(tool)} className={`tool-card accent-${tool.category}`} aria-label={`تفاصيل ${tool.name}`}>
       <div className="card-top">
         <div className="tool-monogram" aria-hidden="true">
-          {tool.logoUrl && failedLogo !== tool.logoUrl ? (
-            <img
-              src={tool.logoUrl}
-              alt=""
-              loading="lazy"
-              onError={() => setFailedLogo(tool.logoUrl)}
-            />
-          ) : (
-            tool.logo
-          )}
+          {logoUrl && failedLogo !== logoUrl ? <img src={logoUrl} alt="" loading="lazy" onError={() => setFailedLogo(logoUrl)} /> : tool.logo}
         </div>
-        <span className="category-label">
-          {categories.find((c) => c.id === tool.category)?.label}
-        </span>
+        <span className="category-label">{categories.find((c) => c.id === tool.category)?.label}</span>
       </div>
       <div className="card-name">
         <h3 dir="ltr">{tool.name}</h3>
@@ -41,12 +21,8 @@ export default function ToolCard({
       <div className="card-vendor">{tool.vendor}</div>
       <p>{tool.hook}</p>
       <div className="card-bottom">
-        <span>
-          {free ? "خطة مجانية متاحة" : `${tool.plans.length} خطط للاطلاع`}
-        </span>
-        <span className="card-arrow">
-          <ArrowUpLeft size={18} />
-        </span>
+        <span>{free ? "خطة مجانية متاحة" : `${tool.plans.length} خطط للاطلاع`}</span>
+        <span className="card-arrow"><ArrowUpLeft size={18} /></span>
       </div>
     </button>
   );
