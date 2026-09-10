@@ -1,58 +1,21 @@
-# أطلس — اكتشف أدوات الذكاء الاصطناعي
+# TALARIA TRADE
 
-دليل عربي RTL مبني على Next.js وReact وTypeScript، بهوية فضائية ونجوم متحركة وكرة أرضية تفاعلية. تبقى الواجهة قابلة للنشر على GitHub Pages؛ Supabase مسؤول عن الهوية والمحتوى وخدمة Gemini الآمنة.
+Institutional-style BTCUSD and XAUUSD decision platform built from the supplied Talaria / TraderHermes algorithmic knowledge base.
 
-## التشغيل
+## Active stack
 
-```bash
-npm ci
-cp .env.example .env.local
-npm run dev
-```
+`Market data → closed-candle validation → MTF structure/liquidity → macro/intermarket context → Hermes strategy dispatcher → sweep/MSS/BOS/POI/OTE → RRR/risk gate → signal → management/audit`
 
-## استوديو أطلس
+The active UI implements the deterministic decision core for BTCUSD and XAUUSD and exposes PCR, SIREN, SNAKE, SAC, WICK, MDS and OSOK strategy families. Default guardrails are 0.5% risk/trade, 2% daily loss limit, 3 daily trades, 3-loss circuit breaker, 2.5R minimum standard RRR and 3R preferred target.
 
-`/admin` صفحة دخول منشورة، وليست مساراً محذوفاً. المسؤولون فقط يستطيعون البحث أو النشر. الحماية في قاعدة البيانات وخدمة البحث، وليست إخفاء الواجهة.
+## Deployment
 
-1. سجّل الدخول بحساب مسؤول موجود في `admin_users`.
-2. اكتب اسم الأداة أو رابطها في البحث الذكي.
-3. يطلب الخادم من Gemini البحث عبر Google Search، ثم ينظم النتائج في مسودة عربية. تُعرض المصادر وملخص البحث واقتراحات Google. لا تُقبل إجابة بلا مصادر، ولا تُنشر النتائج تلقائياً.
-4. أضف النتيجة إلى المسودة، وراجع البيانات والأسعار، ثم اضغط «نشر التعديلات».
-5. النشر يحدّث `atlas_catalog` لجميع الزوار عند تحميل الدليل. يحفظ نسخة سابقة ويمنع الكتابة فوق مراجعة أحدث. «حفظ محلي» يحتفظ بالمسودة على الجهاز فقط.
+GitHub Pages is the static frontend. Supabase contains the persistent schema for market candles, signals and risk state. A real-money broker/exchange adapter must run server-side and validate contract size, point value, currency conversion and order permissions before dispatch.
 
-الواجهة تقرأ المحتوى المنشور من Supabase مع الرجوع للكتالوج المرفق عند انقطاع الخدمة، وتُظهر تنبيهاً. بيانات Supabase غير مهيأة؟ يجب تطبيق الترحيل قبل تشغيل النشر والبحث.
+## Atlas archive
 
-## إعداد الخادم وGemini
+The former Atlas AI-directory application is no longer the active entry point. `_archive/atlas/` is the archive boundary; the original source also remains recoverable from Git history.
 
-راجع [SETUP.md](SETUP.md) لترتيب الإعداد والتفعيل. لا تضع مفتاح Gemini في متغير `NEXT_PUBLIC_*` أو في GitHub أو المتصفح.
+## Source basis
 
-## الاختبارات والنشر
-
-```bash
-npm test
-NEXT_PUBLIC_BASE_PATH=/ai-atlas npm run build
-node tests/static.cjs
-```
-
-ينفذ GitHub Actions الاختبارات والبناء والتحقق من الملفات على طلبات الدمج. النشر إلى GitHub Pages يحدث فقط عند تحديث `main` أو التشغيل اليدوي، بعد نجاح الاختبارات.
-
-اختبار PostgreSQL الاختياري، في بيئة منفصلة عن تبعيات التطبيق:
-
-```bash
-npm install --prefix /tmp/atlas-sql-tests @electric-sql/pglite
-NODE_PATH=/tmp/atlas-sql-tests/node_modules node tests/sql.integration.cjs
-```
-
-## صفحات الأدوات والبيانات
-
-للأدوات الموجودة في `data/catalog.json` صفحات ثابتة `/tools/<id>/` بعناوين ووصف خاصين بها. للأدوات الجديدة المنشورة مباشرة رابط `/tool/?id=<id>`؛ هذه الصفحة غير مفهرسة. لإضافة صفحة ثابتة مفهرسة للأداة الجديدة، صدّر الدليل من الاستوديو واستبدل `data/catalog.json` وأعد البناء. البيانات الحية تُحدّث المحتوى المعروض، أما وصف محرك البحث فيتحدث عند البناء.
-
-راجعت أسعار 13 خطة من المصادر الرسمية بتاريخ 2026-09-07. حُذفت الأرقام التي تعذر تأكيدها من بقية الخطط؛ المزايا القديمة ما زالت موسومة بأنها تحتاج مراجعة. المقارنة لا تدّعي شمول جميع خطط كل شركة. راجع [CONTENT_REVIEW.md](CONTENT_REVIEW.md).
-
-## حدود التحقق
-
-اختبارات Gemini تستخدم ردوداً محاكية للتحقق من رفض المصادر الناقصة والأسعار غير الصالحة وحدود الاستخدام، ولا تثبت نجاح مفتاح حي أو نموذج معين. يلزم اختبار بحث حقيقي بعد إضافة الأسرار ونشر الخدمة. اختبار SQL المحلي لا يحل محل التحقق من إعداد مشروع Supabase الحي. لم يُنفذ اختبار بصري عبر متصفح أو اختبار اختراق شامل.
-
-## الأصول
-
-خريطة الأرض محفوظة محلياً: `public/textures/earth-day.jpg`، من أمثلة Three.js (`earth_atmos_2048.jpg`). [المصدر](https://github.com/mrdoob/three.js/blob/dev/examples/textures/planets/earth_atmos_2048.jpg). الكرة تُحمّل عند العرض مع بديل للأجهزة التي لا تدعم WebGL. النجوم والدوران قابلان للإيقاف ويحترمان تقليل الحركة.
+Implementation follows the supplied Talaria Trade / TraderHermes Levels 6–9 master knowledge base and source PDFs, including market structure, liquidity, IPDA/DOL, PD arrays, intermarket context, killzones, Hermes strategies, risk and execution concepts.
